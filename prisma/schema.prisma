@@ -1,0 +1,58 @@
+/**
+
+url を書かない のが Prisma 7
+Error: Prisma schema validation - (get-config wasm)
+Error code: P1012
+error: The datasource property `url` is no longer supported in schema files. Move connection URLs for Migrate to `prisma.config.ts` and pass either `adapter` for a direct database connection or `accelerateUrl` for Accelerate to the `PrismaClient` constructor. See https://pris.ly/d/config-datasource and https://pris.ly/d/prisma7-client-config
+
+そのため「prisma.config.ts」で記載する
+
+*/
+datasource db {
+  provider = "postgresql"
+  url      = env("POSTGRES_PRISMA_URL")// url      = "file:./dev.db"  // ここにURLを戻します
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Todo {
+  id        Int      @id @default(autoincrement())
+  title     String
+  completed Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+model TodoListA {
+  id           Int      @id @default(autoincrement())
+  title        String
+  completed    Boolean  @default(false)
+  
+  // 新しい項目
+  category     String      // work: 仕事, private: プライベート　other：
+  priority     Int      // 0: 低, 1: 中, 2: 高
+  explanation  String?  // 説明（空でもOKなら ? をつける）
+  targetDate   DateTime // 目標日
+  progressRate Int      @default(0) // 進捗率 (0〜100)
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt // 更新日時もあると便利です
+}
+
+
+model TodoListB {
+  id           Int      @id @default(autoincrement())
+  title        String
+  completed    Boolean  @default(false)
+  
+  // 新しい項目
+  category     String   // work: 仕事, private: プライベート　other：
+  priority     Int      // 0: 低, 1: 中, 2: 高
+  explanation  String?  // 説明（空でもOKなら ? をつける）
+  targetDate   DateTime // 目標日
+  progressRate Int      @default(0) // 進捗率 (0〜100)
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt // 更新日時もあると便利です
+}
+
