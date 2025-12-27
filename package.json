@@ -6,7 +6,8 @@
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.1.0",
@@ -28,9 +29,17 @@
     "daisyui": "^5.5.14",
     "eslint": "^9",
     "eslint-config-next": "15.5.9",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
     "prisma": "^6.19.1",
     "tailwindcss": "^4",
     "tsx": "^4.21.0",
     "typescript": "^5"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "eslint"
+    ]
   }
 }
