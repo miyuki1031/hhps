@@ -29,7 +29,7 @@ export const TodoRegistForm = ({ onSetIsCreate }: Props) => {
             formRef.current?.reset(); // 成功時のみ入力欄を空にする
             onSetIsCreate(false);
         }
-    }, [state]);
+    }, [state, onSetIsCreate]);
     return (
         <form ref={formRef} action={formAction} className="flex gap-2">
             <fieldset className="w-full">
@@ -38,7 +38,6 @@ export const TodoRegistForm = ({ onSetIsCreate }: Props) => {
                     name="todoCategory"
                     label="カテゴリー"
                     id="todo-category"
-                    selected=""
                 />
                 <TodoRegistStars id="todo-priority" label="優先順位" />
 

@@ -1,4 +1,4 @@
-import { useEffect, useTransition } from "react";
+import { useTransition } from "react";
 
 import { Trash2 } from "lucide-react";
 
@@ -20,7 +20,7 @@ export const TodoDelete = ({
     disabled,
 }: Props) => {
     // 削除実行コントロール
-    const [isPendingTodoDelete, startTransitionTodoDelete] = useTransition();
+    const [_isPainging, startTransitionTodoDelete] = useTransition();
 
     // 削除
     const delteTodo = () => {

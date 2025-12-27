@@ -1,7 +1,6 @@
 /**
  * PATH: src/app/page.tsx
  * */
-import Navigation from "../components/Navigation";
 
 export default async function Home() {
     return (

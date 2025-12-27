@@ -1,8 +1,6 @@
 import { SITE_INFO } from "../lib/constants";
 
 export default async function Footer() {
-    const A;
-
     return (
         <footer className="footer sm:footer-horizontal bg-neutral text-neutral-content p-10">
             <aside className="m-auto">

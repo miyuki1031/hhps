@@ -44,11 +44,11 @@ export const TodoList = ({ todos }: Props) => {
         if (!isDelete && selectedDelets.length !== 0) {
             setSelectedDelets([]);
         }
-    });
+    }, [isDelete, selectedDelets, setSelectedDelets]);
 
     // 削除選択
     const handleSelectedDelete = (id: number) => {
-        let copy = new Set(selectedDelets);
+        const copy = new Set(selectedDelets);
         if (copy.has(id)) {
             copy.delete(id);
         } else {

@@ -20,7 +20,7 @@ export const TodoRegistCalendar = ({ name, label }: Props) => {
                     {label}
                 </label>
             )}
-            <InputCalendar id={baseId} />
+            <InputCalendar name={name} id={baseId} />
         </div>
     );
 };

@@ -22,7 +22,7 @@ export const CalculateWinner = (squares: SquareValue[]) => {
 
 
 
-    for (let target of lines) {
+    for (const target of lines) {
         const [a, b, c] = target;
 
         if (

@@ -1,3 +1,31 @@
-#!/bin/sh
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
 
+echo "🔍 Running pre-commit checks..."
+
+# ESLint でコードチェック
+npm run lint
+
+
+# Prettier でフォーマットチェック
+# npm run format:check
+
+# TypeScript の型チェック
+# npm run type-check
+
+echo "✅ Pre-commit checks passed!"
+
+# 上記で実施する際はPackeage.JsonにScriptsへ追加する
+#    "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
+#    "format:check": "prettier --check .",
+#    "format:fix": "prettier --write .",
+#    "type-check": "tsc --noEmit",
+
+echo "🔍 Running lint-staged..."
 npx lint-staged
+
+# Jest実行を追加することもできる
+# echo "🧪 Running tests related to staged files..."
+# npm run test -- --findRelatedTests --passWithNoTests
+
+

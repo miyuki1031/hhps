@@ -6,9 +6,8 @@ interface Props {
     id: string;
     name: string;
     label: string;
-    selected?: string;
 }
-export const TodoRegistCategorys = ({ id, name, label, selected }: Props) => {
+export const TodoRegistCategorys = ({ id, name, label }: Props) => {
     return (
         <div className="flex flex-row gap-1.5 mb-4">
             <label
@@ -21,7 +20,7 @@ export const TodoRegistCategorys = ({ id, name, label, selected }: Props) => {
                 {Object.values(TODO_CATEGORY).map((t) => {
                     return (
                         <option key={t.category} value={t.category}>
-                            {/* <TodoCategorys target={t.category} /> */}
+                            {/* optionの中にSVGは使えないらしい。<TodoCategorys target={t.category} /> */}
                             {t.text}
                         </option>
                     );

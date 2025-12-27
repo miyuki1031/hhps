@@ -1,5 +1,5 @@
 "use client";
-import { usePathname } from "next/navigation";
+/** import { usePathname } from "next/navigation"; */
 import { useState } from "react";
 
 import { CONTENTS } from "../lib/constants";
@@ -8,10 +8,12 @@ import Link from "next/link";
 import { ButtonIcon } from "@/components/Button/ButtonIcon";
 
 export default function Navigation() {
-    const pathname = usePathname(); // URLの "/todos" などが取れる
-    const currentContent =
-        Object.values(CONTENTS).find((item) => item.href === pathname) ||
-        CONTENTS.HOME; // 見つからなければHOME
+    /**
+    // const pathname = usePathname(); // URLの "/todos" などが取れる
+    // const currentContent =
+    //     Object.values(CONTENTS).find((item) => item.href === pathname) ||
+    //     CONTENTS.HOME; // 見つからなければHOME
+     */
     const content = Object.values(CONTENTS);
     const [isDisplay, setIsDisplay] = useState(false);
     const onToggle = () => {
@@ -36,7 +38,7 @@ export default function Navigation() {
                         <Menu size={20} className=" w-10" />
                     </ButtonIcon>
                 </li>
-                {content.map((item, i) => {
+                {content.map((item) => {
                     const Icon = item.label; // 大文字で代入するのがポイント！
                     return (
                         <li
