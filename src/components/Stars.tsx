@@ -2,9 +2,10 @@ type Props = {
     allStars: number;
     pos: number;
     readonly: boolean;
+    formName?: string;
 };
 
-export const Stars = ({ allStars, pos = 0, readonly }: Props) => {
+export const Stars = ({ allStars, pos = 0, readonly, formName }: Props) => {
     let id = 0;
     const ranges = new Array(allStars).fill(null).map((t, i) => {
         id = i + 1;
@@ -31,7 +32,7 @@ export const Stars = ({ allStars, pos = 0, readonly }: Props) => {
                           <input
                               key={t.id}
                               type="radio"
-                              name="rating-2"
+                              name={formName}
                               className="mask mask-star-2 bg-orange-400"
                               aria-label={`${t.id} star`}
                               aria-current={t.isPos}

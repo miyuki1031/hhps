@@ -13,7 +13,12 @@ export const TodoRegistStars = ({ id, label }: Props) => {
             >
                 {label}
             </label>
-            <Stars allStars={3} pos={0} readonly={false} />
+            <Stars
+                allStars={3}
+                pos={0}
+                readonly={false}
+                formName={"todoPriority"}
+            />
         </div>
     );
 };
