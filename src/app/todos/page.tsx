@@ -3,7 +3,7 @@ import { prisma } from "../../lib/prisma";
 import { TodoList } from "./_components/TodoList";
 
 export default async function Home() {
-    const todos = await prisma.todoListB.findMany();
+    const todos = await prisma.todoList.findMany();
 
     return (
         <main className="p-10 flex flex-col items-center justify-center min-h-screen">

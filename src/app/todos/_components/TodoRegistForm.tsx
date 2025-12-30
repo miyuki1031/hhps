@@ -46,6 +46,7 @@ export const TodoRegistForm = ({ onSetIsCreate }: Props) => {
                     label="タイトル"
                     id="todo-title"
                     placeholder="タイトル"
+                    required={true}
                     max={100}
                 ></InputLabel>
                 <InputLabel
@@ -53,6 +54,7 @@ export const TodoRegistForm = ({ onSetIsCreate }: Props) => {
                     label="説明"
                     id="todo-explanation"
                     placeholder="説明"
+                    required={true}
                     max={100}
                 ></InputLabel>
 
@@ -63,6 +65,8 @@ export const TodoRegistForm = ({ onSetIsCreate }: Props) => {
                     label="進捗"
                     id="todo-progressRate"
                     placeholder="進捗"
+                    type="number"
+                    value={0}
                 ></InputLabel>
                 <button
                     type="submit"

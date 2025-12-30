@@ -42,7 +42,7 @@ export async function createTodoAction(
     // 2.ここでDB保存
     console.log(`サーバー側で保存開始：${title}`);
     try {
-        await prisma.todoListB.create({
+        await prisma.todoList.create({
             data: {
                 // カテゴリー
                 category,
@@ -59,6 +59,8 @@ export async function createTodoAction(
             },
         });
     } catch (e) {
+        console.log("error:");
+        console.log(e);
         return { success: false, error: e, message: "DB保存失敗" };
     }
 
@@ -79,7 +81,7 @@ export async function deleteTodoAction(ids: number[]) {
 
     console.log(`サーバー側で削除開始`);
     try {
-        await prisma.todoListB.deleteMany({
+        await prisma.todoList.deleteMany({
             where: {
                 id: { in: ids },
             },
@@ -98,12 +100,12 @@ export async function deleteTodoAction(ids: number[]) {
 ////
 export async function updateTodoAction(type: string, payload: UpdatePayload) {
     if (type === "completed") {
-        await prisma.todoListB.update({
+        await prisma.todoList.update({
             where: { id: payload.id },
             data: { completed: payload.completed },
         });
     } else {
-        await prisma.todoListB.update({
+        await prisma.todoList.update({
             where: { id: payload.id },
             data: { title: payload.title },
         });
