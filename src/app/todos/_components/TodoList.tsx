@@ -110,7 +110,6 @@ export const TodoList = ({ todos }: Props) => {
                                 <TodoCategorys target={todo.category} />
                             </td>
                             <td>
-                                {todo.priority}
                                 <Stars
                                     allStars={3}
                                     pos={todo.priority}
