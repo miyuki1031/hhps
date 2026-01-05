@@ -34,12 +34,8 @@ export const TodoRegistForm = ({ onSetIsCreate }: Props) => {
         <form ref={formRef} action={formAction} className="flex gap-2">
             <fieldset className="w-full">
                 <legend>新しいTodoを追加してください</legend>
-                <TodoRegistCategorys
-                    name="todoCategory"
-                    label="カテゴリー"
-                    id="todo-category"
-                />
-                <TodoRegistStars id="todo-priority" label="優先順位" />
+                <TodoRegistCategorys name="todoCategory" label="カテゴリー" />
+                <TodoRegistStars label="優先順位" />
 
                 <InputLabel
                     name="todoTitle"
@@ -54,7 +50,7 @@ export const TodoRegistForm = ({ onSetIsCreate }: Props) => {
                     label="説明"
                     id="todo-explanation"
                     placeholder="説明"
-                    required={true}
+                    required={false}
                     max={100}
                 ></InputLabel>
 
@@ -66,7 +62,6 @@ export const TodoRegistForm = ({ onSetIsCreate }: Props) => {
                     id="todo-progressRate"
                     placeholder="進捗"
                     type="number"
-                    value={0}
                 ></InputLabel>
                 <button
                     type="submit"
