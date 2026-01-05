@@ -5,7 +5,7 @@
 
 import { useState, useEffect, useTransition } from "react";
 
-import { TodoListB } from "@prisma/client";
+import { TodoList as TodoListType } from "@prisma/client";
 import { updateTodoAction } from "@/app/todos/actions";
 
 import { BookmarkCheck } from "lucide-react";
@@ -15,7 +15,7 @@ import { Stars } from "@/components/Stars";
 import { TodoCategorys } from "./TodoCategorys";
 
 interface Props {
-    todos: TodoListB[];
+    todos: TodoListType[];
 }
 type Delets = number[];
 
@@ -150,8 +150,10 @@ export const TodoList = ({ todos }: Props) => {
                                 )}
                             </td>
                             <td>{todo.explanation}</td>
-                            <td>({todo.createdAt.toLocaleString("ja-JP")})</td>
-                            <td>({todo.targetDate.toLocaleString("ja-JP")})</td>
+                            <td>{todo.createdAt.toLocaleString("ja-JP")}</td>
+                            <td>
+                                {todo.targetDate?.toLocaleString("ja-JP") ?? ""}
+                            </td>
                             <td>{todo.progressRate}</td>
 
                             <td>

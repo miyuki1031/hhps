@@ -17,30 +17,8 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Todo {
-  id        Int      @id @default(autoincrement())
-  title     String
-  completed Boolean  @default(false)
-  createdAt DateTime @default(now())
-}
-model TodoListA {
-  id           Int      @id @default(autoincrement())
-  title        String
-  completed    Boolean  @default(false)
-  
-  // 新しい項目
-  category     String      // work: 仕事, private: プライベート　other：
-  priority     Int      // 0: 低, 1: 中, 2: 高
-  explanation  String?  // 説明（空でもOKなら ? をつける）
-  targetDate   DateTime // 目標日
-  progressRate Int      @default(0) // 進捗率 (0〜100)
 
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt // 更新日時もあると便利です
-}
-
-
-model TodoListB {
+model TodoList {
   id           Int      @id @default(autoincrement())
   title        String
   completed    Boolean  @default(false)
@@ -49,7 +27,7 @@ model TodoListB {
   category     String   // work: 仕事, private: プライベート　other：
   priority     Int      // 0: 低, 1: 中, 2: 高
   explanation  String?  // 説明（空でもOKなら ? をつける）
-  targetDate   DateTime // 目標日
+  targetDate   DateTime? // 目標日
   progressRate Int      @default(0) // 進捗率 (0〜100)
 
   createdAt    DateTime @default(now())

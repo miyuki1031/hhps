@@ -5,6 +5,7 @@ echo "🔍 Running pre-commit checks..."
 
 # ESLint でコードチェック
 npm run lint
+npx prisma generate && npm run build
 
 
 # Prettier でフォーマットチェック
