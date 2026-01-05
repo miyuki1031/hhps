@@ -150,8 +150,10 @@ export const TodoList = ({ todos }: Props) => {
                                 )}
                             </td>
                             <td>{todo.explanation}</td>
-                            <td>({todo.createdAt.toLocaleString("ja-JP")})</td>
-                            <td>({todo.targetDate.toLocaleString("ja-JP")})</td>
+                            <td>{todo.createdAt.toLocaleString("ja-JP")}</td>
+                            <td>
+                                {todo.targetDate?.toLocaleString("ja-JP") ?? ""}
+                            </td>
                             <td>{todo.progressRate}</td>
 
                             <td>

@@ -31,7 +31,7 @@ export async function createTodoAction(
     const explanation = formData.get("todoExplanation") as string;
     // 目標日
     const targetDateRaw = formData.get("todoTargetDate") as string;
-    const targetDate = new Date(targetDateRaw);
+    const targetDate = targetDateRaw === "" ? null : new Date(targetDateRaw);
     // 進捗
     const progressRate = Number(formData.get("todoProgressRate"));
 

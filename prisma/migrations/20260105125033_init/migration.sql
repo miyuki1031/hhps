@@ -16,7 +16,7 @@ CREATE TABLE "TodoListA" (
     "category" TEXT NOT NULL,
     "priority" INTEGER NOT NULL,
     "explanation" TEXT,
-    "targetDate" TIMESTAMP(3) NOT NULL,
+    "targetDate" TIMESTAMP(3),
     "progressRate" INTEGER NOT NULL DEFAULT 0,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,

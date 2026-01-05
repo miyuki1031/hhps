@@ -5,7 +5,7 @@ interface Props {
     id: string;
     type?: "text" | "number";
     placeholder?: string;
-    //    value?: string | number;
+    value?: string | number;
     required?: boolean;
     max?: number;
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -17,7 +17,7 @@ export const InputLabel = ({
     id,
     type = "text",
     required = false,
-    //    value,
+    value,
     max,
     ...props
 }: Props) => {
@@ -38,6 +38,7 @@ export const InputLabel = ({
                 required={required}
                 className="px-3 py-2 border border-gray-300 w-2/3 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 outline-none transition"
                 {...props} // value, onChange, placeholder などをまとめて流し込む
+                value={value}
             />
         </div>
     );
