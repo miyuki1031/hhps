@@ -5,7 +5,7 @@ interface Props {
     id: string;
     type?: "text" | "number";
     placeholder?: string;
-    value?: string | number;
+    //    value?: string | number;
     required?: boolean;
     max?: number;
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -17,7 +17,7 @@ export const InputLabel = ({
     id,
     type = "text",
     required = false,
-    value,
+    //    value,
     max,
     ...props
 }: Props) => {
