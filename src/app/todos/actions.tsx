@@ -97,18 +97,30 @@ export async function deleteTodoAction(ids: number[]) {
 }
 /////
 // 更新
-////
-export async function updateTodoAction(type: string, payload: UpdatePayload) {
-    if (type === "completed") {
-        await prisma.todoList.update({
-            where: { id: payload.id },
-            data: { completed: payload.completed },
-        });
-    } else {
-        await prisma.todoList.update({
-            where: { id: payload.id },
-            data: { title: payload.title },
-        });
+export async function updateTodoAction(
+    id: number,
+    type: string,
+    payload: UpdatePayload
+) {
+    const data: UpdatePayload = {};
+    if (type === "category") {
+        data.category = payload.category;
+    } else if (type === "title") {
+        data.title = payload.title;
+    } else if (type === "completed") {
+        data.completed = payload.completed;
+        // } else if (type === "priority") {
+        //     data.priority = payload.priority;
+        // } else if (type === "explanation") {
+        //     data.explanation = payload.explanation;
+        // } else if (type === "target") {
+        //     data.target = payload.target;
+        // } else if (type === "progress") {
+        //     data.progress = payload.progress;
     }
+    await prisma.todoList.update({
+        where: { id: id },
+        data: data,
+    });
     revalidatePath("/todos");
 }

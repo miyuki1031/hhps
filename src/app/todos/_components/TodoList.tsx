@@ -64,23 +64,57 @@ export const TodoList = ({ todos }: Props) => {
     /**
      * DB系
      * */
+    type updateType = {
+        category?: string;
+        title?: string;
+        completed?: boolean;
+    };
+    const getType = (data: updateType) => {
+        if (data.title !== undefined) return "title";
+        if (data.completed !== undefined) return "completed";
+        if (data.category !== undefined) return "category";
+        return "unknown";
+    };
     // 更新
-    const updateTodo = async (
-        id: number,
-        data: { completed?: boolean; title?: string }
-    ) => {
-        if (data.title !== undefined && data.title.trim() === "") {
-            alert("タイトルを入力してください");
+    const updateTodo = async (id: number, data: updateType) => {
+        /**
+         * カテゴリ:category ★
+         * 優先順位:priority ★
+         * タイトル:title ★
+         * 説明:explanation
+         * 目標日:target
+         * 進捗:progress ★(0)
+         * 完了:completed ★(false)
+         *
+         */
+        const isRequired = (type: string, data: updateType) => {
+            const hasRequired = [
+                "title",
+                "category",
+                "priority",
+                "completed",
+            ].includes(type);
+            return (
+                hasRequired &&
+                type === "title" &&
+                data.title &&
+                data.title.trim() === ""
+            );
+        };
+        const type = getType(data);
+        // 不明な場合は何もしない
+        if (type === "unknown") return;
+
+        // 必須チェック
+        if (isRequired(type, data)) {
             setEditingId(null); // 編集をキャンセルして戻す
             return;
         }
-        const type = data.completed === undefined ? "title" : "completed";
 
         // タイトル更新のときは、Actionを待たずにすぐ入力欄を閉じる
         if (type === "title") setEditingId(null);
-
         startTransitionTodoUpdate(async () => {
-            await updateTodoAction(type, { id, ...data });
+            await updateTodoAction(id, type, { ...data });
         });
     };
 
@@ -107,7 +141,13 @@ export const TodoList = ({ todos }: Props) => {
                         <tr key={todo.id} className="border-b py-2">
                             <td>{todo.id}</td>
                             <td>
-                                <TodoCategorys target={todo.category} />
+                                {/* カテゴリ */}
+                                <TodoCategorys
+                                    isLabel={false}
+                                    id={todo.id}
+                                    value={todo.category}
+                                    onUpdateTodo={updateTodo}
+                                />
                             </td>
                             <td>
                                 <Stars
