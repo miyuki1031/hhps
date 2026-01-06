@@ -1,12 +1,12 @@
 "use client";
 
-import { useRef, useActionState, useEffect } from "react";
+import { useRef, useActionState, useEffect, useState } from "react";
 
 import { CirclePlus } from "lucide-react";
 import { InputLabel } from "@/components/Input/InputLabel";
 
 import { createTodoAction } from "@/app/todos/actions";
-import { TodoRegistCategorys } from "./TodoRegistCategorys";
+import { TodoCategorys } from "./TodoCategorys";
 import { TodoRegistStars } from "./TodoRegistStars";
 import { TodoRegistCalendar } from "./TodoRegistCalendar";
 // お試し
@@ -21,9 +21,11 @@ export const TodoRegistForm = ({ onSetIsCreate }: Props) => {
         createTodoAction,
         initialState
     );
-
+    const [value, setValue] = useState<string>("");
     const formRef = useRef<HTMLFormElement>(null); // 1. フォームへの「参照」を作る
-
+    const receiveValue = (value: string) => {
+        setValue(value);
+    };
     useEffect(() => {
         if (state.success) {
             formRef.current?.reset(); // 成功時のみ入力欄を空にする
@@ -34,7 +36,13 @@ export const TodoRegistForm = ({ onSetIsCreate }: Props) => {
         <form ref={formRef} action={formAction} className="flex gap-2">
             <fieldset className="w-full">
                 <legend>新しいTodoを追加してください</legend>
-                <TodoRegistCategorys name="todoCategory" label="カテゴリー" />
+                <input type="hidden" name="todoCategory" value={value} />
+                <TodoCategorys
+                    isLabel={true}
+                    id={null}
+                    value={value}
+                    onChange={(value) => receiveValue(value)}
+                />
                 <TodoRegistStars label="優先順位" />
 
                 <InputLabel
