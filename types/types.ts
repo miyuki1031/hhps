@@ -10,10 +10,10 @@ export interface UpdatePayload {
     completed?: boolean;
     title?: string;
     category?: string;
-    // priority?: number;
-    // explanation?:
-    // target?:
-    // progress?: number;
+    priority?: number;
+    explanation?: string;
+    progressRate?: number;
+    targetDate?: Date | string | null;// Serverでは日付、ブラウザからは文字列、空入力はnull
 };
 
 

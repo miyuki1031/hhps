@@ -4,14 +4,17 @@
 "use client";
 
 import { useState, useEffect, useTransition } from "react";
+import { FormProvider, useForm } from "react-hook-form";
+
+import { UpdatePayload } from "../../../../types/types";
 
 import { TodoList as TodoListType } from "@prisma/client";
 import { updateTodoAction } from "@/app/todos/actions";
 
 import { BookmarkCheck } from "lucide-react";
 import { TodoDelete } from "./TodoDelete";
-import { Stars } from "@/components/Stars";
 import { TodoCategorys } from "./TodoCategorys";
+import { TodoPriority } from "./TodoPriority";
 
 interface Props {
     todos: TodoListType[];
@@ -19,6 +22,19 @@ interface Props {
 type Delets = number[];
 
 export const TodoList = ({ todos }: Props) => {
+    const methods = useForm<UpdatePayload>({
+        defaultValues: {
+            category: "WORK",
+            priority: 0,
+            title: "",
+            explanation: "",
+            progressRate: 0,
+            targetDate: null,
+            completed: false,
+        },
+        mode: "onChange",
+    });
+
     // list再生成
     const list = todos.map((t) => {
         return { isEditTitle: false, ...t };
@@ -53,10 +69,6 @@ export const TodoList = ({ todos }: Props) => {
         setSelectedDelets([...copy]);
     };
 
-    const handleCompleted = (id: number, completed: boolean) =>
-        updateTodo(id, { completed });
-    const handleTitle = (id: number, title: string) =>
-        updateTodo(id, { title });
     /**
      * DB系
      * */
@@ -64,15 +76,14 @@ export const TodoList = ({ todos }: Props) => {
         category?: string;
         title?: string;
         completed?: boolean;
-    };
-    const getType = (data: updateType) => {
-        if (data.title !== undefined) return "title";
-        if (data.completed !== undefined) return "completed";
-        if (data.category !== undefined) return "category";
-        return "unknown";
+        priority?: number;
     };
     // 更新
-    const updateTodo = async (id: number, data: updateType) => {
+    const handleUpdateTodo = async (id: number, data: updateType) => {
+        console.log(id);
+        console.log(data);
+        console.log("------------------------");
+
         /**
          * カテゴリ:category ★
          * 優先順位:priority ★
@@ -83,39 +94,28 @@ export const TodoList = ({ todos }: Props) => {
          * 完了:completed ★(false)
          *
          */
-        const isRequired = (type: string, data: updateType) => {
-            const hasRequired = [
-                "title",
-                "category",
-                "priority",
-                "completed",
-            ].includes(type);
-            return (
-                hasRequired &&
-                type === "title" &&
-                data.title &&
-                data.title.trim() === ""
-            );
-        };
-        const type = getType(data);
-        // 不明な場合は何もしない
-        if (type === "unknown") return;
+        // 更新
+        // 1. 送られてきた項目の key を取得 (例: ["category"])
+        const [key] = Object.keys(data) as (keyof updateType)[];
+        if (!key) return;
 
-        // 必須チェック
-        if (isRequired(type, data)) {
-            setEditingId(null); // 編集をキャンセルして戻す
+        // 2. 必須チェック（タイトルが空ならキャンセル）
+        if (key === "title" && (!data.title || data.title.trim() === "")) {
+            setEditingId(null);
             return;
         }
 
-        // タイトル更新のときは、Actionを待たずにすぐ入力欄を閉じる
-        if (type === "title") setEditingId(null);
+        // 3. UIの制御
+        if (key === "title") setEditingId(null);
+
+        // 4. 実行！ (key を type としてそのまま渡す)
         startTransitionTodoUpdate(async () => {
-            await updateTodoAction(id, type, { ...data });
+            await updateTodoAction(id, key, { ...data });
         });
     };
 
     return (
-        <>
+        <FormProvider {...methods}>
             <table className="table table-zebra">
                 <thead>
                     <tr>
@@ -141,14 +141,19 @@ export const TodoList = ({ todos }: Props) => {
                                     isLabel={false}
                                     id={todo.id}
                                     value={todo.category}
-                                    onUpdateTodo={updateTodo}
+                                    onValueChange={handleUpdateTodo}
                                 />
                             </td>
                             <td>
-                                <Stars
-                                    allStars={3}
-                                    pos={todo.priority}
-                                    readonly={true}
+                                {/* 優先順位 */}
+                                <TodoPriority
+                                    isLabel={false}
+                                    id={todo.id}
+                                    value={todo.priority} // fieldから値を取得
+                                    isReadOnly={false}
+                                    isModeToggle={true}
+                                    isDefaultMode={false}
+                                    onValueChange={handleUpdateTodo}
                                 />
                             </td>
                             <td>
@@ -163,10 +168,9 @@ export const TodoList = ({ todos }: Props) => {
                                             if (e.target.value === todo.title) {
                                                 setEditingId(null); // 変わってなければ閉じるだけ
                                             } else {
-                                                handleTitle(
-                                                    todo.id,
-                                                    e.target.value
-                                                );
+                                                handleUpdateTodo(todo.id, {
+                                                    title: e.target.value,
+                                                });
                                             }
                                         }}
                                         // Enterキーで確定（オプション）
@@ -196,10 +200,9 @@ export const TodoList = ({ todos }: Props) => {
                                 <button
                                     defaultChecked={todo.completed}
                                     onClick={() =>
-                                        handleCompleted(
-                                            todo.id,
-                                            !todo.completed
-                                        )
+                                        handleUpdateTodo(todo.id, {
+                                            completed: !todo.completed,
+                                        })
                                     }
                                     disabled={isPendingTodoUppdate}
                                 >
@@ -235,6 +238,6 @@ export const TodoList = ({ todos }: Props) => {
                 onSetSelectedDelets={setSelectedDelets}
                 disabled={list.length === 0}
             />
-        </>
+        </FormProvider>
     );
 };
