@@ -9,7 +9,6 @@ import { TodoList as TodoListType } from "@prisma/client";
 import { updateTodoAction } from "@/app/todos/actions";
 
 import { BookmarkCheck } from "lucide-react";
-import { TodoRegist } from "./TodoRegist";
 import { TodoDelete } from "./TodoDelete";
 import { Stars } from "@/components/Stars";
 import { TodoCategorys } from "./TodoCategorys";
@@ -35,9 +34,6 @@ export const TodoList = ({ todos }: Props) => {
     const [isDelete, setIsDelete] = useState(false);
     // 削除選択(list分生成)
     const [selectedDelets, setSelectedDelets] = useState<Delets>([]);
-
-    // 新規作成フラグ(modal制御用)
-    const [isCreate, setIsCreate] = useState(false);
 
     useEffect(() => {
         // 削除機能オフ時に選択されていたら解除
@@ -120,7 +116,6 @@ export const TodoList = ({ todos }: Props) => {
 
     return (
         <>
-            <TodoRegist isCreate={isCreate} setIsCreate={setIsCreate} />
             <table className="table table-zebra">
                 <thead>
                     <tr>
