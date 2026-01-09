@@ -6,56 +6,69 @@
  */
 
 import { TODO_CATEGORY } from "../constants";
+import { useFormContext, Controller } from "react-hook-form";
 import { SelectBase } from "@/components/Select/SelectBase";
 
 type Props = {
     isLabel: boolean;
-    id?: number | null;
+    id?: number;
     value: string;
-    onUpdateTodo?: (id: number, data: { category: string }) => void;
-    onChange?: (value: string) => void;
+    onValueChange?: (id: number, data: { category: string }) => void;
+    //    onChange?: (value: string) => void;
 };
 export const TodoCategorys = ({
     id,
     isLabel,
     value,
-    onUpdateTodo,
-    onChange,
-}: Props) => {
+    onValueChange,
+}: //    onChange,
+Props) => {
+    const { control } = useFormContext();
     const width = isLabel ? " w-1/3" : " w-full";
+
+    const renderLabels = () => {
+        if (!isLabel) return null;
+        return (
+            /**
+             * 入力フォームではないためlabelではない
+             * そのためhtmlForも不要
+             */
+            <label
+                htmlFor={`${id} ? category-${id}: `}
+                className={`rounded-box bg-blue-400 text-sm p-2 font-medium text-gray-700 ${width}`}
+            >
+                カテゴリー
+            </label>
+        );
+    };
     return (
         <div className={`flex flex-row gap-1.5 ${isLabel ? "mb-4" : ""}`}>
-            {isLabel && (
-                /** ラベル */
-                /**
-                 * 入力フォームではないためlabelではない
-                 * そのためhtmlForも不要
-                 */
-                <div
-                    className={`rounded-box bg-blue-400 text-sm p-2 font-medium text-gray-700 ${width}`}
-                >
-                    カテゴリー
-                </div>
-            )}
-            <SelectBase
-                value={value}
-                classWidth={width}
-                list={Object.values(TODO_CATEGORY).map((t) => {
-                    return {
-                        label: t.text,
-                        value: t.category,
-                        icon: t.label,
-                    };
-                })}
-                onChange={(value: string) => {
-                    if (id && onUpdateTodo && value !== undefined) {
-                        // 即時更新
-                        onUpdateTodo(id, { category: value });
-                    } else if (onChange) {
-                        // 親へ変更値引き渡し
-                        onChange(value);
-                    }
-                }}
+            {/** ラベル */}
+            {renderLabels()}
+            <Controller
+                name={`category${id ? +"_" + id : ""}`}
+                control={control}
+                render={({ field }) => (
+                    <SelectBase
+                        value={field.value ?? value}
+                        classWidth={width}
+                        list={Object.values(TODO_CATEGORY).map((t) => {
+                            return {
+                                label: t.text,
+                                value: t.category,
+                                icon: t.label,
+                            };
+                        })}
+                        onChange={(value: string) => {
+                            if (id && onValueChange) {
+                                // 即時更新
+                                onValueChange(id, { category: value });
+                            } else {
+                                field.onChange(value);
+                            }
+                        }}
+                    />
+                )}
             />
         </div>
     );

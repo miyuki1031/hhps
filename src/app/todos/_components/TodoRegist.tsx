@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import { CirclePlus } from "lucide-react";
 import { ButtonIcon } from "@/components/Button/ButtonIcon";
-import { TodoRegistForm } from "./TodoRegistForm";
+import { TodoCreateForm } from "./TodoCreateForm";
 import { Dialog } from "@/components/Dialog/Dialog";
 
 export const TodoRegist = () => {
@@ -21,7 +21,7 @@ export const TodoRegist = () => {
                 isOpen={isCreate}
                 onSetIsOpen={setIsCreate}
             >
-                <TodoRegistForm onSetIsCreate={setIsCreate} />
+                <TodoCreateForm onSetIsCreate={setIsCreate} />
             </Dialog>
         </div>
     );
