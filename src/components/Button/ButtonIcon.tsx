@@ -4,6 +4,7 @@ interface Props {
     className?: string;
     disabled?: boolean;
     isTransparent?: boolean; // 透明フラグを追加
+    position?: "l" | "c" | "r";
 }
 export const ButtonIcon = ({
     onClick,
@@ -11,11 +12,26 @@ export const ButtonIcon = ({
     className,
     disabled,
     isTransparent = false,
+    position,
 }: Props) => {
+    // bg-transparent
+
     // 透明な場合のベースクラス
-    const baseClass = isTransparent
-        ? "bg-transparent border-none p-0 flex items-center justify-center"
-        : "btn btn-ghost"; // デフォルト（DaisyUI等の例）
+    let baseClass = isTransparent
+        ? `border-none p-0 font-inherit cursor-pointer 
+            outline-none appearance-none 
+            w-full h-full min-h-[1.5em] 
+            items-center `
+        : "btn btn-ghost";
+
+    if (position === "l") {
+        baseClass += "flex justify-start";
+    } else if (position === "r") {
+        baseClass += "flex justify-end";
+    } else {
+        baseClass += "flex justify-center";
+    }
+
     return (
         <button
             type="button"

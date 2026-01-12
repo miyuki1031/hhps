@@ -14,6 +14,7 @@ import { InputLabel } from "@/components/Input/InputLabel";
 import { TodoCategorys } from "./TodoCategorys";
 import { TodoPriority } from "./TodoPriority";
 import { TodoTarget } from "./TodoTarget";
+import { TodoExplanation } from "./TodoExplanation";
 // お試し
 type Props = {
     onSetIsCreate: (value: boolean) => void;
@@ -89,25 +90,17 @@ export const TodoCreateForm = ({ onSetIsCreate }: Props) => {
                             ></InputLabel>
                         )}
                     />
-                    <Controller
-                        name={"explanation"}
-                        control={control}
-                        render={({ field }) => (
-                            <InputLabel
-                                name="explanation"
-                                label="説明"
-                                id="todo-explanation"
-                                placeholder="説明"
-                                required={false}
-                                max={100}
-                                onChange={(value: string) =>
-                                    field.onChange(value)
-                                }
-                            ></InputLabel>
-                        )}
+
+                    <TodoExplanation
+                        isReadOnly={false}
+                        isModeToggle={false}
+                        isDefaultMode={false}
+                        isRealTimeUpdate={false}
+                        isLabel={true}
+                        value={""}
                     />
                     <TodoTarget name="todoTargetDate" label="目標日" />
-                    <Controller
+                    {/* <Controller
                         name={"progressRate"}
                         control={control}
                         render={({ field }) => (
@@ -122,7 +115,7 @@ export const TodoCreateForm = ({ onSetIsCreate }: Props) => {
                                 }
                             ></InputLabel>
                         )}
-                    />
+                    /> */}
                     <button
                         type="submit"
                         className="bg-blue-500 text-white px-4 py-2 rounded flex flex-row"

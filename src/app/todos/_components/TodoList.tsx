@@ -15,6 +15,7 @@ import { BookmarkCheck } from "lucide-react";
 import { TodoDelete } from "./TodoDelete";
 import { TodoCategorys } from "./TodoCategorys";
 import { TodoPriority } from "./TodoPriority";
+import { TodoExplanation } from "./TodoExplanation";
 
 interface Props {
     todos: TodoListType[];
@@ -77,6 +78,7 @@ export const TodoList = ({ todos }: Props) => {
         title?: string;
         completed?: boolean;
         priority?: number;
+        explanation?: string;
     };
     // 更新
     const handleUpdateTodo = async (id: number, data: updateType) => {
@@ -188,7 +190,19 @@ export const TodoList = ({ todos }: Props) => {
                                     </button>
                                 )}
                             </td>
-                            <td>{todo.explanation}</td>
+                            <td>
+                                {/** 説明 */}
+                                <TodoExplanation
+                                    isReadOnly={false}
+                                    isModeToggle={true}
+                                    isRealTimeUpdate={true}
+                                    isDefaultMode={false}
+                                    value={todo.explanation ?? ""}
+                                    isLabel={false}
+                                    id={todo.id}
+                                    onChange={handleUpdateTodo}
+                                />
+                            </td>
                             <td>{todo.createdAt.toLocaleString("ja-JP")}</td>
                             <td>
                                 {todo.targetDate?.toLocaleString("ja-JP") ?? ""}
