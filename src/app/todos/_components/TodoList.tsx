@@ -16,6 +16,7 @@ import { TodoDelete } from "./TodoDelete";
 import { TodoCategorys } from "./TodoCategorys";
 import { TodoPriority } from "./TodoPriority";
 import { TodoExplanation } from "./TodoExplanation";
+import { TodoTitle } from "./TodoTitle";
 
 interface Props {
     todos: TodoListType[];
@@ -159,36 +160,17 @@ export const TodoList = ({ todos }: Props) => {
                                 />
                             </td>
                             <td>
-                                {!isPendingTodoUppdate &&
-                                editingId === todo.id ? (
-                                    <input
-                                        type="text"
-                                        className="input"
-                                        defaultValue={todo.title}
-                                        // フォーカスが外れたら編集終了
-                                        onBlur={(e) => {
-                                            if (e.target.value === todo.title) {
-                                                setEditingId(null); // 変わってなければ閉じるだけ
-                                            } else {
-                                                handleUpdateTodo(todo.id, {
-                                                    title: e.target.value,
-                                                });
-                                            }
-                                        }}
-                                        // Enterキーで確定（オプション）
-                                        onKeyDown={(e) =>
-                                            e.key === "Enter" &&
-                                            e.currentTarget.blur()
-                                        }
-                                        autoFocus
-                                    />
-                                ) : (
-                                    <button
-                                        onClick={() => setEditingId(todo.id)}
-                                    >
-                                        {todo.title}
-                                    </button>
-                                )}
+                                {/** タイトル */}
+                                <TodoTitle
+                                    isReadOnly={false}
+                                    isModeToggle={true}
+                                    isRealTimeUpdate={true}
+                                    isDefaultMode={false}
+                                    value={todo.title ?? ""}
+                                    isLabel={false}
+                                    id={todo.id}
+                                    onChange={handleUpdateTodo}
+                                />
                             </td>
                             <td>
                                 {/** 説明 */}

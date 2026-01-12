@@ -4,7 +4,7 @@ import { ButtonIcon } from "@/components/Button/ButtonIcon";
 import { RealTimeInput } from "@/components/Input/RealTimeInput";
 import { FormInput } from "@/components/Input/FormInput";
 
-type ExplanationProps =
+type titleProps =
     | {
           isReadOnly: true;
           isModeToggle?: never;
@@ -21,23 +21,22 @@ type ApplyTiming =
           // 入力値即反映
           id: number;
           isRealTimeUpdate: true;
-          onChange: (id: number, data: { explanation: string }) => void;
+          onChange: (id: number, data: { title: string }) => void;
       }
     | {
           // 保存ボタン実行
           id?: never;
           isRealTimeUpdate: false;
-          //onChange: (value: string) => void;
           onChange?: never;
       };
 
-type Props = ExplanationProps &
+type Props = titleProps &
     ApplyTiming & {
         isLabel: boolean;
         value: string;
     };
 
-export const TodoExplanation = ({
+export const TodoTitle = ({
     isLabel,
     id,
     isRealTimeUpdate,
@@ -55,10 +54,11 @@ export const TodoExplanation = ({
         if (!isLabel) return null;
         return (
             <label
-                htmlFor={`explanation${id ? "_" + id : ""}`}
-                className={`rounded-box bg-blue-400 text-sm p-2 font-medium text-gray-700 ${width}`}
+                htmlFor={`title${id ? "_" + id : ""}`}
+                className={`rounded-box bg-blue-400 text-sm p-2 
+                    font-medium text-gray-700 ${width}`}
             >
-                説明
+                タイトル
             </label>
         );
     };
@@ -79,31 +79,16 @@ export const TodoExplanation = ({
         setIsShowEditor(!isShowEditor);
     };
 
-    const handleRealTimeSave = (
-        id: number,
-        saveValue: string
-        // isFinish: boolean
-    ) => {
+    const handleRealTimeSave = (id: number, saveValue: string) => {
         if (isRealTimeUpdate && id !== undefined) {
-            // (onChange as (id: number, data: { explanation: string }) => void)(id, { explanation: value });
-
-            onChange(id, { explanation: saveValue });
+            onChange(id, { title: saveValue });
 
             onToggle();
         }
     };
 
-    // const handleFormSave = (saveValue: string) => {
-    //     // (onChange as (value: string) => void)(value);
-    //     if (!isRealTimeUpdate) {
-    //         onChange(saveValue);
-    //         // フォーム形式の場合は閉じないことが多いですが、必要なら onToggle()
-    //     }
-    // };
-
     return (
         <div className={`flex flex-row gap-1.5${isLabel ? " mb-4" : " "}`}>
-            {/** 説明 */}
             {renderLabels()}
             {isShowEditor ? (
                 <ButtonIcon
@@ -116,7 +101,7 @@ export const TodoExplanation = ({
                 </ButtonIcon>
             ) : (
                 <Controller
-                    name={`explanation${id ? "_" + id : ""}`}
+                    name={`title${id ? "_" + id : ""}`}
                     control={control}
                     render={({ field }) => (
                         <>
@@ -124,10 +109,10 @@ export const TodoExplanation = ({
                                 <RealTimeInput<string>
                                     id={id}
                                     value={field.value ?? value}
-                                    placeholder="説明"
-                                    name="explanation"
-                                    required={false}
+                                    placeholder="タイトル"
+                                    name="title"
                                     className={isLabel ? " w-2/3" : " w-full"}
+                                    required={false}
                                     onSave={(id, value, isFinish) => {
                                         field.onChange(value);
                                         if (isFinish && handleRealTimeSave) {

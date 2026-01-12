@@ -15,6 +15,7 @@ import { TodoCategorys } from "./TodoCategorys";
 import { TodoPriority } from "./TodoPriority";
 import { TodoTarget } from "./TodoTarget";
 import { TodoExplanation } from "./TodoExplanation";
+import { TodoTitle } from "./TodoTitle";
 // お試し
 type Props = {
     onSetIsCreate: (value: boolean) => void;
@@ -42,8 +43,6 @@ export const TodoCreateForm = ({ onSetIsCreate }: Props) => {
     } = methods;
 
     const onSubmit = async (data: UpdatePayload) => {
-        console.log("onSubmitonSubmitonSubmit");
-        console.log(data);
         // 1. サーバー送信
         const result = await createTodoAction(data);
 
@@ -73,22 +72,13 @@ export const TodoCreateForm = ({ onSetIsCreate }: Props) => {
                         value={0}
                     />
 
-                    <Controller
-                        name={"title"}
-                        control={control}
-                        render={({ field }) => (
-                            <InputLabel
-                                name="title"
-                                label="タイトル"
-                                id="todo-title"
-                                placeholder="タイトル"
-                                required={true}
-                                max={100}
-                                onChange={(value: string) =>
-                                    field.onChange(value)
-                                }
-                            ></InputLabel>
-                        )}
+                    <TodoTitle
+                        isLabel={true}
+                        isReadOnly={false}
+                        isModeToggle={false}
+                        isDefaultMode={true}
+                        isRealTimeUpdate={false}
+                        value={""}
                     />
 
                     <TodoExplanation
