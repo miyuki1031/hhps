@@ -95,7 +95,7 @@ export const TodoList = ({ todos }: Props) => {
         completed?: boolean;
         priority?: number;
         explanation?: string;
-        target?: string;
+        targetDate?: string;
     };
     // 更新
     const handleUpdateTodo = async (id: number, data: updateType) => {
@@ -156,7 +156,7 @@ export const TodoList = ({ todos }: Props) => {
                                     isLabel={false}
                                     id={todo.id}
                                     value={todo.category}
-                                    onValueChange={handleUpdateTodo}
+                                    onChange={handleUpdateTodo}
                                 />
                             </td>
                             <td>
@@ -166,9 +166,8 @@ export const TodoList = ({ todos }: Props) => {
                                     id={todo.id}
                                     value={todo.priority} // fieldから値を取得
                                     isReadOnly={false}
-                                    isModeToggle={true}
-                                    isDefaultMode={false}
-                                    onValueChange={handleUpdateTodo}
+                                    isRealTimeUpdate={true}
+                                    onChange={handleUpdateTodo}
                                 />
                             </td>
                             <td>

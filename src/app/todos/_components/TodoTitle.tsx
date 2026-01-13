@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useFormContext, Controller } from "react-hook-form";
+import { Label } from "@/components/Lable";
 import { ButtonIcon } from "@/components/Button/ButtonIcon";
 import { RealTimeInput } from "@/components/Input/RealTimeInput";
 import { FormInput } from "@/components/Input/FormInput";
@@ -47,21 +48,14 @@ export const TodoTitle = ({
     onChange,
 }: Props) => {
     const { control } = useFormContext();
-    const width = isLabel ? " w-1/3" : " w-full";
-
-    // コンポーネント（大文字開始）ではなく、関数（小文字開始）にする
-    const renderLabels = () => {
-        if (!isLabel) return null;
-        return (
-            <label
-                htmlFor={`title${id ? "_" + id : ""}`}
-                className={`rounded-box bg-blue-400 text-sm p-2 
-                    font-medium text-gray-700 ${width}`}
-            >
-                タイトル
-            </label>
-        );
+    const width = isLabel ? " w-2/3" : " w-full";
+    const temp = {
+        textLabel: "タイトル",
+        placeholder: "タイトル",
+        type: "text",
+        name: "title",
     };
+
     const [isShowEditor, setIsShowEditor] = useState<boolean>(
         (() => {
             if (isReadOnly) return false;
@@ -82,14 +76,17 @@ export const TodoTitle = ({
     const handleRealTimeSave = (id: number, saveValue: string) => {
         if (isRealTimeUpdate && id !== undefined) {
             onChange(id, { title: saveValue });
-
             onToggle();
         }
     };
 
     return (
         <div className={`flex flex-row gap-1.5${isLabel ? " mb-4" : " "}`}>
-            {renderLabels()}
+            <Label
+                isLabel={isLabel}
+                htmlFor={`${temp.name}${id ? "_" + id : ""}`}
+                textLabel={temp.textLabel}
+            />
             {isShowEditor ? (
                 <ButtonIcon
                     className=" w-full "
@@ -101,7 +98,7 @@ export const TodoTitle = ({
                 </ButtonIcon>
             ) : (
                 <Controller
-                    name={`title${id ? "_" + id : ""}`}
+                    name={`${temp.name}${id ? "_" + id : ""}`}
                     control={control}
                     render={({ field }) => (
                         <>
@@ -109,9 +106,9 @@ export const TodoTitle = ({
                                 <RealTimeInput<string>
                                     id={id}
                                     value={field.value ?? value}
-                                    placeholder="タイトル"
-                                    name="title"
-                                    className={isLabel ? " w-2/3" : " w-full"}
+                                    placeholder={temp.placeholder}
+                                    name={temp.name}
+                                    className={width}
                                     required={false}
                                     onSave={(id, value, isFinish) => {
                                         field.onChange(value);
@@ -123,7 +120,7 @@ export const TodoTitle = ({
                             ) : (
                                 <FormInput<string>
                                     value={field.value ?? value}
-                                    className={isLabel ? " w-2/3" : " w-full"}
+                                    className={width}
                                     onSave={(value) => field.onChange(value)}
                                 />
                             )}

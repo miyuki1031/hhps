@@ -22,7 +22,7 @@ type ApplyTiming =
           // 入力値即反映
           id: number;
           isRealTimeUpdate: true;
-          onChange: (id: number, data: { target: string }) => void;
+          onChange: (id: number, data: { targetDate: string }) => void;
       }
     | {
           // 保存ボタン実行
@@ -56,6 +56,7 @@ export const TodoTarget = ({
         textLabel: "目標日",
         placeholder: "目標日",
         type: "date",
+        name: "target",
     };
 
     const [isShowEditor, setIsShowEditor] = useState<boolean>(
@@ -76,7 +77,7 @@ export const TodoTarget = ({
     };
     const handleRealTimeSave = (id: number, saveValue: string) => {
         if (isRealTimeUpdate && id !== undefined) {
-            onChange(id, { target: saveValue });
+            onChange(id, { targetDate: saveValue });
             onToggle();
         }
     };
@@ -85,7 +86,7 @@ export const TodoTarget = ({
         <div className="flex flex-row gap-1.5 mb-4">
             <Label
                 isLabel={isLabel}
-                htmlFor={`target${id ? "_" + id : ""}`}
+                htmlFor={`${temp.name}${id ? "_" + id : ""}`}
                 textLabel={temp.textLabel}
             />
             {isShowEditor ? (
@@ -99,7 +100,7 @@ export const TodoTarget = ({
                 </ButtonIcon>
             ) : (
                 <Controller
-                    name={`target${id ? "_" + id : ""}`}
+                    name={`${temp.name}${id ? "_" + id : ""}`}
                     control={control}
                     render={({ field }) => (
                         <>
@@ -109,7 +110,7 @@ export const TodoTarget = ({
                                     value={field.value ?? value}
                                     placeholder={temp.placeholder}
                                     type={temp.type}
-                                    name="target"
+                                    name={temp.name}
                                     min={today}
                                     required={false}
                                     className={width}
@@ -125,7 +126,7 @@ export const TodoTarget = ({
                                     value={field.value ?? value}
                                     placeholder={temp.placeholder}
                                     type={temp.type}
-                                    name="target"
+                                    name={temp.name}
                                     className={width}
                                     onSave={(value) => field.onChange(value)}
                                 />

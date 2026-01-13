@@ -30,27 +30,17 @@
  */
 
 import { useFormContext, Controller } from "react-hook-form";
+import { Label } from "@/components/Lable";
 import { Stars } from "@/components/Stars";
 
-type StarsProps =
-    | {
-          isReadOnly: true;
-          // isReadOnlyがtrueの時は、切り替え関連のPropsは存在すら許さない（またはオプション）
-          isModeToggle?: never;
-          isDefaultMode?: never;
-      }
-    | {
-          isReadOnly: false;
-          isModeToggle: boolean; // 編集可能なら、切り替え可能かどうかを必須にする
-          isDefaultMode: boolean; // 編集可能なら、初期モードも必須にする
-      };
-
 // 共通で必要なProps（valueやonChangeなど）がある場合は交差型（&）でつなぐ
-type Props = StarsProps & {
+type Props = {
     id?: number;
     value: number;
+    isReadOnly: boolean;
     isLabel?: boolean;
-    onValueChange?: (id: number, data: { priority: number }) => void;
+    isRealTimeUpdate?: boolean;
+    onChange?: (id: number, data: { priority: number }) => void;
 };
 
 export const TodoPriority = ({
@@ -58,44 +48,42 @@ export const TodoPriority = ({
     value,
     isLabel = false,
     isReadOnly,
-    // isModeToggle,
-    // isDefaultMode,
-    onValueChange, // 即更新
+    isRealTimeUpdate, // 即更新
+    onChange, // 即更新
 }: Props) => {
     const { control } = useFormContext();
     const allStars = 3;
-    const width = isLabel ? " w-1/3" : " w-full";
+    const temp = {
+        textLabel: "優先順位",
+        name: "priority",
+    };
 
-    // コンポーネント（大文字開始）ではなく、関数（小文字開始）にする
-    const renderLabels = () => {
-        if (!isLabel) return null;
-        return (
-            <label
-                htmlFor={`priority-${id}`}
-                className={`rounded-box bg-blue-400 text-sm p-2 font-medium text-gray-700 ${width}`}
-            >
-                優先順位
-            </label>
-        );
+    const handleRealTimeSave = (id: number, saveValue: number) => {
+        if (isRealTimeUpdate && id !== undefined && onChange) {
+            onChange(id, { priority: saveValue });
+        }
     };
 
     return (
         <div className={`flex flex-row gap-1.5 mb-4`}>
-            {/** ラベル */}
-            {renderLabels()}
+            <Label
+                isLabel={isLabel}
+                htmlFor={`${temp.name}${id ? "_" + id : ""}`}
+                textLabel={temp.textLabel}
+            />
             <Controller
-                name={`priority${id ? +"_" + id : ""}`}
+                name={`${temp.name}${id ? +"_" + id : ""}`}
                 control={control}
                 render={({ field }) => (
                     <Stars
                         allStars={allStars}
                         id={id}
-                        formName="priority"
+                        formName={temp.name}
                         value={field.value ?? value}
                         readonly={isReadOnly}
                         onChange={(value: number) => {
-                            if (id && onValueChange) {
-                                onValueChange(id, { priority: value });
+                            if (id && onChange) {
+                                handleRealTimeSave(id, value);
                             } else {
                                 field.onChange(value);
                             }

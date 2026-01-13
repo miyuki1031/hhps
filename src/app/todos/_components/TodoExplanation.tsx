@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useFormContext, Controller } from "react-hook-form";
+import { Label } from "@/components/Lable";
 import { ButtonIcon } from "@/components/Button/ButtonIcon";
 import { RealTimeInput } from "@/components/Input/RealTimeInput";
 import { FormInput } from "@/components/Input/FormInput";
@@ -27,7 +28,6 @@ type ApplyTiming =
           // 保存ボタン実行
           id?: never;
           isRealTimeUpdate: false;
-          //onChange: (value: string) => void;
           onChange?: never;
       };
 
@@ -48,19 +48,12 @@ export const TodoExplanation = ({
     onChange,
 }: Props) => {
     const { control } = useFormContext();
-    const width = isLabel ? " w-1/3" : " w-full";
-
-    // コンポーネント（大文字開始）ではなく、関数（小文字開始）にする
-    const renderLabels = () => {
-        if (!isLabel) return null;
-        return (
-            <label
-                htmlFor={`explanation${id ? "_" + id : ""}`}
-                className={`rounded-box bg-blue-400 text-sm p-2 font-medium text-gray-700 ${width}`}
-            >
-                説明
-            </label>
-        );
+    const width = isLabel ? " w-2/3" : " w-full";
+    const temp = {
+        textLabel: "説明",
+        placeholder: "説明",
+        type: "text",
+        name: "explanation",
     };
     const [isShowEditor, setIsShowEditor] = useState<boolean>(
         (() => {
@@ -79,32 +72,20 @@ export const TodoExplanation = ({
         setIsShowEditor(!isShowEditor);
     };
 
-    const handleRealTimeSave = (
-        id: number,
-        saveValue: string
-        // isFinish: boolean
-    ) => {
+    const handleRealTimeSave = (id: number, saveValue: string) => {
         if (isRealTimeUpdate && id !== undefined) {
-            // (onChange as (id: number, data: { explanation: string }) => void)(id, { explanation: value });
-
             onChange(id, { explanation: saveValue });
-
             onToggle();
         }
     };
 
-    // const handleFormSave = (saveValue: string) => {
-    //     // (onChange as (value: string) => void)(value);
-    //     if (!isRealTimeUpdate) {
-    //         onChange(saveValue);
-    //         // フォーム形式の場合は閉じないことが多いですが、必要なら onToggle()
-    //     }
-    // };
-
     return (
         <div className={`flex flex-row gap-1.5${isLabel ? " mb-4" : " "}`}>
-            {/** 説明 */}
-            {renderLabels()}
+            <Label
+                isLabel={isLabel}
+                htmlFor={`${temp.name}${id ? "_" + id : ""}`}
+                textLabel={temp.textLabel}
+            />
             {isShowEditor ? (
                 <ButtonIcon
                     className=" w-full "
@@ -116,7 +97,7 @@ export const TodoExplanation = ({
                 </ButtonIcon>
             ) : (
                 <Controller
-                    name={`explanation${id ? "_" + id : ""}`}
+                    name={`${temp.name}${id ? "_" + id : ""}`}
                     control={control}
                     render={({ field }) => (
                         <>
@@ -124,10 +105,10 @@ export const TodoExplanation = ({
                                 <RealTimeInput<string>
                                     id={id}
                                     value={field.value ?? value}
-                                    placeholder="説明"
-                                    name="explanation"
+                                    placeholder={temp.placeholder}
+                                    name={temp.name}
                                     required={false}
-                                    className={isLabel ? " w-2/3" : " w-full"}
+                                    className={width}
                                     onSave={(id, value, isFinish) => {
                                         field.onChange(value);
                                         if (isFinish && handleRealTimeSave) {
@@ -138,7 +119,7 @@ export const TodoExplanation = ({
                             ) : (
                                 <FormInput<string>
                                     value={field.value ?? value}
-                                    className={isLabel ? " w-2/3" : " w-full"}
+                                    className={width}
                                     onSave={(value) => field.onChange(value)}
                                 />
                             )}
