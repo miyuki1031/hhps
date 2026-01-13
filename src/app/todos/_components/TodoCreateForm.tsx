@@ -1,6 +1,6 @@
 "use client";
 
-import { FormProvider, useForm, Controller } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 // import { zodResolver } from "@hookform/resolvers/zod";
 // import { z } from "zod";
 
@@ -10,7 +10,6 @@ import { createTodoAction } from "@/app/todos/actions";
 
 import { CirclePlus } from "lucide-react";
 
-import { InputLabel } from "@/components/Input/InputLabel";
 import { TodoCategorys } from "./TodoCategorys";
 import { TodoPriority } from "./TodoPriority";
 import { TodoTarget } from "./TodoTarget";
@@ -39,7 +38,6 @@ export const TodoCreateForm = ({ onSetIsCreate }: Props) => {
         handleSubmit,
         // isSubmitSuccessful,
         // formState: { errors },
-        control,
     } = methods;
 
     const onSubmit = async (data: UpdatePayload) => {
@@ -89,23 +87,15 @@ export const TodoCreateForm = ({ onSetIsCreate }: Props) => {
                         isLabel={true}
                         value={""}
                     />
-                    <TodoTarget name="todoTargetDate" label="目標日" />
-                    {/* <Controller
-                        name={"progressRate"}
-                        control={control}
-                        render={({ field }) => (
-                            <InputLabel
-                                name="progressRate"
-                                label="進捗"
-                                id="todo-progressRate"
-                                placeholder="進捗"
-                                type="number"
-                                onChange={(value: number) =>
-                                    field.onChange(value)
-                                }
-                            ></InputLabel>
-                        )}
-                    /> */}
+
+                    <TodoTarget
+                        isReadOnly={false}
+                        isModeToggle={false}
+                        isDefaultMode={false}
+                        isRealTimeUpdate={false}
+                        isLabel={true}
+                        value={""}
+                    />
                     <button
                         type="submit"
                         className="bg-blue-500 text-white px-4 py-2 rounded flex flex-row"

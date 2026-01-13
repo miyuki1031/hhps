@@ -17,6 +17,7 @@ import { TodoCategorys } from "./TodoCategorys";
 import { TodoPriority } from "./TodoPriority";
 import { TodoExplanation } from "./TodoExplanation";
 import { TodoTitle } from "./TodoTitle";
+import { TodoTarget } from "./TodoTarget";
 
 interface Props {
     todos: TodoListType[];
@@ -36,17 +37,31 @@ export const TodoList = ({ todos }: Props) => {
         },
         mode: "onChange",
     });
+    const toStringDate = (d: Date | null) => {
+        if (d === null) {
+            return "";
+        } else {
+            return `${d.getFullYear()}/${("0" + (d.getMonth() + 1)).slice(
+                -2
+            )}/${("0" + d.getDate()).slice(-2)}`;
+        }
+    };
 
     // list再生成
-    const list = todos.map((t) => {
-        return { isEditTitle: false, ...t };
+    type TodoDisplayType = Omit<TodoListType, "targetDate"> & {
+        targetDate: string;
+        isEditTitle: boolean;
+    };
+    const list: TodoDisplayType[] = todos.map((t) => {
+        return {
+            ...t,
+            isEditTitle: false,
+            targetDate: toStringDate(t.targetDate),
+        };
     });
 
     // 更新実行コントロール
     const [isPendingTodoUppdate, startTransitionTodoUpdate] = useTransition();
-
-    // 編集フラグ（数値またはNullの配列）
-    const [editingId, setEditingId] = useState<number | null>(null);
 
     // 削除フラグ
     const [isDelete, setIsDelete] = useState(false);
@@ -80,6 +95,7 @@ export const TodoList = ({ todos }: Props) => {
         completed?: boolean;
         priority?: number;
         explanation?: string;
+        target?: string;
     };
     // 更新
     const handleUpdateTodo = async (id: number, data: updateType) => {
@@ -104,12 +120,8 @@ export const TodoList = ({ todos }: Props) => {
 
         // 2. 必須チェック（タイトルが空ならキャンセル）
         if (key === "title" && (!data.title || data.title.trim() === "")) {
-            setEditingId(null);
             return;
         }
-
-        // 3. UIの制御
-        if (key === "title") setEditingId(null);
 
         // 4. 実行！ (key を type としてそのまま渡す)
         startTransitionTodoUpdate(async () => {
@@ -187,7 +199,17 @@ export const TodoList = ({ todos }: Props) => {
                             </td>
                             <td>{todo.createdAt.toLocaleString("ja-JP")}</td>
                             <td>
-                                {todo.targetDate?.toLocaleString("ja-JP") ?? ""}
+                                {/** 目標日 */}
+                                <TodoTarget
+                                    isReadOnly={false}
+                                    isModeToggle={true}
+                                    isRealTimeUpdate={true}
+                                    isDefaultMode={false}
+                                    value={todo.targetDate ?? ""}
+                                    isLabel={false}
+                                    id={todo.id}
+                                    onChange={handleUpdateTodo}
+                                />
                             </td>
                             <td>{todo.progressRate}</td>
 
