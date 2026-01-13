@@ -1,12 +1,11 @@
-"use client";
 import { useState } from "react";
 import { useFormContext, Controller } from "react-hook-form";
+import { Label } from "@/components/Lable";
 import { ButtonIcon } from "@/components/Button/ButtonIcon";
 import { RealTimeInput } from "@/components/Input/RealTimeInput";
 import { FormInput } from "@/components/Input/FormInput";
-import { Label } from "@/components/Lable";
 
-type TargetProps =
+type ProgressRatePropsType =
     | {
           isReadOnly: true;
           isModeToggle?: never;
@@ -17,27 +16,28 @@ type TargetProps =
           isModeToggle: boolean; // 編集可能なら、切り替え可能かどうかを必須にする
           isDefaultMode: boolean; // 編集可能なら、初期モードも必須にする
       };
+
 type ApplyTiming =
     | {
           // 入力値即反映
           id: number;
           isRealTimeUpdate: true;
-          onChange: (id: number, data: { targetDate: string }) => void;
+          onChange: (id: number, data: { progressRate: number }) => void;
       }
     | {
           // 保存ボタン実行
           id?: never;
           isRealTimeUpdate: false;
-          //onChange: (value: string) => void;
           onChange?: never;
       };
 
-type Props = TargetProps &
+type Props = ProgressRatePropsType &
     ApplyTiming & {
         isLabel: boolean;
-        value?: string;
+        value: number;
     };
-export const TodoTarget = ({
+
+export const TodoProgressRate = ({
     isLabel,
     id,
     isRealTimeUpdate,
@@ -48,18 +48,15 @@ export const TodoTarget = ({
     onChange,
 }: Props) => {
     const { control } = useFormContext();
-    const today = new Intl.DateTimeFormat("sv-SE", {
-        timeZone: "Asia/Tokyo",
-    }).format(new Date());
     const width = isLabel ? " w-2/3" : " w-full";
     const temp = {
-        textLabel: "目標日",
-        placeholder: "目標日",
-        type: "date",
-        name: "target",
-        min: today,
+        textLabel: "進捗率",
+        placeholder: "進捗率",
+        type: "number",
+        name: "progress",
+        min: 0,
+        max: 100,
     };
-
     const [isShowEditor, setIsShowEditor] = useState<boolean>(
         (() => {
             if (isReadOnly) return false;
@@ -76,15 +73,16 @@ export const TodoTarget = ({
         if (isReadOnly) return;
         setIsShowEditor(!isShowEditor);
     };
-    const handleRealTimeSave = (id: number, saveValue: string) => {
+
+    const handleRealTimeSave = (id: number, saveValue: number) => {
         if (isRealTimeUpdate && id !== undefined) {
-            onChange(id, { targetDate: saveValue });
+            onChange(id, { progressRate: saveValue });
             onToggle();
         }
     };
 
     return (
-        <div className="flex flex-row gap-1.5 mb-4">
+        <div className={`flex flex-row gap-1.5${isLabel ? " mb-4" : " "}`}>
             <Label
                 isLabel={isLabel}
                 htmlFor={`${temp.name}${id ? "_" + id : ""}`}
@@ -106,13 +104,14 @@ export const TodoTarget = ({
                     render={({ field }) => (
                         <>
                             {isRealTimeUpdate ? (
-                                <RealTimeInput<string>
+                                <RealTimeInput<number>
                                     id={id}
                                     value={field.value ?? value}
                                     placeholder={temp.placeholder}
                                     type={temp.type}
-                                    name={temp.name}
                                     min={temp.min}
+                                    max={temp.max}
+                                    name={temp.name}
                                     required={false}
                                     className={width}
                                     onSave={(id, value, isFinish) => {
@@ -123,12 +122,12 @@ export const TodoTarget = ({
                                     }}
                                 />
                             ) : (
-                                <FormInput<string>
+                                <FormInput<number>
                                     value={field.value ?? value}
-                                    placeholder={temp.placeholder}
-                                    type={temp.type}
-                                    name={temp.name}
                                     className={width}
+                                    type={temp.type}
+                                    min={temp.min}
+                                    max={temp.max}
                                     onSave={(value) => field.onChange(value)}
                                 />
                             )}

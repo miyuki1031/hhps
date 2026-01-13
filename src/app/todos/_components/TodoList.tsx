@@ -18,6 +18,7 @@ import { TodoPriority } from "./TodoPriority";
 import { TodoExplanation } from "./TodoExplanation";
 import { TodoTitle } from "./TodoTitle";
 import { TodoTarget } from "./TodoTarget";
+import { TodoProgressRate } from "./TodoProgressRate";
 
 interface Props {
     todos: TodoListType[];
@@ -96,6 +97,7 @@ export const TodoList = ({ todos }: Props) => {
         priority?: number;
         explanation?: string;
         targetDate?: string;
+        progressRate?: number;
     };
     // 更新
     const handleUpdateTodo = async (id: number, data: updateType) => {
@@ -109,7 +111,7 @@ export const TodoList = ({ todos }: Props) => {
          * タイトル:title ★
          * 説明:explanation
          * 目標日:target
-         * 進捗:progress ★(0)
+         * 進捗:progressRate ★(0)
          * 完了:completed ★(false)
          *
          */
@@ -210,7 +212,18 @@ export const TodoList = ({ todos }: Props) => {
                                     onChange={handleUpdateTodo}
                                 />
                             </td>
-                            <td>{todo.progressRate}</td>
+                            <td>
+                                <TodoProgressRate
+                                    isReadOnly={false}
+                                    isModeToggle={true}
+                                    isRealTimeUpdate={true}
+                                    isDefaultMode={false}
+                                    value={todo.progressRate ?? 0}
+                                    isLabel={false}
+                                    id={todo.id}
+                                    onChange={handleUpdateTodo}
+                                />
+                            </td>
 
                             <td>
                                 {/** 完了 */}

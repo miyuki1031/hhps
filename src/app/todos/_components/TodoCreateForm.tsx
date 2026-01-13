@@ -15,6 +15,7 @@ import { TodoPriority } from "./TodoPriority";
 import { TodoTarget } from "./TodoTarget";
 import { TodoExplanation } from "./TodoExplanation";
 import { TodoTitle } from "./TodoTitle";
+import { TodoProgressRate } from "./TodoProgressRate";
 // お試し
 type Props = {
     onSetIsCreate: (value: boolean) => void;
@@ -90,6 +91,16 @@ export const TodoCreateForm = ({ onSetIsCreate }: Props) => {
                         isLabel={true}
                         value={""}
                     />
+
+                    <TodoProgressRate
+                        isReadOnly={false}
+                        isModeToggle={false}
+                        isDefaultMode={false}
+                        isRealTimeUpdate={false}
+                        isLabel={true}
+                        value={0}
+                    />
+
                     <button
                         type="submit"
                         className="bg-blue-500 text-white px-4 py-2 rounded flex flex-row"
