@@ -119,7 +119,7 @@ export async function updateTodoAction(
         // 目標日
         const targetDateRaw = payload.targetDate as string;
         data.targetDate = targetDateRaw === "" ? null : new Date(targetDateRaw);
-    } else if (type === "progress") {
+    } else if (type === "progressRate") {
         data.progressRate = payload.progressRate;
     }
     await prisma.todoList.update({
