@@ -62,13 +62,7 @@ export const TodoCreateForm = ({ onSetIsCreate }: Props) => {
                         value="" // fieldから値を取得
                     />
 
-                    <TodoPriority
-                        isLabel={true}
-                        isReadOnly={false}
-                        isModeToggle={false} // モード切替はしない（仮）
-                        isDefaultMode={true} // デフォルトモードで表示（仮
-                        value={0}
-                    />
+                    <TodoPriority isLabel={true} isReadOnly={false} value={0} />
 
                     <TodoTitle
                         isLabel={true}
