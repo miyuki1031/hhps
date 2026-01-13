@@ -7,46 +7,33 @@
 
 import { TODO_CATEGORY } from "../constants";
 import { useFormContext, Controller } from "react-hook-form";
+import { Label } from "@/components/Lable";
 import { SelectBase } from "@/components/Select/SelectBase";
 
 type Props = {
     isLabel: boolean;
     id?: number;
     value: string;
-    onValueChange?: (id: number, data: { category: string }) => void;
-    //    onChange?: (value: string) => void;
+    onChange?: (id: number, data: { category: string }) => void;
 };
-export const TodoCategorys = ({
-    id,
-    isLabel,
-    value,
-    onValueChange,
-}: //    onChange,
-Props) => {
+export const TodoCategorys = ({ id, isLabel, value, onChange }: Props) => {
     const { control } = useFormContext();
-    const width = isLabel ? " w-1/3" : " w-full";
-
-    const renderLabels = () => {
-        if (!isLabel) return null;
-        return (
-            /**
-             * 入力フォームではないためlabelではない
-             * そのためhtmlForも不要
-             */
-            <label
-                htmlFor={`${id} ? category-${id}: `}
-                className={`rounded-box bg-blue-400 text-sm p-2 font-medium text-gray-700 ${width}`}
-            >
-                カテゴリー
-            </label>
-        );
+    const width = isLabel ? " w-2/3" : " w-full";
+    const temp = {
+        textLabel: "カテゴリー",
+        name: "category",
     };
+
     return (
         <div className={`flex flex-row gap-1.5 ${isLabel ? "mb-4" : ""}`}>
-            {/** ラベル */}
-            {renderLabels()}
+            <Label
+                isLabel={isLabel}
+                htmlFor={`${temp.name}${id ? "_" + id : ""}`}
+                textLabel={temp.textLabel}
+            />
+
             <Controller
-                name={`category${id ? +"_" + id : ""}`}
+                name={`${temp.name}${id ? +"_" + id : ""}`}
                 control={control}
                 render={({ field }) => (
                     <SelectBase
@@ -60,9 +47,9 @@ Props) => {
                             };
                         })}
                         onChange={(value: string) => {
-                            if (id && onValueChange) {
+                            if (id && onChange) {
                                 // 即時更新
-                                onValueChange(id, { category: value });
+                                onChange(id, { category: value });
                             } else {
                                 field.onChange(value);
                             }

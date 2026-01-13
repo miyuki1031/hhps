@@ -4,7 +4,9 @@
 echo "🔍 Running pre-commit checks..."
 
 # ESLint でコードチェック
-npm run lint
+
+npx lint-staged
+# npm run lint
 npx prisma generate && npm run build
 
 

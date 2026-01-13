@@ -115,7 +115,7 @@ export async function updateTodoAction(
         data.priority = payload.priority;
     } else if (type === "explanation") {
         data.explanation = payload.explanation;
-    } else if (type === "target") {
+    } else if (type === "targetDate") {
         // 目標日
         const targetDateRaw = payload.targetDate as string;
         data.targetDate = targetDateRaw === "" ? null : new Date(targetDateRaw);

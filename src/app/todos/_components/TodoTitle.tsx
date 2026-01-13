@@ -1,12 +1,11 @@
-"use client";
 import { useState } from "react";
 import { useFormContext, Controller } from "react-hook-form";
+import { Label } from "@/components/Lable";
 import { ButtonIcon } from "@/components/Button/ButtonIcon";
 import { RealTimeInput } from "@/components/Input/RealTimeInput";
 import { FormInput } from "@/components/Input/FormInput";
-import { Label } from "@/components/Lable";
 
-type TargetProps =
+type titleProps =
     | {
           isReadOnly: true;
           isModeToggle?: never;
@@ -17,27 +16,28 @@ type TargetProps =
           isModeToggle: boolean; // 編集可能なら、切り替え可能かどうかを必須にする
           isDefaultMode: boolean; // 編集可能なら、初期モードも必須にする
       };
+
 type ApplyTiming =
     | {
           // 入力値即反映
           id: number;
           isRealTimeUpdate: true;
-          onChange: (id: number, data: { targetDate: string }) => void;
+          onChange: (id: number, data: { title: string }) => void;
       }
     | {
           // 保存ボタン実行
           id?: never;
           isRealTimeUpdate: false;
-          //onChange: (value: string) => void;
           onChange?: never;
       };
 
-type Props = TargetProps &
+type Props = titleProps &
     ApplyTiming & {
         isLabel: boolean;
-        value?: string;
+        value: string;
     };
-export const TodoTarget = ({
+
+export const TodoTitle = ({
     isLabel,
     id,
     isRealTimeUpdate,
@@ -48,15 +48,12 @@ export const TodoTarget = ({
     onChange,
 }: Props) => {
     const { control } = useFormContext();
-    const today = new Intl.DateTimeFormat("sv-SE", {
-        timeZone: "Asia/Tokyo",
-    }).format(new Date());
     const width = isLabel ? " w-2/3" : " w-full";
     const temp = {
-        textLabel: "目標日",
-        placeholder: "目標日",
-        type: "date",
-        name: "target",
+        textLabel: "タイトル",
+        placeholder: "タイトル",
+        type: "text",
+        name: "title",
     };
 
     const [isShowEditor, setIsShowEditor] = useState<boolean>(
@@ -75,15 +72,16 @@ export const TodoTarget = ({
         if (isReadOnly) return;
         setIsShowEditor(!isShowEditor);
     };
+
     const handleRealTimeSave = (id: number, saveValue: string) => {
         if (isRealTimeUpdate && id !== undefined) {
-            onChange(id, { targetDate: saveValue });
+            onChange(id, { title: saveValue });
             onToggle();
         }
     };
 
     return (
-        <div className="flex flex-row gap-1.5 mb-4">
+        <div className={`flex flex-row gap-1.5${isLabel ? " mb-4" : " "}`}>
             <Label
                 isLabel={isLabel}
                 htmlFor={`${temp.name}${id ? "_" + id : ""}`}
@@ -109,11 +107,9 @@ export const TodoTarget = ({
                                     id={id}
                                     value={field.value ?? value}
                                     placeholder={temp.placeholder}
-                                    type={temp.type}
                                     name={temp.name}
-                                    min={today}
-                                    required={false}
                                     className={width}
+                                    required={false}
                                     onSave={(id, value, isFinish) => {
                                         field.onChange(value);
                                         if (isFinish && handleRealTimeSave) {
@@ -124,9 +120,6 @@ export const TodoTarget = ({
                             ) : (
                                 <FormInput<string>
                                     value={field.value ?? value}
-                                    placeholder={temp.placeholder}
-                                    type={temp.type}
-                                    name={temp.name}
                                     className={width}
                                     onSave={(value) => field.onChange(value)}
                                 />
