@@ -2,7 +2,7 @@ import { BaseInput } from "./Baseinput";
 interface FormInputProps<T>
     extends Omit<
         React.InputHTMLAttributes<HTMLInputElement>,
-        "id" | "onChange" | "value"
+        "onChange" | "value"
     > {
     value: T;
     onSave: (value: T) => void;

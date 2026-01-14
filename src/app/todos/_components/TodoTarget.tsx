@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useId } from "react";
 import { useFormContext, Controller } from "react-hook-form";
 import { ButtonIcon } from "@/components/Button/ButtonIcon";
 import { RealTimeInput } from "@/components/Input/RealTimeInput";
@@ -28,7 +28,6 @@ type ApplyTiming =
           // 保存ボタン実行
           id?: never;
           isRealTimeUpdate: false;
-          //onChange: (value: string) => void;
           onChange?: never;
       };
 
@@ -48,6 +47,7 @@ export const TodoTarget = ({
     onChange,
 }: Props) => {
     const { control } = useFormContext();
+    const generatedId = useId();
     const today = new Intl.DateTimeFormat("sv-SE", {
         timeZone: "Asia/Tokyo",
     }).format(new Date());
@@ -57,6 +57,7 @@ export const TodoTarget = ({
         placeholder: "目標日",
         type: "date",
         name: "targetDate",
+        controlName: id ? "targetDate_" + id : "targetDate",
         min: today,
     };
 
@@ -76,18 +77,18 @@ export const TodoTarget = ({
         if (isReadOnly) return;
         setIsShowEditor(!isShowEditor);
     };
-    const handleRealTimeSave = (id: number, saveValue: string) => {
-        if (isRealTimeUpdate && id !== undefined) {
+    const handleRealTimeSave = (saveValue: string, isFinish: boolean) => {
+        if (isFinish && isRealTimeUpdate && id !== undefined) {
             onChange(id, { targetDate: saveValue });
             onToggle();
         }
     };
 
     return (
-        <div className="flex flex-row gap-1.5 mb-4">
+        <div className={`flex flex-row gap-1.5${isLabel ? " mb-4" : ""}`}>
             <Label
                 isLabel={isLabel}
-                htmlFor={`${temp.name}${id ? "_" + id : ""}`}
+                htmlFor={generatedId}
                 textLabel={temp.textLabel}
             />
             {isShowEditor ? (
@@ -101,13 +102,13 @@ export const TodoTarget = ({
                 </ButtonIcon>
             ) : (
                 <Controller
-                    name={`${temp.name}${id ? "_" + id : ""}`}
+                    name={temp.controlName}
                     control={control}
                     render={({ field }) => (
                         <>
                             {isRealTimeUpdate ? (
                                 <RealTimeInput<string>
-                                    id={id}
+                                    id={generatedId}
                                     value={field.value ?? value}
                                     placeholder={temp.placeholder}
                                     type={temp.type}
@@ -115,15 +116,14 @@ export const TodoTarget = ({
                                     min={temp.min}
                                     required={false}
                                     className={width}
-                                    onSave={(id, value, isFinish) => {
-                                        field.onChange(value);
-                                        if (isFinish && handleRealTimeSave) {
-                                            handleRealTimeSave(id, value);
-                                        }
+                                    onSave={(saveValue, isFinish) => {
+                                        field.onChange(saveValue);
+                                        handleRealTimeSave(saveValue, isFinish);
                                     }}
                                 />
                             ) : (
                                 <FormInput<string>
+                                    id={generatedId}
                                     value={field.value ?? value}
                                     placeholder={temp.placeholder}
                                     type={temp.type}

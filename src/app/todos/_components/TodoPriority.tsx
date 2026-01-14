@@ -28,7 +28,6 @@
  *
  *
  */
-
 import { useFormContext, Controller } from "react-hook-form";
 import { Label } from "@/components/Lable";
 import { Stars } from "@/components/Stars";
@@ -56,9 +55,10 @@ export const TodoPriority = ({
     const temp = {
         textLabel: "優先順位",
         name: "priority",
+        controlName: id ? "priority_" + id : "priority",
     };
 
-    const handleRealTimeSave = (id: number, saveValue: number) => {
+    const handleRealTimeSave = (saveValue: number) => {
         if (isRealTimeUpdate && id !== undefined && onChange) {
             onChange(id, { priority: saveValue });
         }
@@ -68,11 +68,11 @@ export const TodoPriority = ({
         <div className={`flex flex-row gap-1.5 mb-4`}>
             <Label
                 isLabel={isLabel}
-                htmlFor={`${temp.name}${id ? "_" + id : ""}`}
+                isStandalone={true}
                 textLabel={temp.textLabel}
             />
             <Controller
-                name={`${temp.name}${id ? +"_" + id : ""}`}
+                name={temp.controlName}
                 control={control}
                 render={({ field }) => (
                     <Stars
@@ -81,12 +81,9 @@ export const TodoPriority = ({
                         formName={temp.name}
                         value={field.value ?? value}
                         readonly={isReadOnly}
-                        onChange={(value: number) => {
-                            if (id && onChange) {
-                                handleRealTimeSave(id, value);
-                            } else {
-                                field.onChange(value);
-                            }
+                        onChange={(saveValue: number) => {
+                            field.onChange(saveValue);
+                            handleRealTimeSave(saveValue);
                         }}
                     />
                 )}

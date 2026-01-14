@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useId } from "react";
 import { useFormContext, Controller } from "react-hook-form";
 import { Label } from "@/components/Lable";
 import { ButtonIcon } from "@/components/Button/ButtonIcon";
@@ -48,12 +48,14 @@ export const TodoTitle = ({
     onChange,
 }: Props) => {
     const { control } = useFormContext();
+    const generatedId = useId();
     const width = isLabel ? " w-2/3" : " w-full";
     const temp = {
         textLabel: "タイトル",
         placeholder: "タイトル",
         type: "text",
         name: "title",
+        controlName: id ? "title_" + id : "title",
     };
 
     const [isShowEditor, setIsShowEditor] = useState<boolean>(
@@ -73,8 +75,8 @@ export const TodoTitle = ({
         setIsShowEditor(!isShowEditor);
     };
 
-    const handleRealTimeSave = (id: number, saveValue: string) => {
-        if (isRealTimeUpdate && id !== undefined) {
+    const handleRealTimeSave = (saveValue: string, isFinish: boolean) => {
+        if (isFinish && isRealTimeUpdate && id !== undefined) {
             onChange(id, { title: saveValue });
             onToggle();
         }
@@ -84,7 +86,7 @@ export const TodoTitle = ({
         <div className={`flex flex-row gap-1.5${isLabel ? " mb-4" : " "}`}>
             <Label
                 isLabel={isLabel}
-                htmlFor={`${temp.name}${id ? "_" + id : ""}`}
+                htmlFor={generatedId}
                 textLabel={temp.textLabel}
             />
             {isShowEditor ? (
@@ -98,27 +100,26 @@ export const TodoTitle = ({
                 </ButtonIcon>
             ) : (
                 <Controller
-                    name={`${temp.name}${id ? "_" + id : ""}`}
+                    name={temp.controlName}
                     control={control}
                     render={({ field }) => (
                         <>
                             {isRealTimeUpdate ? (
                                 <RealTimeInput<string>
-                                    id={id}
+                                    id={generatedId}
                                     value={field.value ?? value}
                                     placeholder={temp.placeholder}
                                     name={temp.name}
                                     className={width}
                                     required={false}
-                                    onSave={(id, value, isFinish) => {
-                                        field.onChange(value);
-                                        if (isFinish && handleRealTimeSave) {
-                                            handleRealTimeSave(id, value);
-                                        }
+                                    onSave={(saveValue, isFinish) => {
+                                        field.onChange(saveValue);
+                                        handleRealTimeSave(saveValue, isFinish);
                                     }}
                                 />
                             ) : (
                                 <FormInput<string>
+                                    id={generatedId}
                                     value={field.value ?? value}
                                     className={width}
                                     onSave={(value) => field.onChange(value)}
