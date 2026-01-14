@@ -1,20 +1,29 @@
 "use client";
 type LabelPropsType = {
+    isStandalone?: boolean;
     isLabel?: boolean;
     htmlFor?: string;
     textLabel?: string;
 };
 
-export const Label = (props: LabelPropsType) => {
-    if (!props.isLabel) return;
+export const Label = ({
+    isStandalone = false,
+    isLabel,
+    htmlFor,
+    textLabel,
+}: LabelPropsType) => {
+    if (!isLabel) return;
+    const labelStyle = `rounded-box bg-blue-400 text-sm p-2 font-medium text-gray-700 w-1/3`;
 
-    const { htmlFor, textLabel } = props;
     return (
-        <label
-            htmlFor={htmlFor}
-            className={`rounded-box bg-blue-400 text-sm p-2 font-medium text-gray-700 w-1/3`}
-        >
-            {textLabel}
-        </label>
+        <>
+            {isStandalone ? (
+                <div className={labelStyle}>{textLabel}</div>
+            ) : (
+                <label htmlFor={htmlFor} className={labelStyle}>
+                    {textLabel}
+                </label>
+            )}
+        </>
     );
 };

@@ -22,18 +22,24 @@ export const TodoCategorys = ({ id, isLabel, value, onChange }: Props) => {
     const temp = {
         textLabel: "カテゴリー",
         name: "category",
+        controlName: id ? "category_" + id : "category",
+    };
+    const handleRealTimeSave = (saveValue: string) => {
+        if (onChange && id !== undefined) {
+            onChange(id, { category: saveValue });
+        }
     };
 
     return (
         <div className={`flex flex-row gap-1.5 ${isLabel ? "mb-4" : ""}`}>
             <Label
+                isStandalone={true}
                 isLabel={isLabel}
-                htmlFor={`${temp.name}${id ? "_" + id : ""}`}
                 textLabel={temp.textLabel}
             />
 
             <Controller
-                name={`${temp.name}${id ? +"_" + id : ""}`}
+                name={temp.controlName}
                 control={control}
                 render={({ field }) => (
                     <SelectBase
@@ -46,13 +52,10 @@ export const TodoCategorys = ({ id, isLabel, value, onChange }: Props) => {
                                 icon: t.label,
                             };
                         })}
-                        onChange={(value: string) => {
-                            if (id && onChange) {
-                                // 即時更新
-                                onChange(id, { category: value });
-                            } else {
-                                field.onChange(value);
-                            }
+                        onChange={(saveValue: string) => {
+                            field.onChange(saveValue);
+                            // 即時更新
+                            handleRealTimeSave(saveValue);
                         }}
                     />
                 )}

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useId } from "react";
 import { useFormContext, Controller } from "react-hook-form";
 import { Label } from "@/components/Lable";
 import { ButtonIcon } from "@/components/Button/ButtonIcon";
@@ -48,12 +48,14 @@ export const TodoProgressRate = ({
     onChange,
 }: Props) => {
     const { control } = useFormContext();
+    const generatedId = useId();
     const width = isLabel ? " w-2/3" : " w-full";
     const temp = {
         textLabel: "進捗率",
         placeholder: "進捗率",
         type: "number",
-        name: "progress",
+        name: "progressRate",
+        controlName: id ? "progressRate_" + id : "progressRate",
         min: 0,
         max: 100,
     };
@@ -74,18 +76,18 @@ export const TodoProgressRate = ({
         setIsShowEditor(!isShowEditor);
     };
 
-    const handleRealTimeSave = (id: number, saveValue: number) => {
-        if (isRealTimeUpdate && id !== undefined) {
+    const handleRealTimeSave = (saveValue: number, isFinish: boolean) => {
+        if (isFinish && isRealTimeUpdate && id !== undefined) {
             onChange(id, { progressRate: saveValue });
             onToggle();
         }
     };
 
     return (
-        <div className={`flex flex-row gap-1.5${isLabel ? " mb-4" : " "}`}>
+        <div className={`flex flex-row gap-1.5${isLabel ? " mb-4" : ""}`}>
             <Label
                 isLabel={isLabel}
-                htmlFor={`${temp.name}${id ? "_" + id : ""}`}
+                htmlFor={generatedId}
                 textLabel={temp.textLabel}
             />
             {isShowEditor ? (
@@ -93,19 +95,19 @@ export const TodoProgressRate = ({
                     className=" w-full "
                     isTransparent={true}
                     position={"l"}
-                    onClick={() => onToggle()}
+                    onClick={onToggle}
                 >
                     {value}
                 </ButtonIcon>
             ) : (
                 <Controller
-                    name={`${temp.name}${id ? "_" + id : ""}`}
+                    name={temp.controlName}
                     control={control}
                     render={({ field }) => (
                         <>
                             {isRealTimeUpdate ? (
                                 <RealTimeInput<number>
-                                    id={id}
+                                    id={generatedId}
                                     value={field.value ?? value}
                                     placeholder={temp.placeholder}
                                     type={temp.type}
@@ -114,18 +116,18 @@ export const TodoProgressRate = ({
                                     name={temp.name}
                                     required={false}
                                     className={width}
-                                    onSave={(id, value, isFinish) => {
-                                        field.onChange(value);
-                                        if (isFinish && handleRealTimeSave) {
-                                            handleRealTimeSave(id, value);
-                                        }
+                                    onSave={(saveValue, isFinish) => {
+                                        field.onChange(saveValue);
+                                        handleRealTimeSave(saveValue, isFinish);
                                     }}
                                 />
                             ) : (
                                 <FormInput<number>
+                                    id={generatedId}
                                     value={field.value ?? value}
                                     className={width}
                                     type={temp.type}
+                                    name={temp.name}
                                     min={temp.min}
                                     max={temp.max}
                                     onSave={(value) => field.onChange(value)}
