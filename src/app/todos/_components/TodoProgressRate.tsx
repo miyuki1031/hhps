@@ -53,7 +53,7 @@ export const TodoProgressRate = ({
         textLabel: "進捗率",
         placeholder: "進捗率",
         type: "number",
-        name: "progress",
+        name: "progressRate",
         min: 0,
         max: 100,
     };
@@ -126,6 +126,7 @@ export const TodoProgressRate = ({
                                     value={field.value ?? value}
                                     className={width}
                                     type={temp.type}
+                                    name={temp.name}
                                     min={temp.min}
                                     max={temp.max}
                                     onSave={(value) => field.onChange(value)}

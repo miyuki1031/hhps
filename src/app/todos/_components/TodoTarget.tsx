@@ -56,7 +56,7 @@ export const TodoTarget = ({
         textLabel: "目標日",
         placeholder: "目標日",
         type: "date",
-        name: "target",
+        name: "targetDate",
         min: today,
     };
 
