@@ -6,10 +6,16 @@ export type ContentKey = keyof typeof CONTENTS;
 
 // payload（データ）の形を定義
 export interface UpdatePayload {
-    id: number;
+    // id: number;
     completed?: boolean;
     title?: string;
+    category?: string;
+    priority?: number;
+    explanation?: string;
+    progressRate?: number;
+    targetDate?: Date | string | null;// Serverでは日付、ブラウザからは文字列、空入力はnull
 };
+
 
 /**
  type: 新しい型の名前を決めます。

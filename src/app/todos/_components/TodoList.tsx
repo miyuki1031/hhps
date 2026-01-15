@@ -4,15 +4,21 @@
 "use client";
 
 import { useState, useEffect, useTransition } from "react";
+import { FormProvider, useForm } from "react-hook-form";
+
+import { UpdatePayload } from "../../../../types/types";
 
 import { TodoList as TodoListType } from "@prisma/client";
 import { updateTodoAction } from "@/app/todos/actions";
 
 import { BookmarkCheck } from "lucide-react";
-import { TodoRegist } from "./TodoRegist";
 import { TodoDelete } from "./TodoDelete";
-import { Stars } from "@/components/Stars";
 import { TodoCategorys } from "./TodoCategorys";
+import { TodoPriority } from "./TodoPriority";
+import { TodoExplanation } from "./TodoExplanation";
+import { TodoTitle } from "./TodoTitle";
+import { TodoTarget } from "./TodoTarget";
+import { TodoProgressRate } from "./TodoProgressRate";
 
 interface Props {
     todos: TodoListType[];
@@ -20,24 +26,48 @@ interface Props {
 type Delets = number[];
 
 export const TodoList = ({ todos }: Props) => {
+    const methods = useForm<UpdatePayload>({
+        defaultValues: {
+            category: "WORK",
+            priority: 0,
+            title: "",
+            explanation: "",
+            progressRate: 0,
+            targetDate: null,
+            completed: false,
+        },
+        mode: "onChange",
+    });
+    const toStringDate = (d: Date | null) => {
+        if (d === null) {
+            return "";
+        } else {
+            return `${d.getFullYear()}/${("0" + (d.getMonth() + 1)).slice(
+                -2
+            )}/${("0" + d.getDate()).slice(-2)}`;
+        }
+    };
+
     // list再生成
-    const list = todos.map((t) => {
-        return { isEditTitle: false, ...t };
+    type TodoDisplayType = Omit<TodoListType, "targetDate"> & {
+        targetDate: string;
+        isEditTitle: boolean;
+    };
+    const list: TodoDisplayType[] = todos.map((t) => {
+        return {
+            ...t,
+            isEditTitle: false,
+            targetDate: toStringDate(t.targetDate),
+        };
     });
 
     // 更新実行コントロール
     const [isPendingTodoUppdate, startTransitionTodoUpdate] = useTransition();
 
-    // 編集フラグ（数値またはNullの配列）
-    const [editingId, setEditingId] = useState<number | null>(null);
-
     // 削除フラグ
     const [isDelete, setIsDelete] = useState(false);
     // 削除選択(list分生成)
     const [selectedDelets, setSelectedDelets] = useState<Delets>([]);
-
-    // 新規作成フラグ(modal制御用)
-    const [isCreate, setIsCreate] = useState(false);
 
     useEffect(() => {
         // 削除機能オフ時に選択されていたら解除
@@ -57,36 +87,52 @@ export const TodoList = ({ todos }: Props) => {
         setSelectedDelets([...copy]);
     };
 
-    const handleCompleted = (id: number, completed: boolean) =>
-        updateTodo(id, { completed });
-    const handleTitle = (id: number, title: string) =>
-        updateTodo(id, { title });
     /**
      * DB系
      * */
+    type updateType = {
+        category?: string;
+        title?: string;
+        completed?: boolean;
+        priority?: number;
+        explanation?: string;
+        targetDate?: string;
+        progressRate?: number;
+    };
     // 更新
-    const updateTodo = async (
-        id: number,
-        data: { completed?: boolean; title?: string }
-    ) => {
-        if (data.title !== undefined && data.title.trim() === "") {
-            alert("タイトルを入力してください");
-            setEditingId(null); // 編集をキャンセルして戻す
+    const handleUpdateTodo = async (id: number, data: updateType) => {
+        console.log(id);
+        console.log(data);
+        console.log("------------------------");
+
+        /**
+         * カテゴリ:category ★
+         * 優先順位:priority ★
+         * タイトル:title ★
+         * 説明:explanation
+         * 目標日:target
+         * 進捗:progressRate ★(0)
+         * 完了:completed ★(false)
+         *
+         */
+        // 更新
+        // 1. 送られてきた項目の key を取得 (例: ["category"])
+        const [key] = Object.keys(data) as (keyof updateType)[];
+        if (!key) return;
+
+        // 2. 必須チェック（タイトルが空ならキャンセル）
+        if (key === "title" && (!data.title || data.title.trim() === "")) {
             return;
         }
-        const type = data.completed === undefined ? "title" : "completed";
 
-        // タイトル更新のときは、Actionを待たずにすぐ入力欄を閉じる
-        if (type === "title") setEditingId(null);
-
+        // 4. 実行！ (key を type としてそのまま渡す)
         startTransitionTodoUpdate(async () => {
-            await updateTodoAction(type, { id, ...data });
+            await updateTodoAction(id, key, { ...data });
         });
     };
 
     return (
-        <>
-            <TodoRegist isCreate={isCreate} setIsCreate={setIsCreate} />
+        <FormProvider {...methods}>
             <table className="table table-zebra">
                 <thead>
                     <tr>
@@ -107,64 +153,86 @@ export const TodoList = ({ todos }: Props) => {
                         <tr key={todo.id} className="border-b py-2">
                             <td>{todo.id}</td>
                             <td>
-                                <TodoCategorys target={todo.category} />
-                            </td>
-                            <td>
-                                <Stars
-                                    allStars={3}
-                                    pos={todo.priority}
-                                    readonly={true}
+                                {/* カテゴリ */}
+                                <TodoCategorys
+                                    isLabel={false}
+                                    id={todo.id}
+                                    value={todo.category}
+                                    onChange={handleUpdateTodo}
                                 />
                             </td>
                             <td>
-                                {!isPendingTodoUppdate &&
-                                editingId === todo.id ? (
-                                    <input
-                                        type="text"
-                                        className="input"
-                                        defaultValue={todo.title}
-                                        // フォーカスが外れたら編集終了
-                                        onBlur={(e) => {
-                                            if (e.target.value === todo.title) {
-                                                setEditingId(null); // 変わってなければ閉じるだけ
-                                            } else {
-                                                handleTitle(
-                                                    todo.id,
-                                                    e.target.value
-                                                );
-                                            }
-                                        }}
-                                        // Enterキーで確定（オプション）
-                                        onKeyDown={(e) =>
-                                            e.key === "Enter" &&
-                                            e.currentTarget.blur()
-                                        }
-                                        autoFocus
-                                    />
-                                ) : (
-                                    <button
-                                        onClick={() => setEditingId(todo.id)}
-                                    >
-                                        {todo.title}
-                                    </button>
-                                )}
+                                {/* 優先順位 */}
+                                <TodoPriority
+                                    isLabel={false}
+                                    id={todo.id}
+                                    value={todo.priority} // fieldから値を取得
+                                    isReadOnly={false}
+                                    isRealTimeUpdate={true}
+                                    onChange={handleUpdateTodo}
+                                />
                             </td>
-                            <td>{todo.explanation}</td>
+                            <td>
+                                {/** タイトル */}
+                                <TodoTitle
+                                    isReadOnly={false}
+                                    isModeToggle={true}
+                                    isRealTimeUpdate={true}
+                                    isDefaultMode={false}
+                                    value={todo.title ?? ""}
+                                    isLabel={false}
+                                    id={todo.id}
+                                    onChange={handleUpdateTodo}
+                                />
+                            </td>
+                            <td>
+                                {/** 説明 */}
+                                <TodoExplanation
+                                    isReadOnly={false}
+                                    isModeToggle={true}
+                                    isRealTimeUpdate={true}
+                                    isDefaultMode={false}
+                                    value={todo.explanation ?? ""}
+                                    isLabel={false}
+                                    id={todo.id}
+                                    onChange={handleUpdateTodo}
+                                />
+                            </td>
                             <td>{todo.createdAt.toLocaleString("ja-JP")}</td>
                             <td>
-                                {todo.targetDate?.toLocaleString("ja-JP") ?? ""}
+                                {/** 目標日 */}
+                                <TodoTarget
+                                    isReadOnly={false}
+                                    isModeToggle={true}
+                                    isRealTimeUpdate={true}
+                                    isDefaultMode={false}
+                                    value={todo.targetDate ?? ""}
+                                    isLabel={false}
+                                    id={todo.id}
+                                    onChange={handleUpdateTodo}
+                                />
                             </td>
-                            <td>{todo.progressRate}</td>
+                            <td>
+                                <TodoProgressRate
+                                    isReadOnly={false}
+                                    isModeToggle={true}
+                                    isRealTimeUpdate={true}
+                                    isDefaultMode={false}
+                                    value={todo.progressRate ?? 0}
+                                    isLabel={false}
+                                    id={todo.id}
+                                    onChange={handleUpdateTodo}
+                                />
+                            </td>
 
                             <td>
                                 {/** 完了 */}
                                 <button
                                     defaultChecked={todo.completed}
                                     onClick={() =>
-                                        handleCompleted(
-                                            todo.id,
-                                            !todo.completed
-                                        )
+                                        handleUpdateTodo(todo.id, {
+                                            completed: !todo.completed,
+                                        })
                                     }
                                     disabled={isPendingTodoUppdate}
                                 >
@@ -200,6 +268,6 @@ export const TodoList = ({ todos }: Props) => {
                 onSetSelectedDelets={setSelectedDelets}
                 disabled={list.length === 0}
             />
-        </>
+        </FormProvider>
     );
 };

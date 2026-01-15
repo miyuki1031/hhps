@@ -1,19 +1,15 @@
-/***
- * DialogRegistTodo
- */
 "use client";
 
-import { CirclePlus } from "lucide-react";
+import { useState } from "react";
 
+import { CirclePlus } from "lucide-react";
 import { ButtonIcon } from "@/components/Button/ButtonIcon";
-import { TodoRegistForm } from "./TodoRegistForm";
+import { TodoCreateForm } from "./TodoCreateForm";
 import { Dialog } from "@/components/Dialog/Dialog";
 
-type Props = {
-    isCreate: boolean;
-    setIsCreate: (value: boolean) => void;
-};
-export const TodoRegist = ({ isCreate, setIsCreate }: Props) => {
+export const TodoRegist = () => {
+    // モーダル開閉制御
+    const [isCreate, setIsCreate] = useState<boolean>(false);
     return (
         <div>
             <ButtonIcon className="btn" onClick={() => setIsCreate(!isCreate)}>
@@ -25,7 +21,7 @@ export const TodoRegist = ({ isCreate, setIsCreate }: Props) => {
                 isOpen={isCreate}
                 onSetIsOpen={setIsCreate}
             >
-                <TodoRegistForm onSetIsCreate={setIsCreate} />
+                <TodoCreateForm onSetIsCreate={setIsCreate} />
             </Dialog>
         </div>
     );

@@ -8,7 +8,12 @@ import { House, ListChecks, User } from "lucide-react";
 export const SITE_INFO = {
   NAME: "HappyHalloweenPumpkinStar",
   DESCRIPTION: "HHPSへようこそ！",
-  MESSAGE: "作りたいものがつくれるエンジニアへ！"
+  MESSAGE: "作りたいものがつくれるエンジニアへ！",
+  TODO: {
+    NAME: "Todo",
+    DESCRIPTION: "Todo一覧。",
+    MESSAGE: "作りたいものがつくれるエンジニアへ！",
+  }
 };
 
 export const CONTENTS = {

@@ -14,26 +14,24 @@ export type ActionState = {
     message?: string;
 };
 
-export async function createTodoAction(
-    prevState: ActionState,
-    formData: FormData
-) {
+export async function createTodoAction(data: UpdatePayload) {
     console.log(`createTodoAction`);
+    console.log(data);
 
     // 1. フォームから値を取り出す
     // カテゴリー
-    const category = formData.get("todoCategory") as string;
+    const category = data.category ?? "";
     // タイトル
-    const title = formData.get("todoTitle") as string;
+    const title = data.title;
     // 優先順位
-    const priority = Number(formData.get("todoPriority"));
+    const priority = Number(data.priority);
     // 説明
-    const explanation = formData.get("todoExplanation") as string;
+    const explanation = data.explanation;
     // 目標日
-    const targetDateRaw = formData.get("todoTargetDate") as string;
+    const targetDateRaw = data.targetDate ?? "";
     const targetDate = targetDateRaw === "" ? null : new Date(targetDateRaw);
     // 進捗
-    const progressRate = Number(formData.get("todoProgressRate"));
+    const progressRate = Number(data.progressRate);
 
     if (!title) {
         return { success: false, error: "タイトルを入力してください" };
@@ -97,18 +95,38 @@ export async function deleteTodoAction(ids: number[]) {
 }
 /////
 // 更新
-////
-export async function updateTodoAction(type: string, payload: UpdatePayload) {
-    if (type === "completed") {
-        await prisma.todoList.update({
-            where: { id: payload.id },
-            data: { completed: payload.completed },
-        });
-    } else {
-        await prisma.todoList.update({
-            where: { id: payload.id },
-            data: { title: payload.title },
-        });
+export async function updateTodoAction(
+    id: number,
+    type: string,
+    payload: UpdatePayload
+) {
+    console.log("updateTodoAction---------------------");
+    console.log(`id: ${id} / type: ${type} / payload: ${payload} `);
+    console.log(payload);
+
+    const data: UpdatePayload = {};
+    if (type === "category") {
+        data.category = payload.category;
+    } else if (type === "title") {
+        data.title = payload.title;
+    } else if (type === "completed") {
+        data.completed = payload.completed;
+    } else if (type === "priority") {
+        data.priority = payload.priority;
+    } else if (type === "explanation") {
+        data.explanation = payload.explanation;
+    } else if (type === "targetDate") {
+        // 目標日
+        const targetDateRaw = payload.targetDate as string;
+        data.targetDate = targetDateRaw === "" ? null : new Date(targetDateRaw);
+    } else if (type === "progressRate") {
+        data.progressRate = payload.progressRate;
     }
+    await prisma.todoList.update({
+        where: { id: id },
+        data: data,
+    });
+
     revalidatePath("/todos");
+    return { success: true, error: null };
 }
