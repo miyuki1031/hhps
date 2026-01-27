@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 // import { zodResolver } from "@hookform/resolvers/zod";
 // import { z } from "zod";
@@ -22,6 +23,9 @@ type Props = {
 };
 
 export const CreateForm = ({ onSetIsCreate }: Props) => {
+    // サーバーからのエラーメッセージ（配列）を管理するステート
+    const [serverErrors, setServerErrors] = useState<{ message: string }[]>([]);
+
     const methods = useForm<UpdatePayload>({
         defaultValues: {
             completed: false,
@@ -44,12 +48,17 @@ export const CreateForm = ({ onSetIsCreate }: Props) => {
     const onSubmit = async (data: UpdatePayload) => {
         // 1. サーバー送信
         const result = await createTodoAction(data);
-
+        console.log("onSubmit");
         if (result.success) {
             // 2. 成功したらフォームをリセット
             methods.reset();
             // 3. モーダルを閉じる！
             onSetIsCreate(false); // 親から受け取った「閉じる関数」などを呼ぶ
+        } else {
+            // 前のステップで作った [{message: "..."}] の形式を想定
+            if (result.errors) {
+                setServerErrors(result.errors);
+            }
         }
     };
 
@@ -108,9 +117,14 @@ export const CreateForm = ({ onSetIsCreate }: Props) => {
                     >
                         <CirclePlus />
                     </button>
-                    {/* {state.message && (
-                        <p className="text-red-500 text-sm">{state.message}</p>
-                    )} */}
+                    {/* React Hook Formのエラーではなく、serverErrorsを表示する */}
+                    <div className="text-red-500 text-sm mt-2">
+                        {serverErrors.map((err) => (
+                            <span key={err.message} className="block">
+                                {err.message}
+                            </span>
+                        ))}
+                    </div>
                 </fieldset>
             </form>
         </FormProvider>
