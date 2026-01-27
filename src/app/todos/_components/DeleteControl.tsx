@@ -12,7 +12,7 @@ type Props = {
     onSetSelectedDelets: (value: []) => void;
     disabled?: boolean;
 };
-export const TodoDelete = ({
+export const DeleteControl = ({
     list,
     isDelete,
     onSetIsDelete,
@@ -20,11 +20,11 @@ export const TodoDelete = ({
     disabled,
 }: Props) => {
     // 削除実行コントロール
-    const [_isPainging, startTransitionTodoDelete] = useTransition();
+    const [_isPainging, startTransitionDeleteControl] = useTransition();
 
     // 削除
     const delteTodo = () => {
-        startTransitionTodoDelete(async () => {
+        startTransitionDeleteControl(async () => {
             const rtn = await deleteTodoAction(list);
             if (rtn.success) {
                 // 成功時初期化

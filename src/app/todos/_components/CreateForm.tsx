@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 // import { zodResolver } from "@hookform/resolvers/zod";
 // import { z } from "zod";
@@ -10,18 +11,21 @@ import { createTodoAction } from "@/app/todos/actions";
 
 import { CirclePlus } from "lucide-react";
 
-import { TodoCategorys } from "./TodoCategorys";
-import { TodoPriority } from "./TodoPriority";
-import { TodoTarget } from "./TodoTarget";
-import { TodoExplanation } from "./TodoExplanation";
-import { TodoTitle } from "./TodoTitle";
-import { TodoProgressRate } from "./TodoProgressRate";
+import { CategorySelect } from "./CategorySelect";
+import { Priority } from "./Priority";
+import { Target } from "./Target";
+import { Explanation } from "./Explanation";
+import { Title } from "./Title";
+import { ProgressRate } from "./ProgressRate";
 // お試し
 type Props = {
     onSetIsCreate: (value: boolean) => void;
 };
 
-export const TodoCreateForm = ({ onSetIsCreate }: Props) => {
+export const CreateForm = ({ onSetIsCreate }: Props) => {
+    // サーバーからのエラーメッセージ（配列）を管理するステート
+    const [serverErrors, setServerErrors] = useState<{ message: string }[]>([]);
+
     const methods = useForm<UpdatePayload>({
         defaultValues: {
             completed: false,
@@ -44,12 +48,17 @@ export const TodoCreateForm = ({ onSetIsCreate }: Props) => {
     const onSubmit = async (data: UpdatePayload) => {
         // 1. サーバー送信
         const result = await createTodoAction(data);
-
+        console.log("onSubmit");
         if (result.success) {
             // 2. 成功したらフォームをリセット
             methods.reset();
             // 3. モーダルを閉じる！
             onSetIsCreate(false); // 親から受け取った「閉じる関数」などを呼ぶ
+        } else {
+            // 前のステップで作った [{message: "..."}] の形式を想定
+            if (result.errors) {
+                setServerErrors(result.errors);
+            }
         }
     };
 
@@ -58,14 +67,14 @@ export const TodoCreateForm = ({ onSetIsCreate }: Props) => {
             <form onSubmit={handleSubmit(onSubmit)} className="flex gap-2">
                 <fieldset className="w-full">
                     <legend>新しいTodoを追加してください</legend>
-                    <TodoCategorys
+                    <CategorySelect
                         isLabel={true}
                         value="" // fieldから値を取得
                     />
 
-                    <TodoPriority isLabel={true} isReadOnly={false} value={0} />
+                    <Priority isLabel={true} isReadOnly={false} value={0} />
 
-                    <TodoTitle
+                    <Title
                         isLabel={true}
                         isReadOnly={false}
                         isModeToggle={false}
@@ -74,7 +83,7 @@ export const TodoCreateForm = ({ onSetIsCreate }: Props) => {
                         value={""}
                     />
 
-                    <TodoExplanation
+                    <Explanation
                         isReadOnly={false}
                         isModeToggle={false}
                         isDefaultMode={false}
@@ -83,7 +92,7 @@ export const TodoCreateForm = ({ onSetIsCreate }: Props) => {
                         value={""}
                     />
 
-                    <TodoTarget
+                    <Target
                         isReadOnly={false}
                         isModeToggle={false}
                         isDefaultMode={false}
@@ -92,7 +101,7 @@ export const TodoCreateForm = ({ onSetIsCreate }: Props) => {
                         value={""}
                     />
 
-                    <TodoProgressRate
+                    <ProgressRate
                         isReadOnly={false}
                         isModeToggle={false}
                         isDefaultMode={false}
@@ -108,9 +117,14 @@ export const TodoCreateForm = ({ onSetIsCreate }: Props) => {
                     >
                         <CirclePlus />
                     </button>
-                    {/* {state.message && (
-                        <p className="text-red-500 text-sm">{state.message}</p>
-                    )} */}
+                    {/* React Hook Formのエラーではなく、serverErrorsを表示する */}
+                    <div className="text-red-500 text-sm mt-2">
+                        {serverErrors.map((err) => (
+                            <span key={err.message} className="block">
+                                {err.message}
+                            </span>
+                        ))}
+                    </div>
                 </fieldset>
             </form>
         </FormProvider>

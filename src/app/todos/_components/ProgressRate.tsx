@@ -5,7 +5,7 @@ import { ButtonIcon } from "@/components/Button/ButtonIcon";
 import { RealTimeInput } from "@/components/Input/RealTimeInput";
 import { FormInput } from "@/components/Input/FormInput";
 
-type titleProps =
+type ProgressRatePropsType =
     | {
           isReadOnly: true;
           isModeToggle?: never;
@@ -22,7 +22,7 @@ type ApplyTiming =
           // 入力値即反映
           id: number;
           isRealTimeUpdate: true;
-          onChange: (id: number, data: { title: string }) => void;
+          onChange: (id: number, data: { progressRate: number }) => void;
       }
     | {
           // 保存ボタン実行
@@ -31,13 +31,13 @@ type ApplyTiming =
           onChange?: never;
       };
 
-type Props = titleProps &
+type Props = ProgressRatePropsType &
     ApplyTiming & {
         isLabel: boolean;
-        value: string;
+        value: number;
     };
 
-export const TodoTitle = ({
+export const ProgressRate = ({
     isLabel,
     id,
     isRealTimeUpdate,
@@ -51,13 +51,14 @@ export const TodoTitle = ({
     const generatedId = useId();
     const width = isLabel ? " w-2/3" : " w-full";
     const temp = {
-        textLabel: "タイトル",
-        placeholder: "タイトル",
-        type: "text",
-        name: "title",
-        controlName: id ? "title_" + id : "title",
+        textLabel: "進捗率",
+        placeholder: "進捗率",
+        type: "number",
+        name: "progressRate",
+        controlName: id ? "progressRate_" + id : "progressRate",
+        min: 0,
+        max: 100,
     };
-
     const [isShowEditor, setIsShowEditor] = useState<boolean>(
         (() => {
             if (isReadOnly) return false;
@@ -66,7 +67,7 @@ export const TodoTitle = ({
             } else {
                 return false;
             }
-        })()
+        })(),
     );
 
     const onToggle = () => {
@@ -75,15 +76,15 @@ export const TodoTitle = ({
         setIsShowEditor(!isShowEditor);
     };
 
-    const handleRealTimeSave = (saveValue: string, isFinish: boolean) => {
+    const handleRealTimeSave = (saveValue: number, isFinish: boolean) => {
         if (isFinish && isRealTimeUpdate && id !== undefined) {
-            onChange(id, { title: saveValue });
+            onChange(id, { progressRate: saveValue });
             onToggle();
         }
     };
 
     return (
-        <div className={`flex flex-row gap-1.5${isLabel ? " mb-4" : " "}`}>
+        <div className={`flex flex-row gap-1.5${isLabel ? " mb-4" : ""}`}>
             <Label
                 isLabel={isLabel}
                 htmlFor={generatedId}
@@ -94,7 +95,7 @@ export const TodoTitle = ({
                     className=" w-full "
                     isTransparent={true}
                     position={"l"}
-                    onClick={() => onToggle()}
+                    onClick={onToggle}
                 >
                     {value}
                 </ButtonIcon>
@@ -105,23 +106,30 @@ export const TodoTitle = ({
                     render={({ field }) => (
                         <>
                             {isRealTimeUpdate ? (
-                                <RealTimeInput<string>
+                                <RealTimeInput<number>
                                     id={generatedId}
                                     value={field.value ?? value}
                                     placeholder={temp.placeholder}
+                                    type={temp.type}
+                                    min={temp.min}
+                                    max={temp.max}
                                     name={temp.name}
-                                    className={width}
                                     required={false}
+                                    className={width}
                                     onSave={(saveValue, isFinish) => {
                                         field.onChange(saveValue);
                                         handleRealTimeSave(saveValue, isFinish);
                                     }}
                                 />
                             ) : (
-                                <FormInput<string>
+                                <FormInput<number>
                                     id={generatedId}
                                     value={field.value ?? value}
                                     className={width}
+                                    type={temp.type}
+                                    name={temp.name}
+                                    min={temp.min}
+                                    max={temp.max}
                                     onSave={(value) => field.onChange(value)}
                                 />
                             )}

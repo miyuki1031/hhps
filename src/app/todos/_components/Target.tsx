@@ -1,11 +1,12 @@
+"use client";
 import { useState, useId } from "react";
 import { useFormContext, Controller } from "react-hook-form";
-import { Label } from "@/components/Lable";
 import { ButtonIcon } from "@/components/Button/ButtonIcon";
 import { RealTimeInput } from "@/components/Input/RealTimeInput";
 import { FormInput } from "@/components/Input/FormInput";
+import { Label } from "@/components/Lable";
 
-type ProgressRatePropsType =
+type TargetProps =
     | {
           isReadOnly: true;
           isModeToggle?: never;
@@ -16,13 +17,12 @@ type ProgressRatePropsType =
           isModeToggle: boolean; // 編集可能なら、切り替え可能かどうかを必須にする
           isDefaultMode: boolean; // 編集可能なら、初期モードも必須にする
       };
-
 type ApplyTiming =
     | {
           // 入力値即反映
           id: number;
           isRealTimeUpdate: true;
-          onChange: (id: number, data: { progressRate: number }) => void;
+          onChange: (id: number, data: { targetDate: string }) => void;
       }
     | {
           // 保存ボタン実行
@@ -31,13 +31,12 @@ type ApplyTiming =
           onChange?: never;
       };
 
-type Props = ProgressRatePropsType &
+type Props = TargetProps &
     ApplyTiming & {
         isLabel: boolean;
-        value: number;
+        value?: string;
     };
-
-export const TodoProgressRate = ({
+export const Target = ({
     isLabel,
     id,
     isRealTimeUpdate,
@@ -49,16 +48,19 @@ export const TodoProgressRate = ({
 }: Props) => {
     const { control } = useFormContext();
     const generatedId = useId();
+    const today = new Intl.DateTimeFormat("sv-SE", {
+        timeZone: "Asia/Tokyo",
+    }).format(new Date());
     const width = isLabel ? " w-2/3" : " w-full";
     const temp = {
-        textLabel: "進捗率",
-        placeholder: "進捗率",
-        type: "number",
-        name: "progressRate",
-        controlName: id ? "progressRate_" + id : "progressRate",
-        min: 0,
-        max: 100,
+        textLabel: "目標日",
+        placeholder: "目標日",
+        type: "date",
+        name: "targetDate",
+        controlName: id ? "targetDate_" + id : "targetDate",
+        min: today,
     };
+
     const [isShowEditor, setIsShowEditor] = useState<boolean>(
         (() => {
             if (isReadOnly) return false;
@@ -67,7 +69,7 @@ export const TodoProgressRate = ({
             } else {
                 return false;
             }
-        })()
+        })(),
     );
 
     const onToggle = () => {
@@ -75,10 +77,9 @@ export const TodoProgressRate = ({
         if (isReadOnly) return;
         setIsShowEditor(!isShowEditor);
     };
-
-    const handleRealTimeSave = (saveValue: number, isFinish: boolean) => {
+    const handleRealTimeSave = (saveValue: string, isFinish: boolean) => {
         if (isFinish && isRealTimeUpdate && id !== undefined) {
-            onChange(id, { progressRate: saveValue });
+            onChange(id, { targetDate: saveValue });
             onToggle();
         }
     };
@@ -95,7 +96,7 @@ export const TodoProgressRate = ({
                     className=" w-full "
                     isTransparent={true}
                     position={"l"}
-                    onClick={onToggle}
+                    onClick={() => onToggle()}
                 >
                     {value}
                 </ButtonIcon>
@@ -106,14 +107,13 @@ export const TodoProgressRate = ({
                     render={({ field }) => (
                         <>
                             {isRealTimeUpdate ? (
-                                <RealTimeInput<number>
+                                <RealTimeInput<string>
                                     id={generatedId}
                                     value={field.value ?? value}
                                     placeholder={temp.placeholder}
                                     type={temp.type}
-                                    min={temp.min}
-                                    max={temp.max}
                                     name={temp.name}
+                                    min={temp.min}
                                     required={false}
                                     className={width}
                                     onSave={(saveValue, isFinish) => {
@@ -122,14 +122,13 @@ export const TodoProgressRate = ({
                                     }}
                                 />
                             ) : (
-                                <FormInput<number>
+                                <FormInput<string>
                                     id={generatedId}
                                     value={field.value ?? value}
-                                    className={width}
+                                    placeholder={temp.placeholder}
                                     type={temp.type}
                                     name={temp.name}
-                                    min={temp.min}
-                                    max={temp.max}
+                                    className={width}
                                     onSave={(value) => field.onChange(value)}
                                 />
                             )}

@@ -4,10 +4,10 @@ import { useState } from "react";
 
 import { CirclePlus } from "lucide-react";
 import { ButtonIcon } from "@/components/Button/ButtonIcon";
-import { TodoCreateForm } from "./TodoCreateForm";
+import { CreateForm } from "./CreateForm";
 import { Dialog } from "@/components/Dialog/Dialog";
 
-export const TodoRegist = () => {
+export const Regist = () => {
     // モーダル開閉制御
     const [isCreate, setIsCreate] = useState<boolean>(false);
     return (
@@ -21,7 +21,7 @@ export const TodoRegist = () => {
                 isOpen={isCreate}
                 onSetIsOpen={setIsCreate}
             >
-                <TodoCreateForm onSetIsCreate={setIsCreate} />
+                <CreateForm onSetIsCreate={setIsCreate} />
             </Dialog>
         </div>
     );

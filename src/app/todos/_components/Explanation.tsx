@@ -37,7 +37,7 @@ type Props = ExplanationProps &
         value: string;
     };
 
-export const TodoExplanation = ({
+export const Explanation = ({
     isLabel,
     id,
     isRealTimeUpdate,
@@ -65,7 +65,7 @@ export const TodoExplanation = ({
             } else {
                 return false;
             }
-        })()
+        })(),
     );
 
     const onToggle = () => {

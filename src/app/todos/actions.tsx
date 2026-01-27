@@ -5,7 +5,7 @@
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { UpdatePayload } from "../../../types/types";
-
+import { todoSchema } from "../../lib/schema"; // ←これで本体を読み込んでテストする
 export type ActionState = {
     //    error: string | null | unknown;
     // unknownなんでも受け入れる型のためstring,nullは無意味だよ！って怒られたため下記になる
@@ -17,6 +17,15 @@ export type ActionState = {
 export async function createTodoAction(data: UpdatePayload) {
     console.log(`createTodoAction`);
     console.log(data);
+    // 3. 検問開始！JSコードが紛れ込んでいても、ここで型が合わなければ弾かれる
+    const result = todoSchema.safeParse(data);
+    if (!result.success) {
+        // すべてのエラーメッセージを1つの配列にまとめる
+        const errorMessages = result.error.issues.map((issue) => ({
+            message: issue.message,
+        }));
+        return { success: false, errors: errorMessages };
+    }
 
     // 1. フォームから値を取り出す
     // カテゴリー
@@ -97,36 +106,38 @@ export async function deleteTodoAction(ids: number[]) {
 // 更新
 export async function updateTodoAction(
     id: number,
-    type: string,
-    payload: UpdatePayload
+    type: keyof UpdatePayload, //string,
+    payload: UpdatePayload,
 ) {
     console.log("updateTodoAction---------------------");
     console.log(`id: ${id} / type: ${type} / payload: ${payload} `);
     console.log(payload);
-
-    const data: UpdatePayload = {};
-    if (type === "category") {
-        data.category = payload.category;
-    } else if (type === "title") {
-        data.title = payload.title;
-    } else if (type === "completed") {
-        data.completed = payload.completed;
-    } else if (type === "priority") {
-        data.priority = payload.priority;
-    } else if (type === "explanation") {
-        data.explanation = payload.explanation;
-    } else if (type === "targetDate") {
-        // 目標日
-        const targetDateRaw = payload.targetDate as string;
-        data.targetDate = targetDateRaw === "" ? null : new Date(targetDateRaw);
-    } else if (type === "progressRate") {
-        data.progressRate = payload.progressRate;
+    const updateData: UpdatePayload = { [type]: payload[type] };
+    // 2. スキーマの partial() を使って、渡された項目だけを検問する
+    const result = todoSchema.partial().safeParse(updateData);
+    if (!result.success) {
+        const errorMessages = result.error.issues.map((issue) => ({
+            message: issue.message,
+        }));
+        return { success: false, errors: errorMessages };
     }
-    await prisma.todoList.update({
-        where: { id: id },
-        data: data,
-    });
 
+    // 3. 特殊な変換が必要なものだけ個別に処理（日付など）
+    const finalData: Record<string, unknown> = { ...updateData };
+    if (type === "targetDate") {
+        const raw = payload.targetDate as string;
+        finalData.targetDate = raw === "" ? null : new Date(raw);
+    }
+
+    // 4. DB更新（dataには検証済みの1項目だけが入っている）
+    try {
+        await prisma.todoList.update({
+            where: { id },
+            data: finalData,
+        });
+    } catch (e) {
+        return { success: false, error: e, message: "更新失敗" };
+    }
     revalidatePath("/todos");
     return { success: true, error: null };
 }

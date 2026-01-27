@@ -16,7 +16,7 @@ type Props = {
     value: string;
     onChange?: (id: number, data: { category: string }) => void;
 };
-export const TodoCategorys = ({ id, isLabel, value, onChange }: Props) => {
+export const CategorySelect = ({ id, isLabel, value, onChange }: Props) => {
     const { control } = useFormContext();
     const width = isLabel ? " w-2/3" : " w-full";
     const temp = {

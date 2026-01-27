@@ -8,24 +8,24 @@ import { FormProvider, useForm } from "react-hook-form";
 
 import { UpdatePayload } from "../../../../types/types";
 
-import { TodoList as TodoListType } from "@prisma/client";
+import { TodoList } from "@prisma/client";
 import { updateTodoAction } from "@/app/todos/actions";
 
 import { BookmarkCheck } from "lucide-react";
-import { TodoDelete } from "./TodoDelete";
-import { TodoCategorys } from "./TodoCategorys";
-import { TodoPriority } from "./TodoPriority";
-import { TodoExplanation } from "./TodoExplanation";
-import { TodoTitle } from "./TodoTitle";
-import { TodoTarget } from "./TodoTarget";
-import { TodoProgressRate } from "./TodoProgressRate";
+import { DeleteControl } from "./DeleteControl";
+import { CategorySelect } from "./CategorySelect";
+import { Priority } from "./Priority";
+import { Explanation } from "./Explanation";
+import { Title } from "./Title";
+import { Target } from "./Target";
+import { ProgressRate } from "./ProgressRate";
 
 interface Props {
-    todos: TodoListType[];
+    todos: TodoList[];
 }
 type Delets = number[];
 
-export const TodoList = ({ todos }: Props) => {
+export const List = ({ todos }: Props) => {
     const methods = useForm<UpdatePayload>({
         defaultValues: {
             category: "WORK",
@@ -43,13 +43,13 @@ export const TodoList = ({ todos }: Props) => {
             return "";
         } else {
             return `${d.getFullYear()}/${("0" + (d.getMonth() + 1)).slice(
-                -2
+                -2,
             )}/${("0" + d.getDate()).slice(-2)}`;
         }
     };
 
     // list再生成
-    type TodoDisplayType = Omit<TodoListType, "targetDate"> & {
+    type TodoDisplayType = Omit<TodoList, "targetDate"> & {
         targetDate: string;
         isEditTitle: boolean;
     };
@@ -154,7 +154,7 @@ export const TodoList = ({ todos }: Props) => {
                             <td>{todo.id}</td>
                             <td>
                                 {/* カテゴリ */}
-                                <TodoCategorys
+                                <CategorySelect
                                     isLabel={false}
                                     id={todo.id}
                                     value={todo.category}
@@ -163,7 +163,7 @@ export const TodoList = ({ todos }: Props) => {
                             </td>
                             <td>
                                 {/* 優先順位 */}
-                                <TodoPriority
+                                <Priority
                                     isLabel={false}
                                     id={todo.id}
                                     value={todo.priority} // fieldから値を取得
@@ -174,7 +174,7 @@ export const TodoList = ({ todos }: Props) => {
                             </td>
                             <td>
                                 {/** タイトル */}
-                                <TodoTitle
+                                <Title
                                     isReadOnly={false}
                                     isModeToggle={true}
                                     isRealTimeUpdate={true}
@@ -187,7 +187,7 @@ export const TodoList = ({ todos }: Props) => {
                             </td>
                             <td>
                                 {/** 説明 */}
-                                <TodoExplanation
+                                <Explanation
                                     isReadOnly={false}
                                     isModeToggle={true}
                                     isRealTimeUpdate={true}
@@ -201,7 +201,7 @@ export const TodoList = ({ todos }: Props) => {
                             <td>{todo.createdAt.toLocaleString("ja-JP")}</td>
                             <td>
                                 {/** 目標日 */}
-                                <TodoTarget
+                                <Target
                                     isReadOnly={false}
                                     isModeToggle={true}
                                     isRealTimeUpdate={true}
@@ -213,7 +213,7 @@ export const TodoList = ({ todos }: Props) => {
                                 />
                             </td>
                             <td>
-                                <TodoProgressRate
+                                <ProgressRate
                                     isReadOnly={false}
                                     isModeToggle={true}
                                     isRealTimeUpdate={true}
@@ -261,7 +261,7 @@ export const TodoList = ({ todos }: Props) => {
                 </tbody>
             </table>
 
-            <TodoDelete
+            <DeleteControl
                 list={selectedDelets}
                 isDelete={isDelete}
                 onSetIsDelete={setIsDelete}
