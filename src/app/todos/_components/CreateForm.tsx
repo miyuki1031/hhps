@@ -10,18 +10,18 @@ import { createTodoAction } from "@/app/todos/actions";
 
 import { CirclePlus } from "lucide-react";
 
-import { TodoCategorys } from "./TodoCategorys";
-import { TodoPriority } from "./TodoPriority";
-import { TodoTarget } from "./TodoTarget";
-import { TodoExplanation } from "./TodoExplanation";
-import { TodoTitle } from "./TodoTitle";
-import { TodoProgressRate } from "./TodoProgressRate";
+import { CategorySelect } from "./CategorySelect";
+import { Priority } from "./Priority";
+import { Target } from "./Target";
+import { Explanation } from "./Explanation";
+import { Title } from "./Title";
+import { ProgressRate } from "./ProgressRate";
 // お試し
 type Props = {
     onSetIsCreate: (value: boolean) => void;
 };
 
-export const TodoCreateForm = ({ onSetIsCreate }: Props) => {
+export const CreateForm = ({ onSetIsCreate }: Props) => {
     const methods = useForm<UpdatePayload>({
         defaultValues: {
             completed: false,
@@ -58,14 +58,14 @@ export const TodoCreateForm = ({ onSetIsCreate }: Props) => {
             <form onSubmit={handleSubmit(onSubmit)} className="flex gap-2">
                 <fieldset className="w-full">
                     <legend>新しいTodoを追加してください</legend>
-                    <TodoCategorys
+                    <CategorySelect
                         isLabel={true}
                         value="" // fieldから値を取得
                     />
 
-                    <TodoPriority isLabel={true} isReadOnly={false} value={0} />
+                    <Priority isLabel={true} isReadOnly={false} value={0} />
 
-                    <TodoTitle
+                    <Title
                         isLabel={true}
                         isReadOnly={false}
                         isModeToggle={false}
@@ -74,7 +74,7 @@ export const TodoCreateForm = ({ onSetIsCreate }: Props) => {
                         value={""}
                     />
 
-                    <TodoExplanation
+                    <Explanation
                         isReadOnly={false}
                         isModeToggle={false}
                         isDefaultMode={false}
@@ -83,7 +83,7 @@ export const TodoCreateForm = ({ onSetIsCreate }: Props) => {
                         value={""}
                     />
 
-                    <TodoTarget
+                    <Target
                         isReadOnly={false}
                         isModeToggle={false}
                         isDefaultMode={false}
@@ -92,7 +92,7 @@ export const TodoCreateForm = ({ onSetIsCreate }: Props) => {
                         value={""}
                     />
 
-                    <TodoProgressRate
+                    <ProgressRate
                         isReadOnly={false}
                         isModeToggle={false}
                         isDefaultMode={false}

@@ -42,7 +42,7 @@ type Props = {
     onChange?: (id: number, data: { priority: number }) => void;
 };
 
-export const TodoPriority = ({
+export const Priority = ({
     id = 0,
     value,
     isLabel = false,
