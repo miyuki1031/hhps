@@ -6,7 +6,7 @@ import { ButtonIcon } from "@/components/Button/ButtonIcon";
 import { deleteTodoAction } from "@/app/todos/actions";
 
 type Props = {
-    list: number[];
+    list: string[];
     isDelete: boolean;
     onSetIsDelete: (value: boolean) => void;
     onSetSelectedDelets: (value: []) => void;

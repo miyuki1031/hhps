@@ -17,9 +17,24 @@ generator client {
   provider = "prisma-client-js"
 }
 
+model User {
+  id              String  @id @default(cuid())
+  name            String  @db.VarChar(100) // DB側で @db.VarChar(100) と書けば文字数制限も可能
+  email           String  @unique // ログインに必須
+  passwordHash    String  // パスワード（ハッシュ化して保存）
+  authority       String  @default("Guest") // "Master" "Guest"
+  // 2要素認証用
+  twoFactorSecret String? // Masterのみ使用（最初はnull許容）
 
-model TodoList {
-  id           Int      @id @default(autoincrement())
+  isValid          Boolean @default(true)//  論理
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  todos Todo[]            // 追加
+}
+
+model Todo {
+  id           String @id @default(cuid())
+  userId       String
   title        String
   completed    Boolean  @default(false)
   
@@ -29,6 +44,8 @@ model TodoList {
   explanation  String?  // 説明（空でもOKなら ? をつける）
   targetDate   DateTime? // 目標日
   progressRate Int      @default(0) // 進捗率 (0〜100)
+  isValid      Boolean  @default(true)
+  user   User  @relation(fields: [userId], references: [id])
 
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt // 更新日時もあると便利です

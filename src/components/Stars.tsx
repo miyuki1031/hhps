@@ -1,5 +1,5 @@
 type Props<T> = {
-    id?: number;
+    id?: string;
     allStars: number;
     readonly: boolean;
     formName?: string;
@@ -47,7 +47,7 @@ export const Stars = <T,>({
                               value={i}
                               onChange={(e) => {
                                   const val = Number(
-                                      e.target.value
+                                      e.target.value,
                                   ) as unknown as T;
                                   if (onChange && e.target.value) {
                                       onChange(val);
