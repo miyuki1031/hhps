@@ -6,14 +6,8 @@ import { CONTENTS } from "../lib/constants";
 import { Menu } from "lucide-react";
 import Link from "next/link";
 import { ButtonIcon } from "@/components/Button/ButtonIcon";
-
+import { LoginButton } from "./Button/LoginButton";
 export default function Navigation() {
-    /**
-    // const pathname = usePathname(); // URLの "/todos" などが取れる
-    // const currentContent =
-    //     Object.values(CONTENTS).find((item) => item.href === pathname) ||
-    //     CONTENTS.HOME; // 見つからなければHOME
-     */
     const content = Object.values(CONTENTS);
     const [isDisplay, setIsDisplay] = useState(false);
     const onToggle = () => {
@@ -57,6 +51,7 @@ export default function Navigation() {
                     );
                 })}
             </ul>
+            <LoginButton />
         </nav>
     );
 }

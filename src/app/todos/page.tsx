@@ -1,10 +1,17 @@
 // src/app/page.tsx
 import { prisma } from "../../lib/prisma";
+import { auth } from "../../../auth";
+
 import { Regist } from "./_components/Regist";
 import { List } from "./_components/List";
 
 export default async function Home() {
-    const todos = await prisma.todo.findMany();
+    const session = await auth();
+    if (!session?.user) return <div>ログインしてください</div>;
+
+    const todos = await prisma.todo.findMany({
+        where: { userId: session.user.id },
+    });
 
     return (
         <main className="p-10 flex flex-col items-center justify-center min-h-screen">

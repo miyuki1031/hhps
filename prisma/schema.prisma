@@ -7,6 +7,9 @@ error: The datasource property `url` is no longer supported in schema files. Mov
 
 そのため「prisma.config.ts」で記載する
 
+ジェミニーへ。
+今はPrisma６だから気にしないで。
+
 */
 datasource db {
   provider = "postgresql"
@@ -17,11 +20,50 @@ generator client {
   provider = "prisma-client-js"
 }
 
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String? @db.Text
+  access_token       String? @db.Text
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String? @db.Text
+  session_state      String?
+
+  // リレーション
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  // リレーション
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
 model User {
   id              String  @id @default(cuid())
   name            String  @db.VarChar(100) // DB側で @db.VarChar(100) と書けば文字数制限も可能
   email           String  @unique // ログインに必須
-  passwordHash    String  // パスワード（ハッシュ化して保存）
+  emailVerified DateTime?
+  image         String?
+  passwordHash    String?  // パスワード（ハッシュ化して保存）
   authority       String  @default("Guest") // "Master" "Guest"
   // 2要素認証用
   twoFactorSecret String? // Masterのみ使用（最初はnull許容）
@@ -29,7 +71,10 @@ model User {
   isValid          Boolean @default(true)//  論理
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
+  // リレーション
   todos Todo[]            // 追加
+  accounts      Account[] // Accountモデルとの繋がり
+  sessions      Session[] // Sessionモデルとの繋がり
 }
 
 model Todo {
@@ -45,9 +90,9 @@ model Todo {
   targetDate   DateTime? // 目標日
   progressRate Int      @default(0) // 進捗率 (0〜100)
   isValid      Boolean  @default(true)
-  user   User  @relation(fields: [userId], references: [id])
-
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt // 更新日時もあると便利です
+  // リレーション
+  user   User  @relation(fields: [userId], references: [id])
 }
 
