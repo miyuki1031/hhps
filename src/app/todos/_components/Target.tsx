@@ -20,9 +20,9 @@ type TargetProps =
 type ApplyTiming =
     | {
           // 入力値即反映
-          id: number;
+          id: string;
           isRealTimeUpdate: true;
-          onChange: (id: number, data: { targetDate: string }) => void;
+          onChange: (id: string, data: { targetDate: string }) => void;
       }
     | {
           // 保存ボタン実行

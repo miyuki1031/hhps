@@ -7,7 +7,7 @@ import { UpdatePayload } from "../types/types";
 
 vi.mock("@/lib/prisma", () => ({
     prisma: {
-        todoList: {
+        todo: {
             create: vi.fn(), // DB保存したふり
         }
     }
@@ -34,7 +34,7 @@ describe('createTodoAction の本物ロジックテスト', () => {
         expect(result.success).toBe(true);
 
         // 4. 検証：内部でちゃんとDB保存の命令が飛んだか？
-        expect(prisma.todoList.create).toHaveBeenCalled();
+        expect(prisma.todo.create).toHaveBeenCalled();
         
         // 5. 検証：Next.jsの画面更新が呼ばれたか？
 

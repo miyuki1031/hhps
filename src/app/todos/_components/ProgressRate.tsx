@@ -20,9 +20,9 @@ type ProgressRatePropsType =
 type ApplyTiming =
     | {
           // 入力値即反映
-          id: number;
+          id: string;
           isRealTimeUpdate: true;
-          onChange: (id: number, data: { progressRate: number }) => void;
+          onChange: (id: string, data: { progressRate: number }) => void;
       }
     | {
           // 保存ボタン実行

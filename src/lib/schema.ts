@@ -3,6 +3,9 @@ import { z } from "zod";
 
 // TODOのルールを定義
 export const todoSchema = z.object({
+    userId: z
+        .string()
+        .default(""),
     completed: z.boolean().default(false),
     // 1文字以上、100文字以内、前後の空白を削除
     title: z
@@ -32,7 +35,7 @@ export const todoSchema = z.object({
                 // 「今日」の 00:00:00 を取得（時間まで比較すると、操作した瞬間の秒数でエラーになるため）
                 const today = new Date();
                 today.setHours(0, 0, 0, 0);
-
+console.log(val)
                 return val >= today; // 今日、または今日より未来ならOK
             },
             {

@@ -8,7 +8,7 @@ import { FormProvider, useForm } from "react-hook-form";
 
 import { UpdatePayload } from "../../../../types/types";
 
-import { TodoList } from "@prisma/client";
+import { Todo } from "@prisma/client";
 import { updateTodoAction } from "@/app/todos/actions";
 
 import { BookmarkCheck } from "lucide-react";
@@ -21,9 +21,9 @@ import { Target } from "./Target";
 import { ProgressRate } from "./ProgressRate";
 
 interface Props {
-    todos: TodoList[];
+    todos: Todo[];
 }
-type Delets = number[];
+type Delets = string[];
 
 export const List = ({ todos }: Props) => {
     const methods = useForm<UpdatePayload>({
@@ -49,7 +49,7 @@ export const List = ({ todos }: Props) => {
     };
 
     // list再生成
-    type TodoDisplayType = Omit<TodoList, "targetDate"> & {
+    type TodoDisplayType = Omit<Todo, "targetDate"> & {
         targetDate: string;
         isEditTitle: boolean;
     };
@@ -77,7 +77,7 @@ export const List = ({ todos }: Props) => {
     }, [isDelete, selectedDelets, setSelectedDelets]);
 
     // 削除選択
-    const handleSelectedDelete = (id: number) => {
+    const handleSelectedDelete = (id: string) => {
         const copy = new Set(selectedDelets);
         if (copy.has(id)) {
             copy.delete(id);
@@ -100,7 +100,7 @@ export const List = ({ todos }: Props) => {
         progressRate?: number;
     };
     // 更新
-    const handleUpdateTodo = async (id: number, data: updateType) => {
+    const handleUpdateTodo = async (id: string, data: updateType) => {
         console.log(id);
         console.log(data);
         console.log("------------------------");

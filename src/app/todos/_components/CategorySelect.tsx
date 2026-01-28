@@ -12,9 +12,9 @@ import { SelectBase } from "@/components/Select/SelectBase";
 
 type Props = {
     isLabel: boolean;
-    id?: number;
+    id?: string;
     value: string;
-    onChange?: (id: number, data: { category: string }) => void;
+    onChange?: (id: string, data: { category: string }) => void;
 };
 export const CategorySelect = ({ id, isLabel, value, onChange }: Props) => {
     const { control } = useFormContext();

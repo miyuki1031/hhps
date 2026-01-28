@@ -34,16 +34,16 @@ import { Stars } from "@/components/Stars";
 
 // 共通で必要なProps（valueやonChangeなど）がある場合は交差型（&）でつなぐ
 type Props = {
-    id?: number;
+    id?: string;
     value: number;
     isReadOnly: boolean;
     isLabel?: boolean;
     isRealTimeUpdate?: boolean;
-    onChange?: (id: number, data: { priority: number }) => void;
+    onChange?: (id: string, data: { priority: number }) => void;
 };
 
 export const Priority = ({
-    id = 0,
+    id,
     value,
     isLabel = false,
     isReadOnly,

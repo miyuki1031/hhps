@@ -20,9 +20,9 @@ type ExplanationProps =
 type ApplyTiming =
     | {
           // 入力値即反映
-          id: number;
+          id: string;
           isRealTimeUpdate: true;
-          onChange: (id: number, data: { explanation: string }) => void;
+          onChange: (id: string, data: { explanation: string }) => void;
       }
     | {
           // 保存ボタン実行
