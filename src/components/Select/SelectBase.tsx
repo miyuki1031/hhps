@@ -43,7 +43,11 @@ export const SelectBase = <T,>({
                     setIsOpen(!isOpen);
                 }}
             >
-                {IconComponent && <IconComponent size={20} />}
+                {IconComponent ? (
+                    <IconComponent size={20} />
+                ) : (
+                    getCurrent().label
+                )}
             </ButtonIcon>
             <ul
                 className={`${

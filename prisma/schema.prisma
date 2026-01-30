@@ -79,9 +79,9 @@ model User {
 
 model Todo {
   id           String @id @default(cuid())
-  userId       String
+  userId       String?    // String?にすることnullが許容される
   title        String
-  completed    Boolean  @default(false)
+  completed    Boolean  @default(false) // 完了
   
   // 新しい項目
   category     String   // work: 仕事, private: プライベート　other：
@@ -89,10 +89,10 @@ model Todo {
   explanation  String?  // 説明（空でもOKなら ? をつける）
   targetDate   DateTime? // 目標日
   progressRate Int      @default(0) // 進捗率 (0〜100)
-  isValid      Boolean  @default(true)
+  isValid      Boolean  @default(true) // 有効・無効
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt // 更新日時もあると便利です
   // リレーション
-  user   User  @relation(fields: [userId], references: [id])
+  user   User?  @relation(fields: [userId], references: [id])
 }
 

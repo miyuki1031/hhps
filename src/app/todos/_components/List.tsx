@@ -5,6 +5,7 @@
 
 import { useState, useEffect, useTransition } from "react";
 import { FormProvider, useForm } from "react-hook-form";
+import { useSession } from "next-auth/react";
 
 import { UpdatePayload } from "../../../../types/types";
 
@@ -26,6 +27,8 @@ interface Props {
 type Delets = string[];
 
 export const List = ({ todos }: Props) => {
+    const { data: session } = useSession();
+
     const methods = useForm<UpdatePayload>({
         defaultValues: {
             category: "WORK",
@@ -49,7 +52,8 @@ export const List = ({ todos }: Props) => {
     };
 
     // list再生成
-    type TodoDisplayType = Omit<Todo, "targetDate"> & {
+    type TodoDisplayType = Omit<Todo, "createdAt" | "targetDate"> & {
+        createdAt: string;
         targetDate: string;
         isEditTitle: boolean;
     };
@@ -57,6 +61,7 @@ export const List = ({ todos }: Props) => {
         return {
             ...t,
             isEditTitle: false,
+            createdAt: toStringDate(t.createdAt),
             targetDate: toStringDate(t.targetDate),
         };
     });
@@ -78,13 +83,24 @@ export const List = ({ todos }: Props) => {
 
     // 削除選択
     const handleSelectedDelete = (id: string) => {
-        const copy = new Set(selectedDelets);
-        if (copy.has(id)) {
-            copy.delete(id);
+        // 権限チェック
+        if (session) {
+            //
+            // 複数選択
+            //
+            const copy = new Set(selectedDelets);
+            if (copy.has(id)) {
+                copy.delete(id);
+            } else {
+                copy.add(id);
+            }
+            setSelectedDelets([...copy]);
         } else {
-            copy.add(id);
+            //
+            // 単数選択
+            //
+            setSelectedDelets([id]);
         }
-        setSelectedDelets([...copy]);
     };
 
     /**
@@ -101,10 +117,6 @@ export const List = ({ todos }: Props) => {
     };
     // 更新
     const handleUpdateTodo = async (id: string, data: updateType) => {
-        console.log(id);
-        console.log(data);
-        console.log("------------------------");
-
         /**
          * カテゴリ:category ★
          * 優先順位:priority ★
@@ -136,22 +148,20 @@ export const List = ({ todos }: Props) => {
             <table className="table table-zebra">
                 <thead>
                     <tr>
-                        <th>id</th>
-                        <th>カテゴリー</th>
-                        <th>優先順位</th>
-                        <th>タイトル</th>
-                        <th>説明</th>
-                        <th>登録</th>
-                        <th>目標日</th>
-                        <th>進捗</th>
-                        <th>完了</th>
-                        <th>削除{/** 削除選択 */}</th>
+                        <th className="w-[8%]">カテゴリー</th>
+                        <th className="w-[10%]">優先順位</th>
+                        <th className="w-[25%]">タイトル</th>
+                        <th className="w-[26%]">説明</th>
+                        <th className="w-[8%]">登録日</th>
+                        <th className="w-[8%]">目標日</th>
+                        <th className="w-[5%]">進捗</th>
+                        <th className="w-[5%]">完了</th>
+                        <th className="w-[5%]">削除{/** 削除選択 */}</th>
                     </tr>
                 </thead>
                 <tbody>
                     {list.map((todo) => (
                         <tr key={todo.id} className="border-b py-2">
-                            <td>{todo.id}</td>
                             <td>
                                 {/* カテゴリ */}
                                 <CategorySelect
@@ -198,7 +208,7 @@ export const List = ({ todos }: Props) => {
                                     onChange={handleUpdateTodo}
                                 />
                             </td>
-                            <td>{todo.createdAt.toLocaleString("ja-JP")}</td>
+                            <td>{todo.createdAt}</td>
                             <td>
                                 {/** 目標日 */}
                                 <Target
@@ -244,17 +254,35 @@ export const List = ({ todos }: Props) => {
                                 </button>
                             </td>
                             <td>
-                                {/** 削除選択 */}
-                                <input
-                                    type="checkbox"
-                                    className="checkbox"
-                                    checked={selectedDelets.includes(todo.id)}
-                                    disabled={!isDelete}
-                                    onChange={() =>
-                                        handleSelectedDelete(todo.id)
-                                    }
-                                />
-                                {/* チェックボックスの値はvalueではなくchecked!!! */}
+                                {session ? (
+                                    <input
+                                        type="checkbox"
+                                        className="checkbox"
+                                        checked={selectedDelets.includes(
+                                            todo.id,
+                                        )}
+                                        disabled={!isDelete}
+                                        onChange={() =>
+                                            handleSelectedDelete(todo.id)
+                                        }
+                                    />
+                                ) : (
+                                    <input
+                                        type="radio"
+                                        name="radio-1"
+                                        className="radio"
+                                        disabled={
+                                            !isDelete || todo.userId !== null
+                                        }
+                                        checked={
+                                            selectedDelets.includes(todo.id) ||
+                                            false
+                                        }
+                                        onChange={() =>
+                                            handleSelectedDelete(todo.id)
+                                        }
+                                    />
+                                )}
                             </td>
                         </tr>
                     ))}

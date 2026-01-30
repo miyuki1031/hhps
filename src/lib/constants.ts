@@ -18,7 +18,7 @@ export const SITE_INFO = {
 
 export const CONTENTS = {
   "HOME": { name: "Home", href: "/", label: House },
-  "TODO": { name: "Todo", href: "/todos" , label: ListChecks },
+  "TODO": { name: "Todo", href: "/todos?isValid=true" , label: ListChecks },
   "PROFILE":  { name: 'Profile' , href: "/profile" , label: User },
   // "GAME": { name: 'Game', href: "/todos" },
   // "PET":  { name: 'Pet' , href: "/todos" },
