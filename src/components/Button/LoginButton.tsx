@@ -15,8 +15,8 @@ export const LoginButton = () => {
             onClick={() => (session ? signOut() : signIn())}
             disabled={isLoading} // ← ここでボタンをロック！
             className={`
-                fixed bottom-3 right-3 z-50
-                p-3 rounded-full shadow-md transition-all 
+                fixed bottom-1 right-1 z-50
+                p-2 rounded-full shadow-md transition-all 
                 ${session ? "bg-red-400 hover:bg-red-500" : "bg-yellow-400 hover:bg-yellow-500"}
                 ${isLoading ? "opacity-50 cursor-not-allowed scale-100" : "active:scale-95"}
             `}
