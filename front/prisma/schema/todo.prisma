@@ -1,0 +1,20 @@
+
+model todo {
+  id           String @id @default(cuid())
+  userId       String?    // String?にすることnullが許容される
+  title        String
+  completed    Boolean  @default(false) // 完了
+  
+  // 新しい項目
+  category     String   // work: 仕事, private: プライベート　other：
+  priority     Int      // 0: 低, 1: 中, 2: 高
+  explanation  String?  // 説明（空でもOKなら ? をつける）
+  targetDate   DateTime? // 目標日
+  progressRate Int      @default(0) // 進捗率 (0〜100)
+  isValid      Boolean  @default(true) // 有効・無効
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt // 更新日時もあると便利です
+  // リレーション
+  user   users?  @relation(fields: [userId], references: [id])
+}
+

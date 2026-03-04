@@ -22,7 +22,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             },
             authorize: async (credentials) => {
                 // ここでDBを検索して、ユーザーが正しいかチェックする
-                const user = await prisma.user.findUnique({
+                const user = await prisma.users.findUnique({
                     where: { email: credentials.email as string },
                 });
 
@@ -54,4 +54,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             return session;
         },
     },
+    pages: {
+        error: '/auth/error', // エラーページのパスを指定
+    }
 });

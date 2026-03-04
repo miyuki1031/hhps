@@ -17,7 +17,6 @@ export interface UpdatePayload {
     targetDate?: Date | string | null;// Serverでは日付、ブラウザからは文字列、空入力はnull
 };
 
-
 /**
  type: 新しい型の名前を決めます。
 keyof: 型から「キー（名前）」だけを盗みます。
