@@ -1,4 +1,23 @@
 services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    volumes:
+      - ./backend:/app
+      - /app/target
+    ports:
+      - "8080:8080"
+    environment:
+      # db側の設定（下の方）と完全に一致させました！
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/mylocaldb
+      - SPRING_DATASOURCE_USERNAME=myuser
+      - SPRING_DATASOURCE_PASSWORD=mypassword
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    depends_on:
+      - db
+    command: ./mvnw spring-boot:run # ← depends_on の下あたりに追加
+
   db:
     image: postgres:15
     restart: always
@@ -6,5 +25,7 @@ services:
       POSTGRES_USER: myuser
       POSTGRES_PASSWORD: mypassword
       POSTGRES_DB: mylocaldb
-    ports:
-      - "5432:5432"
+    # ports:
+    #  - "5432:5432"
+    #expose:
+    #  - "5432"

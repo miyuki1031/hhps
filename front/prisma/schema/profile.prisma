@@ -1,0 +1,15 @@
+model profile {
+    id           String @id @default(uuid())
+    myname       String
+    location     String
+    techStack    tech_stack[]
+    licenses     String
+}
+model tech_stack {
+  id        Int      @id @default(autoincrement())
+  name      String   // 例えば "Java", "Next.js" とかが入る
+  
+  // どのProfileに紐づいているか
+  profile   profile  @relation(fields: [profileId], references: [id])
+  profileId String   @db.Uuid
+}

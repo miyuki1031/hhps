@@ -7,7 +7,6 @@
     "build": "next build --turbopack",
     "start": "next start",
     "lint": "eslint",
-    "prepare": "husky install",
     "test": "vitest"
   },
   "dependencies": {
@@ -47,10 +46,7 @@
     "typescript": "^5",
     "vitest": "^4.0.18"
   },
-  "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
-      "eslint --fix",
-      "eslint"
-    ]
+  "prisma": {
+    "schema": "./prisma/schema"
   }
 }
