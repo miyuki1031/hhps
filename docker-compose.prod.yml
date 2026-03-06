@@ -7,3 +7,7 @@ services:
     # expose = 内部ネットワーク。外から接続できなくなる
     expose:
       - "5432"
+
+  frontend:
+    environment:
+      - API_URL=http://happystarlab.com:8080 # Javaのバックエンドと通信する設定だにょ

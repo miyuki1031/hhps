@@ -29,3 +29,15 @@ services:
     #  - "5432:5432"
     #expose:
     #  - "5432"
+
+  frontend:
+    build:
+      # Next.jsのソースコードがあるフォルダを指定
+      context: ./front
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"        # ブラウザから3000番でアクセスできるようにするじぇ
+    environment:
+      - API_URL=http://backend:8080 # Javaのバックエンドと通信する設定だにょ
+    depends_on:
+      - backend            # Javaが立ち上がってからNext.jsを動かす設定だじぇ
