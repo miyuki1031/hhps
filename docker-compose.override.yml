@@ -7,4 +7,5 @@ services:
      - "5432:5432"
   frontend:
     environment:
-      - API_URL=http://localhost:8080 # Javaのバックエンドと通信する設定だにょ
+      - NEXTAUTH_URL=http://localhost/api/auth
+      - API_URL=http://backend:8080
