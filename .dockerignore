@@ -1,0 +1,8 @@
+# docker
+# ホストの対象ファイルを無視してコンテナ内のものを使用する
+# 例えばnodde_modulesを指定すると、ホスト（ローカル）ではなく作成したものを参照する
+node_modules
+npm-debug.log
+.git
+.next
+.DS_Store

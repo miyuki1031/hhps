@@ -1,0 +1,14 @@
+# Gitに送らないもの
+# 依存関係（超重要）
+node_modules
+
+# Next.jsのビルドキャッシュ
+.next
+out
+
+# 環境変数（セキュリティ的にGitに上げたくないもの）
+.env
+.env.local
+
+# OS特有のゴミファイル
+.DS_Store
