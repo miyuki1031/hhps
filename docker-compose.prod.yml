@@ -1,0 +1,17 @@
+# 
+# 本番
+# 
+services:
+  
+  # db:
+    # expose = 内部ネットワーク。外から接続できなくなる
+  #  expose:
+  #    - "5432"
+
+  frontend:
+    environment:
+      #- API_URL=http://happystarlab.com:8080 # Javaのバックエンドと通信する設定だにょ
+
+  nginx:
+    volumes:
+       - ./nginx/default.prod.conf:/etc/nginx/conf.d/default.conf:ro
