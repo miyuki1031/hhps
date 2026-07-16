@@ -5,6 +5,7 @@ FROM node:24-alpine
 RUN apk add --no-cache postgresql-client netcat-openbsd
 
 # コンテナ内の作業ディレクトリを設定
+# WORKDIR /app
 WORKDIR /app
 
 # 依存関係の定義ファイルをコピー(これらを利用して以下作業を行うため)
@@ -21,4 +22,13 @@ RUN npm install
 COPY . .
 # 起動
 # ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+
+# 
+RUN npm run build
+
+# CMD ["npm", "run", "start"]
+# RUN npm run start とは書かない！
+## そしてdocer-compose.prod.ymlに移行
+
+
 CMD ["npm", "run", "dev"]

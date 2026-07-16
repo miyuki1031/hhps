@@ -2,6 +2,7 @@ services:
   # frontend:
   frontend:
     # command: sh -c "npx prisma db push"
+    command: sh -c "npm run dev"
     build:
       context: ./frontend
       # args:
@@ -9,11 +10,16 @@ services:
       dockerfile: Dockerfile
 
     # ↓Nginx開通したため（Portsみたいな感じ)
-    expose: ["3000"]
+    # expose: ["3000"]
+    ports:
+      - "3000:3000"
     volumes:
-        - ./frontend:/app          # ローカルのソースを同期
-        - /app/node_modules     # コンテナ内のライブラリを優先
-     # depends_on: [backend]
+       - ./frontend:/app
+       - /app/node_modules
+       - /app/.next
+    # environment:
+      # - WATCHPACK_POLLING=true
+      # depends_on: [backend]
       # ↓環境設定を始めたら
       # env_file:
       # - ./frontend/.env
