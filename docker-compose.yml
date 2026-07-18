@@ -9,9 +9,9 @@ services:
       #  - BUILD_DATE=$(date +%Y%m%d_%H%M%S) # ここでビルド時刻を渡す
       dockerfile: Dockerfile
     # ↓Nginx開通したため（Portsみたいな感じ)
-    expose: ["3000"]
-    #ports:
-    #  - "3000:3000"
+    #expose: ["3000"]
+    ports:
+       - "3000:3000"
     volumes:
        - ./frontend:/app
        - /app/node_modules
