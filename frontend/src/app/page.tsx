@@ -1,13 +1,13 @@
+
 import { SITE_INFO } from "../lib/constants";
-import styles from "./style/Top.module.scss";
+import styles from "../../public/style/Top.module.scss";
 
 export default function Home() {
-  return (
+    return (
     <main className="
-      top-title
+      hsl-p-top-title
       flex-1
       w-full
-      bg-[radial-gradient(circle_at_center,#001aa3_0%,#171717_100%)]
       ">
         <div className="
           min-w-max
@@ -23,21 +23,24 @@ export default function Home() {
           gap-4
           text-shadow-lg/30
         ">
-            <div>
-              <span className={styles["text-stroke-top-amber"]}>H</span><span className={styles["text-stroke-top-white"]}>appy</span>
+            <div className="logo">
+              <span className="point">H</span>
+              <span>appy</span>
             </div>
-            <div>
-              <span className={styles["text-stroke-top-amber"]}>S</span><span className={styles["text-stroke-top-white"]}>tar</span>
+            <div className="logo">
+              <span className="point">S</span>
+              <span>tar</span>
             </div>
-            <div>
-              <span className={styles["text-stroke-top-amber"]}>L</span><span className={styles["text-stroke-top-white"]}>aB.</span>
+            <div className="logo">
+              <span className="point">L</span>
+              <span>aB.</span>
             </div>
         </div>
 
         <div className="
           position
           fixed
-          bottom-16
+          bottom-7
           right-5
           text-white
         ">{ SITE_INFO.MESSAGE }</div>

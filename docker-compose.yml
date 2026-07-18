@@ -17,8 +17,7 @@ services:
        - ./frontend:/app
        - /app/node_modules
        - /app/.next
-    # environment:
-      # - WATCHPACK_POLLING=true
+      # environment:
       # depends_on: [backend]
       # ↓環境設定を始めたら
       # env_file:

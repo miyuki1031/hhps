@@ -7,9 +7,9 @@ import { House, ListTodo, Mail, NotebookPen, User } from "lucide-react";
 
 export const SITE_INFO = {
     STARTYEAR: 2026,
-    NAME: "HappyStarLab",
-    DESCRIPTION: "こちらはHappyStarLabです",
-    MESSAGE:"こちらはHappyStarLabです。作りたいものがつくれるエンジニアへ",
+    NAME: "HappyStarLaB",
+    DESCRIPTION: "こちらはHappyStarLaBです",
+    MESSAGE:"ようこそ。HappyStarLaBです。作りたいものがつくれるエンジニアへ",
 };
 
 export const CONTENTS = {

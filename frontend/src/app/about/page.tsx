@@ -11,7 +11,7 @@ export default function Home() {
   ];
   return (
     <main className="
-      p-about-me
+      hsl-p-about-me
       flex-1
       w-full
       bg-[radial-gradient(circle_at_center,#001aa3_0%,#171717_100%)]
@@ -34,35 +34,38 @@ export default function Home() {
        * 
        */}
       <div className="
-        w-1/2
+        w-3/4
         min-h-100
-        mt-10
+        mtb-10
         m-auto
         bg-white
         rounded-lg
         grid aura aura-holo
       ">
         <div className="card bg-base-100">
-          <div className="card-body">
+          <div className="card-body flex">
             {/** 自画像 */}
-            <div className="avatar">
+            <div className="avatar justify-center ">
                 <div className="w-24 rounded-full">
                   <img src="image/img_me.png" />
                 </div>
             </div>
 
-            <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
+            <div className="justify-center overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
               <table className="table">
-                { about_me.map((item) => {
-                  return (
-                    <tr>
-                      <th>{ item.info }</th>
-                      <td className="whitespace-pre-wrap">
-                          <div dangerouslySetInnerHTML={{ __html:item.text }} />
-                      </td>
-                    </tr>
-                  );
-                })}
+                <tbody>
+                  { about_me.map((item, index) => {
+
+                    return (
+                      <tr key={index}>
+                        <th>{ item.info }</th>
+                        <td className="whitespace-pre-wrap">
+                            <div dangerouslySetInnerHTML={{ __html:item.text }} />
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
               </table>
             </div>
 
