@@ -9,7 +9,6 @@ services:
       dockerfile: Dockerfile
     environment:
       - NODE_ENV=production
-    # - API_URL=http://happystarlab.com:8080 # Javaのバックエンドと通信する設定だにょ
     expose: ["3000"]
 
   nginx:
