@@ -2,21 +2,24 @@
 # 本番
 # 
 services:
-  
-  # db:
-  # expose = 内部ネットワーク。外から接続できなくなる
-  #  expose:
-  #    - "5432"
-
   frontend:
+    command: sh -c "npm run start"
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
     environment:
       - NODE_ENV=production
     # - API_URL=http://happystarlab.com:8080 # Javaのバックエンドと通信する設定だにょ
-    command: sh -c "npm run start"
+    expose: ["3000"]
 
   nginx:
+    image: nginx:alpine
     ports:
       - "80:80"
       - "127.0.0.1:3000:3000"
     volumes:
        - ./nginx/default.prod.conf:/etc/nginx/conf.d/default.conf:ro
+       - .:/var/www/hhps:ro
+    depends_on:
+       - frontend
+
