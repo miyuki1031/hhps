@@ -1,6 +1,5 @@
 
 import { SITE_INFO } from "../lib/constants";
-import styles from "../../public/style/Top.module.scss";
 
 export default function Home() {
     return (

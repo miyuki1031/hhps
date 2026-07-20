@@ -2,7 +2,9 @@ services:
   # frontend:
   frontend:
     # command: sh -c "npx prisma db push"
-    command: sh -c "npm run dev"
+    # command: sh -c "npm run dev"
+    # 💡 -p 3000 -H 0.0.0.0 を明示的に追加して、Next.jsの視野を広げる
+    command: sh -c "npm run dev -- --port 3000 --hostname 0.0.0.0"
     build:
       context: ./frontend
       # args:
@@ -16,11 +18,15 @@ services:
        - ./frontend:/app
        - /app/node_modules
        - /app/.next
-      # environment:
+    environment:
+      - WATCHPACK_POLLING=true  # Docker内部でのファイル変更検知（HMR）を確実にする
+      - NEXT_TELEMETRY_DISABLED=1
+      # 💡 これを追加して、iPhoneのIP（192.168.~）からのHMRアクセスをNext.jsに強制許可する
+      - NEXT_PUBLIC_ALLOWED_HOSTS=localhost,127.0.0.1,192.168.0.14
       # depends_on: [backend]
       # ↓環境設定を始めたら
-      # env_file:
-      # - ./frontend/.env
+    env_file:
+     - ./frontend/.env
 
     # バックエンド
     # backend:

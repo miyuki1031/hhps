@@ -9,7 +9,8 @@ export const SITE_INFO = {
     STARTYEAR: 2026,
     NAME: "HappyStarLaB",
     DESCRIPTION: "こちらはHappyStarLaBです",
-    MESSAGE:"ようこそ。HappyStarLaBです。作りたいものがつくれるエンジニアへ",
+    MESSAGE: "ようこそ。HappyStarLaBです。作りたいものがつくれるエンジニアへ",
+    HS: "はっぴーすたぁ"
 };
 
 export const CONTENTS = {
@@ -17,8 +18,8 @@ export const CONTENTS = {
     HOME: {
         NAME: "HOME",
         DESCRIPTION: "TOPページ",
-        HREF:"/",
-        LABEL: House ,
+        HREF: "/",
+        LABEL: House,
         IS_ENABLED: true
     },
     ABOUT: {
@@ -33,7 +34,7 @@ export const CONTENTS = {
         NAME: "CONTACT",
         DESCRIPTION: "お問い合わせ",
         HREF: "/contact",
-        LABEL: Mail ,
+        LABEL: Mail,
         COLOR: "green",
         IS_ENABLED: false
     },
@@ -43,7 +44,7 @@ export const CONTENTS = {
         HREF: "/todo",
         LABEL: ListTodo,
         COLOR: "blue",
-        IS_ENABLED: false 
+        IS_ENABLED: false
     },
     NOTES: {
         NAME: "NOTES",

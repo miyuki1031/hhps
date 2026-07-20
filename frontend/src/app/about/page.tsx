@@ -1,5 +1,6 @@
-import { CONTENTS } from '@/lib/constants';
-import Title from '../../components/Title';
+import Image from 'next/image'
+import { CONTENTS, SITE_INFO } from '@/lib/constants';
+import Title from '@/components/Title';
 
 
 export default function Home() {
@@ -47,7 +48,12 @@ export default function Home() {
             {/** 自画像 */}
             <div className="avatar justify-center ">
                 <div className="w-24 rounded-full">
-                  <img src="image/img_me.png" />
+                  <Image 
+                    width={500}
+                    height={500}
+                    alt={SITE_INFO.HS}
+                  src="image/img_me.png" />
+
                 </div>
             </div>
 

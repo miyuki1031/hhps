@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { House } from "lucide-react";
+import Image from 'next/image';
  
 export default function NotFound() {
   return (
@@ -23,7 +24,11 @@ export default function NotFound() {
                     <span>Return Home</span>
                 </Link>
             </div>
-            <img className="w-100 h-100 p-10" src="image/img_maintenance.png"></img>
+            <Image
+                className="w-100 h-100 p-10"
+                src="image/img_maintenance.png"
+                alt="404！"
+            />
         </div>
     </div>
   )
