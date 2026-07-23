@@ -1,7 +1,7 @@
-import { SITE_INFO } from "@/lib/constants";
+import { SITE_INFO } from '@/lib/constants';
 
 export default function Footer() {
-    let currentYear = new Date().getFullYear();
+    const currentYear = new Date().getFullYear();
     
     return (
         <footer className="`

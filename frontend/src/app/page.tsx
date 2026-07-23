@@ -1,10 +1,11 @@
+'use client';
 
-import { SITE_INFO } from "../lib/constants";
+import { SITE_INFO } from '../lib/constants';
 
 export default function Home() {
     return (
     <main className="
-      hsl-p-top-title
+      hsl-c-top
       flex-1
       w-full
       ">

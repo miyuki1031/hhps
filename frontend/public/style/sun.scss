@@ -1,42 +1,48 @@
-
 .sun {
-    
+
     --hsl--color-title: #5c3f2b; // タイトルの文字色
-    --hsl-color-logo-point: #edb02b;    // ロゴのポイントカラー
-    --hsl-color-logo: #fff7e6;          // ロゴカラー
-;
+    --hsl-color-logo-point: #edb02b; // ロゴのポイントカラー
+    --hsl-color-logo: #fff7e6; // ロゴカラー
 
     --hsl-bar-image-color: linear-gradient(to right, #f4ec61 0% 40%, #e5c583 40% 55%, #d7a370 75% 85%, #c27ba0 75% 100%);
 
     header {
         background-image: var(--hsl-bar-image-color);
+
         h1 {
             color: var(--color-orange-400);
         }
 
     }
-    
+
     footer {
         background-image: var(--hsl-bar-image-color);
-    }
-    footer {
+
         span {
             color: var(--color1);
         }
-
     }
-    main.hsl-p-top-title { 
-        background-image: url("/image/bd_top_sun.png");
+
+    main {
+        background: radial-gradient(#ffffe7, #f6e4a2);
+    }
+
+    main.hsl-c-top {
+        background-image: url('/image/bd_top_sun.png');
+        background-repeat: no-repeat;
+        background-size: cover;
+
         .logo {
             span {
-                font-family: "Arial Black";
+                font-family: 'Arial Black';
                 color: var(--hsl-color-logo);
                 -webkit-text-stroke: 2px var(--hsl-color-logo);
                 text-stroke: 2px var(--hsl-color-logo);
             }
+
             .point {
                 color: var(--hsl-color-logo-point);
-                -webkit-text-stroke: 2x  var(--hsl-color-logo-point);
+                -webkit-text-stroke: 2x var(--hsl-color-logo-point);
                 text-stroke: 2px var(--hsl-color-logo-point);
             }
         }

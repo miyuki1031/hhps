@@ -1,3 +1,5 @@
+import styles from '../../../public/style/AboutMe.module.scss';
+
 import Image from 'next/image'
 import { CONTENTS, SITE_INFO } from '@/lib/constants';
 import Title from '@/components/Title';
@@ -11,19 +13,20 @@ export default function Home() {
     { info: "LICENSES",  text: "車・電工２（試験合格）" }
   ];
   return (
-    <main className="
+    <main className={`
       hsl-p-about-me
       flex-1
       w-full
-      bg-[radial-gradient(circle_at_center,#001aa3_0%,#171717_100%)]
-      ">
+      ${styles["hsl-p-about-me"]}
+      `}
+      >
         <h2 className="
           flex
           flex-col
           flex-1
           items-center
           justify-center 
-          
+          p-6
         ">
           <Title text={CONTENTS.ABOUT.NAME} color={CONTENTS.ABOUT.COLOR} />
       </h2>
@@ -49,11 +52,11 @@ export default function Home() {
             <div className="avatar justify-center ">
                 <div className="w-24 rounded-full">
                   <Image 
+                    src="/image/img_me.png"
                     width={500}
                     height={500}
                     alt={SITE_INFO.HS}
-                  src="image/img_me.png" />
-
+                   />
                 </div>
             </div>
 
