@@ -1,5 +1,27 @@
-.sun common-top,
-.moon common-top {}
+/**  ウィンドウ幅大きめ */
+body.hsl-screen-layout {
+    .hsl-screen-full {
+        visibility: visible;
+    }
+
+    .hsl-screen-compact {
+        visibility: hidden;
+    }
+}
+
+/**  ウィンドウ幅小さめ */
+@media screen and (max-width: 640px) {
+    body.hsl-screen-layout {
+        .hsl-screen-full {
+            visibility: hidden;
+        }
+
+        .hsl-screen-compact {
+            visibility: visible;
+        }
+    }
+}
+
 
 .error-page {
     background: #0e1821;

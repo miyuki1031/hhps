@@ -1,13 +1,14 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import '../../public/style/globals.css';
-
 import '../../public/style/common.scss';
+
+import '../../public/style/pages.scss';
 import '../../public/style/moon.scss';
 import '../../public/style/sun.scss';
 
 import { SITE_INFO } from '../lib/constants';
-import AppProvider from './AppProvider';
+import AppProvider from '../providers/AppProvider';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
@@ -35,8 +36,9 @@ export default function RootLayout({
     <html
       lang="ja"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col hsl-screen-layout">
         <AppProvider>
           <Header />
           {children}

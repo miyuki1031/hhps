@@ -1,4 +1,4 @@
-import styles from "../../public/style/Title.module.scss";
+import styles from '../../public/style/Title.module.scss';
 
 interface TitleProps {
  text: string,
