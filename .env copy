@@ -1,0 +1,21 @@
+NODE_ENV = 'development'
+# iPhoneからアクセスできる、Windowsの中継IPを指定する
+NEXT_PUBLIC_ASSET_URL=http://192.168.0.15:3000
+
+
+#
+# Docker内部でのファイル変更検知（HMR）を確実にする
+WATCHPACK_POLLING=true
+NEXT_TELEMETRY_DISABLED=1
+#これを追加して、iPhoneのIP（192.168.~）からのHMRアクセスをNext.jsに強制許可する
+NEXT_PUBLIC_ALLOWED_HOSTS=localhost,127.0.0.1,192.168.0.15
+
+
+
+# DB
+POSTGRES_USER = myuser
+POSTGRES_PASSWORD = mypassword
+POSTGRES_DB = mylocaldb
+DATABASE_URL =postgresql://myuser:mypassword@localhost:5432/mylocaldb
+
+  

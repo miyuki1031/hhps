@@ -4,6 +4,7 @@
  */
 
 import { House, ListTodo, Mail, NotebookPen, User } from 'lucide-react';
+import { DefaultConfig } from '@/lib/definitions';
 export const SITE_INFO = {
     STARTYEAR: 2026,
     NAME: 'HappyStarLaB',
@@ -58,4 +59,13 @@ export const CONTENTS = {
         IS_MENU: true,
         IS_ENABLED: false
     },
+};
+
+export const DEFAULT_CONFIG: DefaultConfig = {
+    RESUME_QUERIES: {
+        order: 'desc',
+        limit: 5,
+        page: 'p',
+        isSkill: false,
+    }
 }

@@ -1,0 +1,11 @@
+
+実行場所は
+「drizzle.config.ts」にて定義
+    schema: "./src/db/schema/index.ts",
+
+
+テーブル定義の追加
+npx drizzle-kit push
+
+シードデータの追加
+npx tsx src/db/seed.ts
