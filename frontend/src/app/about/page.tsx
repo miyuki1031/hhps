@@ -1,23 +1,25 @@
-import styles from '../../../public/style/AboutMe.module.scss';
-
-import Image from 'next/image'
-import { CONTENTS, SITE_INFO } from '@/lib/constants';
+import { CONTENTS } from '@/lib/constants';
 import Title from '@/components/Title';
 
+import ProfileTable from './ProfileTable'
+import Resume from './Resume';
+import { ResumeQueries } from '@/lib/definitions';
+import Tabs from './Tabs';
 
-export default function Home() {
-  const about_me = [
-    { info: "NAME", text: "MZY[mizi] みじぃ" },
-    { info: "LEARNING", text: "NextJs ReactJs VueJs JAVA" },
-    { info: "LOCATION", text: `ラニアケア超銀河団局所銀河群天の川銀河オリオン腕 太陽系第三惑星地球 日本の関東<br><span class="text-[10px] text-blue-200">Location Laniakea / Local Group / Milky Way / Orion Arm Solar System / Earth / Kanto, Japan</span>` },
-    { info: "LICENSES",  text: "車・電工２（試験合格）" }
-  ];
+
+export default async function page({
+  searchParams,
+}: {
+  searchParams: Promise<ResumeQueries>;
+}) {
+  const params = await searchParams;
+  const isProfile = params?.page === 'p' || !params?.page;
+  console.log(`isProfile ${isProfile}`)
   return (
     <main className={`
       hsl-p-about-me
       flex-1
       w-full
-      ${styles["hsl-p-about-me"]}
       `}
       >
         <h2 className="
@@ -30,13 +32,7 @@ export default function Home() {
         ">
           <Title text={CONTENTS.ABOUT.NAME} color={CONTENTS.ABOUT.COLOR} />
       </h2>
-      {/**
-       * 指名・職種・生年月日・住まい
-       * 職務経歴
-       * スキルセット
-       * 自己PR
-       * 
-       */}
+
       <div className="
         w-3/4
         min-h-100
@@ -48,41 +44,15 @@ export default function Home() {
       ">
         <div className="card bg-base-100">
           <div className="card-body flex">
-            {/** 自画像 */}
-            <div className="avatar justify-center ">
-                <div className="w-24 rounded-full">
-                  <Image 
-                    src="/image/img_me.png"
-                    width={500}
-                    height={500}
-                    alt={SITE_INFO.HS}
-                   />
-                </div>
-            </div>
-
             <div className="justify-center overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
-              <table className="table">
-                <tbody>
-                  { about_me.map((item, index) => {
-
-                    return (
-                      <tr key={index}>
-                        <th>{ item.info }</th>
-                        <td className="whitespace-pre-wrap">
-                            <div dangerouslySetInnerHTML={{ __html:item.text }} />
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
+              <Tabs
+                profileComponent={<ProfileTable />}
+                resumeComponent={<Resume queries={params} />}
+              />
             </div>
-
-
-
           </div>
         </div>
-       </div>
+      </div>
     </main>
   );
 }

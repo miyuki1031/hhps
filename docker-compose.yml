@@ -1,4 +1,17 @@
 services:
+
+  nginx:
+    image: nginx:alpine
+    ports:
+       - "80:80"
+       - "3000:3000"
+      # - "443:443"
+    volumes:
+       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+       - .:/var/www/hhps:ro
+    depends_on:
+       - frontend
+
   # frontend:
   frontend:
     # command: sh -c "npx prisma db push"
@@ -18,15 +31,9 @@ services:
        - ./frontend:/app
        - /app/node_modules
        - /app/.next
-    environment:
-      - WATCHPACK_POLLING=true  # Docker内部でのファイル変更検知（HMR）を確実にする
-      - NEXT_TELEMETRY_DISABLED=1
-      # 💡 これを追加して、iPhoneのIP（192.168.~）からのHMRアクセスをNext.jsに強制許可する
-      - NEXT_PUBLIC_ALLOWED_HOSTS=localhost,127.0.0.1,192.168.0.14
       # depends_on: [backend]
-      # ↓環境設定を始めたら
     env_file:
-     - ./frontend/.env
+     - .env
 
     # バックエンド
     # backend:
@@ -45,28 +52,16 @@ services:
       # depends_on: [db]
       # # command: ./mvnw spring-boot:run 
 
-    # # DB 
-    # db:
-    #   image: postgres:17-alpine
-    #   restart: always
-    #   environment:
-    #     POSTGRES_USER: myuser
-    #     POSTGRES_PASSWORD: mypassword
-    #     POSTGRES_DB: mylocaldb
-    #   ports:
-    #     - "5432:5432"
-
-  nginx:
-    image: nginx:alpine
+  # DB 
+  db:
+    image: postgres:17-alpine
+    restart: always
     ports:
-       - "80:80"
-       - "3000:3000"
-
-      # - "443:443"
+     - "5432:5432"
+    env_file:
+     - ./.env
     volumes:
-       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
-       - .:/var/www/hhps:ro
-    depends_on:
-       - frontend
-
-
+     - ./db:/var/lib/postgresql/data
+#    environment:
+#      - POSTGRES_USER = myuseraa
+#      - POSTGRES_PASSWORD = mypasswords
