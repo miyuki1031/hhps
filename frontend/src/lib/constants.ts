@@ -65,7 +65,6 @@ export const DEFAULT_CONFIG: DefaultConfig = {
     RESUME_QUERIES: {
         order: 'desc',
         limit: 5,
-        page: 'p',
-        isSkill: false,
+        page: 'p'
     }
 }
