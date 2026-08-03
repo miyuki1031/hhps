@@ -4,17 +4,16 @@ import Image from 'next/image';
  
 export default function NotFound() {
   return (
-    <div className="
-        error-page
-        w-full
-        h-screen
-        text-white
-        p-10
+    <main className="
+        hsl-error-page
+        flex-1
+        p-10 flex flex-col justify-center items-center
     ">
         <div className="
             m-auto
             w-100
             text-center
+            p-2.5
         ">
             <h1 className="mb-10">NOT FOUND</h1>
             <p className="mb-10"> ページが見つかりませんでした。</p>
@@ -26,10 +25,12 @@ export default function NotFound() {
             </div>
             <Image
                 className="w-100 h-100 p-10"
-                src="image/img_maintenance.png"
+                width={100}
+                height={100}
+                src="/image/img_maintenance.png"
                 alt="404！"
             />
         </div>
-    </div>
+    </main>
   )
 } 

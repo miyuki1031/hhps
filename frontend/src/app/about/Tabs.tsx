@@ -1,66 +1,58 @@
 'use client';
-import { useState, ReactNode } from 'react';
-import { useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
+import Link from 'next/link';
 
-interface TabsProps {
-    profileComponent: ReactNode
-    resumeComponent: ReactNode
-}
-
-
-export default function Tabs ({ profileComponent, resumeComponent  }: TabsProps) {
-    const router = useRouter();
-    const [ isProfile, setIsProfile ] = useState(true);
-    const handleToggle = (tabName: 'p' | 'r') => {
-        setIsProfile(tabName === "p");
-        // リロードせずに URL だけを ?page=p や ?page=r に書き換える（スクロール位置を維持）
-        router.push(`?page=${tabName}`, { scroll: false });
-    }
-
+export default function Tabs() {
+    const pathname = usePathname();
+    const isProfile = pathname === '/about';
+    const isResume =  pathname === '/about/resume';
+    const isIntroduction =  pathname === '/about/introduction';
+    const style_button_base ="tab p-2 text-center focus:outline-none ";
     return (
-        <>
         <div className="w-auto">
-            <div className="grid grid-cols-2">
-                <button
+            <div className="grid grid-cols-1 md:grid-cols-3">
+                <Link
+                    href="/about"
+                    scroll={false} // 必要に応じてスクロール位置を維持したいとき
                     className={`
-                        tab
-                        p-2
-                        text-center
-                        focus:outline-none
+                        ${style_button_base}
                         ${isProfile
                             ? "bg-amber-300 font-bold" 
                             : "bg-gray-300 cursor-pointer"
                         }
                     `}
-                    onClick={()=>{ handleToggle("p") }}
                 >
-                   Profile
-                </button>
-                <button
+                    Profile
+                </Link>
+
+                <Link
+                    href="/about/resume"
+                    scroll={false} // 必要に応じてスクロール位置を維持したいとき
                     className={`
-                        tab
-                        p-2
-                        text-center
-                        focus:outline-none
-                        ${!isProfile
+                        ${style_button_base}
+                        ${isResume
                             ? "bg-amber-300 font-bold" 
                             : "bg-gray-300 cursor-pointer"
                         }
                     `}
-                    onClick={()=>{ handleToggle("r") }}
                 >
                     Resume
-                </button>
+                </Link>
+
+                <Link
+                    href="/about/introduction"
+                    scroll={false} // 必要に応じてスクロール位置を維持したいとき
+                    className={`
+                        ${style_button_base}
+                        ${isIntroduction
+                            ? "bg-amber-300 font-bold" 
+                            : "bg-gray-300 cursor-pointer"
+                        }
+                    `}
+                >
+                    Introduction
+                </Link>
             </div>
         </div>
-        {/* 状態によって表示を切り替える */}
-        <div className={isProfile ? 'block' : 'hidden'}>
-            {profileComponent}
-        </div>
-        <div className={!isProfile ? 'block' : 'hidden'}>
-            {resumeComponent}
-        </div>
-       
-       </>
     )
 }

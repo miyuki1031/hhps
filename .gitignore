@@ -21,7 +21,8 @@ build
 /db
 Thumbs.db
 
-.vscode
+/.vscode/
+.vscode/.json
 .idea
 
 #  一旦混じってしまうため送らない

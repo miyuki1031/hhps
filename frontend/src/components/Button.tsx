@@ -24,16 +24,16 @@ export function ButtonPager({
     };
 return (
     
-    <div className="grid grid-cols-2 gap-4 w-full">
+    <div className="grid grid-cols-2 gap-4 ml-2 mr-2">
         <button
-            className="btn btn-xs border p-2 hover:bg-gray-100 rounded-md"
+            className="btn border p-2 hover:bg-gray-100 rounded-md"
             onClick={() => handlePageMove('prev')}
             disabled={isDisabledPrev}
         >
             <ArrowLeft />
         </button>
         <button
-            className="btn btn-xs border p-2 hover:bg-gray-100 rounded-md"
+            className="btn border p-2 hover:bg-gray-100 rounded-md"
             onClick={() => handlePageMove('next')}
             disabled={isDisabledNext}
         >
