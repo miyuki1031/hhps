@@ -18,6 +18,7 @@ export const CONTENTS = {
     HOME: {
         NAME: 'HOME',
         DESCRIPTION: 'TOPページ',
+        INTRODUCTION: 'TOPページ。AI（Gemini）に作成してもらったTOP画像が目印です。',
         HREF: '/',
         LABEL: House,
         IS_MENU: true,
@@ -26,6 +27,7 @@ export const CONTENTS = {
     ABOUT: {
         NAME: 'ABOUT ME',
         DESCRIPTION: '自己紹介',
+        INTRODUCTION: '自己紹介・職務経歴書・サイト構成。<br>職務経歴書→NextJsのServerActionにて作成<br>',
         HREF: '/about',
         LABEL: User,
         COLOR: 'pink',
@@ -35,6 +37,7 @@ export const CONTENTS = {
     CONTACT: {
         NAME: 'CONTACT',
         DESCRIPTION: 'お問い合わせ',
+        INTRODUCTION: 'お問い合わせはこちらからどうぞ！',
         HREF: '/contact',
         LABEL: Mail,
         COLOR: 'green',
@@ -44,15 +47,17 @@ export const CONTENTS = {
     TODO: {
         NAME: 'TODO',
         DESCRIPTION: '開発予定TODOリスト',
+        INTRODUCTION: 'NextJsのServerActionにて作成',
         HREF: '/todo',
         LABEL: ListTodo,
         COLOR: 'blue',
         IS_MENU: true,
-        IS_ENABLED: false
+        IS_ENABLED: true
     },
     NOTES: {
         NAME: 'NOTES',
         DESCRIPTION: '勉強メモ',
+        INTRODUCTION: '汗と血と涙とよだれの結晶',
         HREF: '/notes',
         LABEL: NotebookPen,
         COLOR: 'orange',

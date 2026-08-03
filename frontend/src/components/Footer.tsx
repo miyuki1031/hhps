@@ -8,7 +8,7 @@ export default function Footer() {
             w-full 
             h-4
             flex
-            items-start /** */
+            items-start
             justify-center
 
         `">

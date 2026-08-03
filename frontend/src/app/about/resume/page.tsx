@@ -32,7 +32,12 @@ const getParam =  <K extends keyof ResumeQueries>(
     }
     return queries?.[key] || DEFAULT_CONFIG.RESUME_QUERIES[key];
 }
-export default async function Resume ({ queries }: { queries?: ResumeQueries }) {
+export default async function page ({
+    searchParams,
+ }: {
+    searchParams: Promise<ResumeQueries>
+}) {
+    const queries = await searchParams;
     // URLのクエリパラメータから受け取ったものをそのまま渡す
     const fetchResumeParam = {
         order: getParam('order', queries),

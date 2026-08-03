@@ -5,9 +5,9 @@ import Navigation from './Navigation';
 
 export default function Header() {
     return (
-        <header className="w-full flex justify-between items-center px-2 py-1">
+        <header className="flex justify-between items-center px-2 py-1">
             <h1 className="text-xs"> {SITE_INFO.NAME}</h1>
-            <Navigation className="w-8 h-8" />
+            <Navigation />
         </header>
     );
 }
