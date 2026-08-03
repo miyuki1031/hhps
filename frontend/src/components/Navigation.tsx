@@ -35,138 +35,81 @@ export default function Navigation({ className = '' }: NavigationProps) {
     }        
 
     return (
-        
-        <div className={`
-            hsl-c-navigation
-            ${className}
-            `}
-            onBlur={handleCloseMenu}
-        >
-            <div className="hsl-screen-full">
-                <button
-                    ref={buttonRef}
-                    className="
-                        z-100
-                        w-7.5 h-7.5
-                        btn btn-square
-                        min-h-0
-                        bg-[radial-gradient(circle_closest-corner,#ffffff_0%,#ffcc00_100%)]
-                        border-none
-                        cursor-pointer
-                    "
-                    onClick={handleToggleMenu}
-                    suppressHydrationWarning={true}
-                    >
-                    <Menu className="grow-0 w-4 h-4 text-neutral" />
-                </button>
-                <ul
-                    className={`
-                        menu 
-                        bg-neutral-800 
-                        text-white 
-                        rounded-box 
-                        w-52 
-                        p-2 
-                        shadow-lg 
-                        border border-white/10
-                        mt-2
-                        transition-all duration-200 ease-out
-                        relative
-                        -top-[15px]
-                        right-[155px]
-                        z-100
-                        ${isOpen 
-                            ? "opacity-100 visible translate-y-0 scale-100" 
-                            : "opacity-0 invisible -translate-y-2 scale-95"
-                        }
-                `}>
-                    { content.map((item, index) => {
-                        const Icon = item.LABEL;
-                        return (
-                            <li
-                                key={index}
-                                className="tooltip"
-                                data-tip={item.DESCRIPTION}
-                            >
-                                <Link
-                                    onClick={() => setIsOpen(false) }
-                                    className={`
-                                        hover:bg-white/10 text-white
-                                        ${ pathname === item.HREF
-                                            ? "bg-white/10"
-                                            : ""
-                                        }
-                                    `}
-                                    href={item.HREF}
-                                >
-                                        
-                                    <Icon size={20} />
-                                    {item.NAME}
-                                </Link>
-                            </li>
-                        )
-                    }) }
-                    <li 
-                        className="
-                            tooltip
-                            hover:bg-white/10
-                            text-white
-                            flex justify-start
-                        "
-                        data-tip="モード切替">
-                        <ColorTheme
-                            size={20}
-                            className="
-                                grid
-                                justify-items-start
-                            "
-                            description="モード切替"
-                        />
-                    </li>
-                </ul>
-            </div>
-
-            <div className="
-                fab
-                fab-flower
-                hsl-screen-compact
-            ">
-                <div
-                    tabIndex={0}
-                    role="button"
-                    className="
-                        btn
-                        btn-lg
-                        btn-circle
-                    "
-                    onClick={handleToggleMenu}
-                >
-                    <Menu className="grow-0 w-4 h-4 text-neutral" />
-
-                </div>
-                    { content.map((item, index) => {
-                        return (
-                            <ButtonBase
-                                key={index}
-                                className={`
-                                    btn btn-lg btn-circle
-                                `}
-                                onClick={() => setIsOpen(false) }
-                                href={item.HREF}
-                            >
-                            {item.NAME.slice(0,1)}
-                            </ButtonBase>
-                        )
-                    })}
-                    <ColorTheme
-                        size={24}
+        <div className="absolute bottom-10 right-10 md:static md:bottom-auto md:right-auto">
+            <div className="drawer drawer-end" >
+                <input id="my-drawer-1" type="checkbox" className="drawer-toggle" />
+                <div className="drawer-content">
+                    <label
+                        htmlFor="my-drawer-1"
                         className="
                             btn
-                            btn-lg
                             btn-circle
+                            drawer-button
+                            bg-[radial-gradient(circle_closest-corner,#ffffff_0%,#ffcc00_100%)]
+                            w-10
+                            h-10
                         "
-                    />
+                    >
+                        <Menu
+                            className="
+                                grow-0
+                                w-4
+                                h-4
+                                text-neutral
+                            "
+                        />
+                    </label>
                 </div>
+                <div className="drawer-side">
+                    <label htmlFor="my-drawer-1" aria-label="close sidebar" className="drawer-overlay"></label>
+                    <ul className="menu bg-base-200 min-h-full w-80 p-4">
+                        { content.map((item, index) => {
+                            const Icon = item.LABEL;
+                            return (
+                                <li
+                                    key={index}
+                                    className="tooltip"
+                                    data-tip={item.DESCRIPTION}
+                                >
+                                    <Link
+                                        onClick={() => setIsOpen(false) }
+                                        className={`
+                                            hover:bg-white/10 text-white
+                                            ${ pathname === item.HREF
+                                                ? "bg-white/10"
+                                                : ""
+                                            }
+                                        `}
+                                        href={item.HREF}
+                                    >
+                                            
+                                        <Icon size={20} />
+                                        {item.NAME}
+                                    </Link>
+                                </li>
+                            )
+                        }) }
+                        <li 
+                            className="
+                                tooltip
+                                hover:bg-white/10
+                                text-white
+                                flex justify-start
+                            "
+                            data-tip="モード切替">
+                            <ColorTheme
+                                size={20}
+                                className="
+                                    grid
+                                    justify-items-start
+                                "
+                                description="モード切替"
+                            />
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
         </div>
     );
 }

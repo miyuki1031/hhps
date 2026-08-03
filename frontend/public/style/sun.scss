@@ -5,12 +5,17 @@
     --hsl-color-logo: #fff7e6; // ロゴカラー
 
     --hsl-bar-image-color: linear-gradient(to right, #f4ec61 0% 40%, #e5c583 40% 55%, #d7a370 75% 85%, #c27ba0 75% 100%);
+    --hsl-menu-background-color: #c27ba0; // メニューの背景色
 
     header {
         background-image: var(--hsl-bar-image-color);
 
         h1 {
             color: var(--color-orange-400);
+        }
+
+        .drawer-side ul {
+            background: var(--hsl-menu-background-color);
         }
 
     }
