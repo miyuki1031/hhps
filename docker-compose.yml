@@ -14,15 +14,13 @@ services:
 
   # frontend:
   frontend:
-    # command: sh -c "npx prisma db push"
-    # command: sh -c "npm run dev"
     # 💡 -p 3000 -H 0.0.0.0 を明示的に追加して、Next.jsの視野を広げる
     command: sh -c "npm run dev -- --port 3000 --hostname 0.0.0.0"
     build:
       context: ./frontend
       # args:
       #  - BUILD_DATE=$(date +%Y%m%d_%H%M%S) # ここでビルド時刻を渡す
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     # ↓Nginx開通したため（Portsみたいな感じ)
     expose: ["3000"]
     # ports:
