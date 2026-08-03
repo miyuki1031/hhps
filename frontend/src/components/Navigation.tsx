@@ -16,14 +16,21 @@ export default function Navigation({ className }: NavigationProps) {
     const pathname = usePathname();
     const content = (Object.values(CONTENTS)).filter((item) => item.IS_ENABLED);
     const [isChecked, setIsChecked] = useState(false);
-    
+    const handleClose = () => {
+        setIsChecked(false); // メニューをクリックして閉じたい場合
+    };
     return (
         <div className={`absolute bottom-10 right-10 md:static md:bottom-auto md:right-auto z-50
             ${className}
             `}>
             <div className="drawer drawer-end" >
-                <input id="my-drawer-1" type="checkbox" className="drawer-toggle" checked={isChecked} 
-                onChange={(e) => setIsChecked(e.target.checked)}/>
+                <input
+                    id="my-drawer-1"
+                    type="checkbox"
+                    className="drawer-toggle"
+                    checked={isChecked} 
+                    onChange={(e) => setIsChecked(e.target.checked)}
+                />
                 <div className="drawer-content">
                     <label
                         htmlFor="my-drawer-1"
@@ -66,6 +73,7 @@ export default function Navigation({ className }: NavigationProps) {
                                             }
                                         `}
                                         href={item.HREF}
+                                        onClick={handleClose}
                                     >
                                             
                                         <Icon size={20} />
