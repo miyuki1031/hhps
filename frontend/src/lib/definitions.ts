@@ -7,6 +7,7 @@ import { resumesTable } from '../db/schema/resumes';
 
 import { type InferSelectModel } from 'drizzle-orm';
 
+
 // スキーマーの型参照
 //　
 // ここでDrizzleから型を自動取得して Profile 型として定義する
@@ -34,3 +35,12 @@ export type ResumeQueries = {
 export type DefaultConfig = {
     RESUME_QUERIES: ResumeQueries
 };
+
+export type Todo = {
+    id: string;
+    title: string;
+    description: string;
+    limit: string;
+    isDelete: boolean;
+}
+export type NewTodo = Omit<Todo, 'id'>;

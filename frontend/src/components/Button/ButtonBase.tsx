@@ -8,15 +8,21 @@ import { ReactNode, ComponentPropsWithoutRef, MouseEvent } from 'react';
  */
 interface ButtonBaseProps extends ComponentPropsWithoutRef<'button'> {
     children: ReactNode
-    onClick?: React.MouseEventHandler<HTMLButtonElement>,
+    onClick?: React.MouseEventHandler<HTMLButtonElement>
     href?: string
+    className?: string
+    tooltips?: {
+        text: string
+        className: 'tooltip-start' | 'tooltip-end' | ''
+    } | undefined
 }
 
 export default function ButtonBase({
     children,
     onClick,
     href,
-    ...props // その他の属性（className や type など）をまるっと受け取る
+    tooltips,
+    ...props // extendsで定義してあるその他の属性（className や type など）をまるっと受け取る
 } : ButtonBaseProps) {
     const router = useRouter();
     const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
@@ -27,10 +33,19 @@ export default function ButtonBase({
             onClick(e);
         }
     }
+    let tooltipProps = {}, tooltipsClassName = "";
+    const isTooltips = tooltips !== undefined;
+    // 1. 条件に応じたオブジェクトを用意する
+    if (isTooltips && "text" in tooltips) {
+        tooltipProps = { "data-tip": tooltips.text };
+        tooltipsClassName = `tooltip tooltip-top ${tooltips.className || ""}`
+}
     return (
         <button
             onClick={handleClick}
             {...props}
+            {...tooltipProps}
+            className={`btn btn-soft ${props.className || ""} ${tooltipsClassName}`}
         >
             { children }
         </button>

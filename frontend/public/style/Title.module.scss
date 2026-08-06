@@ -30,9 +30,39 @@
       -webkit-text-stroke: 0.5px #ff9cc8;
     }
 
-    &.green {}
+    &.green {
+      color: #15803d;
+      text-shadow:
+        0 1px #166534,
+        1px 0 #15803d,
+        1px 2px #166534,
+        2px 1px #15803d,
+        2px 3px #166534,
+        3px 2px #15803d,
+        3px 4px #166534,
+        4px 3px #15803d,
+        4px 5px #166534,
+        5px 6px #15803d,
+        6px 7px 5px #166534;
+      -webkit-text-stroke: 0.5px #86efac;
+    }
 
-    &.blue {}
+    &.blue {
+      color: #4e76f8;
+      text-shadow:
+        0 1px #1e40af,
+        1px 0 #1d4ed8,
+        1px 2px #1e40af,
+        2px 1px #1d4ed8,
+        2px 3px #1e40af,
+        3px 2px #1d4ed8,
+        3px 4px #1e40af,
+        4px 3px #1d4ed8,
+        4px 5px #1e40af,
+        5px 6px #1d4ed8,
+        6px 7px 5px #1e40af;
+      -webkit-text-stroke: 0.5px #93c5fd;
+    }
 
     &.orange {
       text-shadow:
