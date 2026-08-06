@@ -1,23 +1,15 @@
-
+import { db } from "@/db";
 import { ResumeSchema } from '../definitions';
 import { DEFAULT_CONFIG } from '../constants';
 import { resumesTable } from '@/db/schema/resumes';
 
-// Make sure to install the 'pg' package 
-import { drizzle } from 'drizzle-orm/node-postgres';
 import { asc, desc } from 'drizzle-orm';
-import { Pool } from "pg";
-
-const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
-});
-const db = drizzle({ client: pool });
 
 let lastOffset = 0;
 let lastOrder = DEFAULT_CONFIG.RESUME_QUERIES.order;
 let total = 0;
 
-export type fetchResumeOptionsProps = Record<string, number | boolean | string | "asc" | "desc">;
+// export type fetchResumeOptionsProps = Record<string, number | boolean | string | "asc" | "desc">;
 
 type ResumeColumnKey = keyof typeof resumesTable._.columns;
 type FetchResumeOptions = {
