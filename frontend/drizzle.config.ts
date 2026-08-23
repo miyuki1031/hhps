@@ -10,6 +10,10 @@ console.log(process.env.POSE);
 console.log("2手動合体");
 console.log(`postgresql://${process.env.POSTGRES_USER}:${process.env.POSTGRES_PASSWORD}@${process.env.DB_HOST || 'localhost'}:5432/${process.env.POSTGRES_DB}`);
 
+const a = `postgresql://${process.env.POSTGRES_USER}:${process.env.POSTGRES_PASSWORD}@${process.env.DB_HOST || 'localhost'}:5432/${process.env.POSTGRES_DB}`
+console.log(a === process.env.DATABASE_URL ? "OK" : "NG");
+
+
 export default defineConfig({
     schema: "./src/db/schema/index.ts",
     out: "./migrations",

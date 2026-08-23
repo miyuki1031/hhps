@@ -1,10 +1,22 @@
 import { ReactNode } from 'react';
 
+import UserAgentProvider from './UserDeviceProvider';
 import ThemeColorProvider from './ThemeColorProvider';
-export default function ClientProvideContainer({ children }: { children: ReactNode }) {
+import ModalProvider from './ModalProvider';
+export default function ClientProvideContainer({
+    children,
+    uaInfo,
+ }: {
+    children: ReactNode,
+    uaInfo: string,
+}) {
     return (
-        <ThemeColorProvider>
-            {children}
-        </ThemeColorProvider>
+        <UserAgentProvider uaInfo={uaInfo}>
+            <ModalProvider>
+                <ThemeColorProvider>
+                    {children}
+                </ThemeColorProvider>
+            </ModalProvider>
+        </UserAgentProvider>
     );
 }

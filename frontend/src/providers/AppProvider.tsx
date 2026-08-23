@@ -18,12 +18,11 @@ export default async function AppProvider ({ children }: { children: ReactNode }
 const headersList = await headers();
 
 const raw = headersList.get('user-agent') || '';
+
     return (
-      <ServerProvideContainer uaInfo={raw}>
-        <ClientProvideContainer>
-        {/* <SessionProvider> */}
+      <ServerProvideContainer>
+        <ClientProvideContainer uaInfo={raw} >
           {children}
-        {/* </SessionProvider> */}
         </ClientProvideContainer>
       </ServerProvideContainer>
     )

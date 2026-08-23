@@ -11,8 +11,8 @@ export default function Home() {
       ">
         <div className="
           min-w-max
-          md:text-8xl 
-          leading-[1.5]
+          md:text-8xl
+          leading-normal
           tracking-wide
           ml-10
           font-bold

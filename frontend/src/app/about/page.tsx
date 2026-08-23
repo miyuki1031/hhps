@@ -4,8 +4,13 @@ import { SITE_INFO } from '@/lib/constants';
 
 export default async function page () {
   // id のみリストから除外
+  const profile = await fetchProfile();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { id, ...displayList } = (await fetchProfile())?.[0];
+  const { id, ...displayList } = profile.success && profile.data
+    ? profile.data
+    : { id: null }
+console.log("profile-----------")
+console.log(profile)
     return (
       <div className="flex flex-col p-2 gap-2">
         <h3 className="text-xl font-bold h-10">

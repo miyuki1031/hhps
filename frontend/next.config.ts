@@ -6,7 +6,8 @@ const nextConfig: NextConfig = {
     '192.168.0.15',
     '192.168.0.15:3000',
     '10.0.0.2',
-    '10.0.0.2:3000'
+    '10.0.0.2:3000',
+    'discuss-bug-interactive-dash.trycloudflare.com'
   ],
   devIndicators: {
     position: 'bottom-right', // 15移行で邪魔なインジケータを消す場合
