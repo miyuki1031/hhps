@@ -13,10 +13,16 @@ export const todoTable = pgTable("todo", {
     title: varchar("title", { length: 255 }).notNull(),
     // Todoの詳細
     description: text("description"),
-    // 
-    limit: date("limit"),
+    // 期限
+    dueDate: date("due_date"),
+    // private（非公開・公開）
+    isPrivate: boolean("is_private").notNull().default(true),
+    // 完了
+    isComplete: boolean("is_complete").notNull().default(false),
     // 論理削除
     isDelete: boolean("is_delete").notNull().default(false),
+    // オーサー
+    isMasterAuthor: boolean("is_master_author").notNull().default(false),
 });
 
 

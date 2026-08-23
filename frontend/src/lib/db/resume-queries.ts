@@ -1,5 +1,5 @@
 import { db } from "@/db";
-import { ResumeSchema } from '../definitions';
+import { ResumeSchema, FetchResumeOptions } from '../definitions';
 import { DEFAULT_CONFIG } from '../constants';
 import { resumesTable } from '@/db/schema/resumes';
 
@@ -9,15 +9,6 @@ let lastOffset = 0;
 let lastOrder = DEFAULT_CONFIG.RESUME_QUERIES.order;
 let total = 0;
 
-// export type fetchResumeOptionsProps = Record<string, number | boolean | string | "asc" | "desc">;
-
-type ResumeColumnKey = keyof typeof resumesTable._.columns;
-type FetchResumeOptions = {
-    orderByColumn?: ResumeColumnKey; // カラム名（例: "employmentPeriodEd" など）
-    order?: "asc" | "desc";
-    limit?: number;
-    move?: "prev" | "next";
-};
 export async function fetchResume(options: FetchResumeOptions): Promise<ResumeSchema[]> {
     try {
         const limit = options.limit || DEFAULT_CONFIG.RESUME_QUERIES.limit!;

@@ -1,24 +1,18 @@
+import { db } from "@/db";
+import { ProfileSchema, ApiResponse } from '../definitions';
+import { profileTable } from '@/db/schema/profile';
 
-import {
-    ProfileSchema
-} from '../definitions';
-import { profileTable } from '../../db/schema/profile';
+import { apiResponse } from './response';
 
-// Make sure to install the 'pg' package 
-import { drizzle } from "drizzle-orm/node-postgres";
-import { Pool } from "pg";
-
-const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
-});
-const db = drizzle({ client: pool });
-
-export async function fetchProfile(): Promise<ProfileSchema[]> {
+export async function fetchProfile(): Promise<ApiResponse<ProfileSchema>> {
     try {
         const data = await db.select().from(profileTable);
-        return data as ProfileSchema[];
+        console.log("data")
+
+        console.log(data)
+        return apiResponse.success(data[0] as ProfileSchema);
     } catch (error) {
         console.error('Database Error:', error);
-        throw new Error('Failed to fetch fetchProfile');
+        return apiResponse.error('Database Error:' + error)
     }
 }

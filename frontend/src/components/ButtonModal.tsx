@@ -4,7 +4,7 @@ import { FilePlusCorner, FilePen } from 'lucide-react';
 import { ReactNode } from 'react';
 import ButtonBase from './Button/ButtonBase';
 
-type ModalProps<T = any> = {
+type ModalProps<T = unknown> = {
     className?: string
     tooltips?: {
         text: string
@@ -14,27 +14,25 @@ type ModalProps<T = any> = {
     contents?: T
 }
 
-export default function ButtonModal({
+export default function ButtonModal<T extends { id?: string | number } >({
     className,
     tooltips,
     modalDom,
     contents,
-
-}: ModalProps) {
+}: ModalProps<T>) {
     const { openModal } = useModal();
 
-    const handleSwitchData = (modalDom?: ReactNode, contents?: any) => {
-        openModal(modalDom, contents);
+    const handleSwitchData = (dom?: ReactNode, data?: T) => {
+        openModal(dom, data);
     };
+
     return (
         <ButtonBase
-            onClick={() =>handleSwitchData(modalDom, contents)}
+            onClick={() => handleSwitchData(modalDom, contents)}
             className={className}
             tooltips={tooltips}
         >
-            {contents?.id 
-                 ? <FilePlusCorner />
-                 : <FilePen />
-            }
-        </ButtonBase>)
+            {contents?.id ? <FilePlusCorner /> : <FilePen />}
+        </ButtonBase>
+    );
 }

@@ -1,3 +1,4 @@
+'use client'
 import { useRouter } from 'next/navigation';
 import { ReactNode, ComponentPropsWithoutRef, MouseEvent } from 'react';
 
@@ -22,7 +23,7 @@ export default function ButtonBase({
     onClick,
     href,
     tooltips,
-    ...props // extendsで定義してあるその他の属性（className や type など）をまるっと受け取る
+    ...props // extendsで定義してあるその他の属性（className や type formActionなど）をまるっと受け取る
 } : ButtonBaseProps) {
     const router = useRouter();
     const handleClick = (e: MouseEvent<HTMLButtonElement>) => {

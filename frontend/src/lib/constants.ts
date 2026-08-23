@@ -3,6 +3,8 @@
  * 
  */
 
+
+
 import { House, ListTodo, Mail, NotebookPen, User } from 'lucide-react';
 import { DefaultConfig } from '@/lib/definitions';
 export const SITE_INFO = {
@@ -71,5 +73,12 @@ export const DEFAULT_CONFIG: DefaultConfig = {
         order: 'desc',
         limit: 5,
         page: 'p'
+    },
+    TODO_QUERIES: {
+        order: 'desc',
+        orderByColumn: 'dueDate',
+        isDelete: false,
+        isComplete: false,
+        isPrivate: false,
     }
 }
