@@ -31,6 +31,7 @@ export default function ModalProvider({ children }: { children: ReactNode }) {
 
     // モーダル展開
     const toggleModal = () => {
+        setModalDom(null)
         setIsOpenModal(prev => !prev);
     };
     // 表示内容セット（DOMそのまま）
