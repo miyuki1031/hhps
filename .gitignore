@@ -5,10 +5,26 @@ node_modules
 # Next.jsのビルドキャッシュ
 .next
 out
+dist
+build
 
 # 環境変数（セキュリティ的にGitに上げたくないもの）
 .env
 .env.local
+.env.*.local
+.env.prod
 
 # OS特有のゴミファイル
 .DS_Store
+
+# データベースのVolumeファイル
+/db
+Thumbs.db
+
+/.vscode/
+.vscode/.json
+.idea
+
+#  一旦混じってしまうため送らない
+docker-compose.yml
+docker-compose.prod.yml

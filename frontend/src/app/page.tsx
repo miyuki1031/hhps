@@ -1,18 +1,18 @@
+'use client';
 
-import { SITE_INFO } from "../lib/constants";
-import styles from "../../public/style/Top.module.scss";
+import { SITE_INFO } from '../lib/constants';
 
 export default function Home() {
     return (
     <main className="
-      hsl-p-top-title
+      hsl-c-top
       flex-1
       w-full
       ">
         <div className="
           min-w-max
-          md:text-8xl 
-          leading-[1.5]
+          md:text-8xl
+          leading-normal
           tracking-wide
           ml-10
           font-bold

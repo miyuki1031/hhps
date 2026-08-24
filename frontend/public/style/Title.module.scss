@@ -1,21 +1,21 @@
 .title-container {
-    color: #ffba16;
-    font-family:  Impact, Helvetica, sans-serif;
-    font-size: 80px;
-    letter-spacing: 0.2em;
-    padding: 10px 0;
-    -moz-transform: skew(-25deg) rotate(5deg);
-    -ms-transform: skew(-25deg) rotate(5deg);
-    -webkit-transform: skew(-25deg) rotate(5deg);
-    transform: skew(-25deg) rotate(-10deg);
+  color: #ffba16;
+  font-family: Impact, Helvetica, sans-serif;
+  font-size: 80px;
+  letter-spacing: 0.2em;
+  padding: 10px 0;
+  -moz-transform: skew(-25deg) rotate(5deg);
+  -ms-transform: skew(-25deg) rotate(5deg);
+  -webkit-transform: skew(-25deg) rotate(5deg);
+  transform: skew(-25deg) rotate(-10deg);
 
-    span {
-        letter-spacing: 3px;
+  span {
+    letter-spacing: 3px;
 
-        &.pink{
-        
-        color: #ff539f;
-        text-shadow:
+    &.pink {
+
+      color: #ff539f;
+      text-shadow:
         0 1px #f7046f,
         1px 0 #e50568,
         1px 2px #f7046f,
@@ -27,28 +27,57 @@
         4px 5px #f7046f,
         5px 6px #e50568,
         6px 7px 5px #f7046f;
-        -webkit-text-stroke: 0.5px #ff9cc8;
+      -webkit-text-stroke: 0.5px #ff9cc8;
     }
+
     &.green {
-        
+      color: #15803d;
+      text-shadow:
+        0 1px #166534,
+        1px 0 #15803d,
+        1px 2px #166534,
+        2px 1px #15803d,
+        2px 3px #166534,
+        3px 2px #15803d,
+        3px 4px #166534,
+        4px 3px #15803d,
+        4px 5px #166534,
+        5px 6px #15803d,
+        6px 7px 5px #166534;
+      -webkit-text-stroke: 0.5px #86efac;
     }
+
     &.blue {
-        
+      color: #4e76f8;
+      text-shadow:
+        0 1px #1e40af,
+        1px 0 #1d4ed8,
+        1px 2px #1e40af,
+        2px 1px #1d4ed8,
+        2px 3px #1e40af,
+        3px 2px #1d4ed8,
+        3px 4px #1e40af,
+        4px 3px #1d4ed8,
+        4px 5px #1e40af,
+        5px 6px #1d4ed8,
+        6px 7px 5px #1e40af;
+      -webkit-text-stroke: 0.5px #93c5fd;
     }
+
     &.orange {
-            text-shadow:
-    0 1px #ff9b0d,
-    1px 0 #f79100,
-    1px 2px #ff9b0d,
-    2px 1px #f79100,
-    2px 3px #ff9b0d,
-    3px 2px #f79100,
-    3px 4px #ff9b0d,
-    4px 3px #f79100,
-    4px 5px #ff9b0d,
-    5px 6px #f79100,
-    6px 7px 5px #ff9b0d;
-  -webkit-text-stroke: 0.5px #ffcf5d;
+      text-shadow:
+        0 1px #ff9b0d,
+        1px 0 #f79100,
+        1px 2px #ff9b0d,
+        2px 1px #f79100,
+        2px 3px #ff9b0d,
+        3px 2px #f79100,
+        3px 4px #ff9b0d,
+        4px 3px #f79100,
+        4px 5px #ff9b0d,
+        5px 6px #f79100,
+        6px 7px 5px #ff9b0d;
+      -webkit-text-stroke: 0.5px #ffcf5d;
     }
 
   }
