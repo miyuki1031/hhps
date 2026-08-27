@@ -109,8 +109,11 @@ const TodoBodyDom = ({
     return (
         <form 
             className={`
+                touch-none
                 flex flex-col
-                h-full
+                h-fit md:h-full
+                bg-gray-200
+                p-5
             `}
             onSubmit={handleSubmit}>
             <input
@@ -123,13 +126,13 @@ const TodoBodyDom = ({
                 {/** タイトル */}
                 <fieldset className="fieldset">
                     <div className="flex justify-between">
-                        <legend className="fieldset-legend">タイトル</legend><p className="label text-pink-600">必須</p>
+                        <legend className="fieldset-legend text-gray-800">タイトル</legend><p className="label text-pink-600">必須</p>
                     </div>
 
                     <input
                         type="text"
                         name="title"
-                        className="w-auto input invalid:border-pink-500 invalid:text-pink-600 focus:border-sky-500 focus:outline focus:outline-sky-500 focus:invalid:border-pink-500 focus:invalid:outline-pink-500 disabled:border-gray-200 disabled:bg-gray-50 disabled:text-gray-500 disabled:shadow-none dark:disabled:border-gray-700 dark:disabled:bg-gray-800/2"
+                        className="w-auto input invalid:border-pink-500 invalid:text-pink-600 focus:border-sky-500 focus:outline focus:outline-sky-500 focus:invalid:border-pink-500 focus:invalid:outline-pink-500 disabled:border-gray-200 disabled:bg-gray-50 disabled:text-gray-500 disabled:shadow-none dark:disabled:border-gray-700 dark:disabled:bg-gray-800/2 bg-white"
                         placeholder="Todoの内容を入力してね"
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
@@ -138,9 +141,9 @@ const TodoBodyDom = ({
                 </fieldset>
                 {/** 内容 */}
                 <fieldset className="fieldset">
-                    <legend className="fieldset-legend">内容</legend>
+                    <legend className="fieldset-legend text-gray-800">内容</legend>
                     <textarea
-                        className="w-auto textarea h-24"
+                        className="w-auto textarea h-24 bg-white border-gray-800"
                         placeholder="description"
                         name="description"
                         value={description}
@@ -151,11 +154,11 @@ const TodoBodyDom = ({
                 {/** 有効期限 */}
                 <fieldset className="fieldset">
                     <div className="flex justify-between">
-                        <legend className="fieldset-legend">有効期限</legend>
+                        <legend className="fieldset-legend text-gray-800">有効期限</legend>
                     </div>
                     <input
                         type="date"
-                        className="input input-bordered w-full"
+                        className="input input-bordered w-full bg-white border-gray-800"
                         value={dueDate}
                         onChange={(e) => setDueDate(e.target.value)}
                     />
@@ -168,7 +171,7 @@ const TodoBodyDom = ({
                         ${isLoginMaster? "block": "hidden"}
 
                     `}>
-                        <legend className="fieldset-legend">公開範囲</legend>
+                        <legend className="fieldset-legend text-gray-800">公開範囲</legend>
                         <div className="grid grid-cols-3 mb-1">
                             <input
                                 type="checkbox" 
@@ -181,7 +184,7 @@ const TodoBodyDom = ({
 
 
                     <fieldset className="fieldset grid grid-cols-2">
-                        <legend className="fieldset-legend">完了</legend>
+                        <legend className="fieldset-legend text-gray-800">完了</legend>
                         <input
                             type="checkbox" 
                             className="toggle" 
@@ -194,7 +197,7 @@ const TodoBodyDom = ({
                         fieldset grid grid-cols-2
                         ${id === ""? "hidden": "block"}
                     `}>
-                        <legend className="fieldset-legend">削除</legend>
+                        <legend className="fieldset-legend text-gray-800">削除</legend>
                         <input
                             type="checkbox" 
                             className="toggle" 

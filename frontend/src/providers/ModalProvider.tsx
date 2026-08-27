@@ -62,27 +62,19 @@ export default function ModalProvider({ children }: { children: ReactNode }) {
                      ? "block"
                     : "hidden"
                 }
-                fixed
-                top-0
-                left-0
-                w-screen
-                h-screen
-                z-200
-                bg-orange-500/50
-                grid
-                place-items-center
+                fixed inset-0 z-200 h-full bg-orange-500/50 grid place-items-center touch-none md:touch-auto
             `}>
                 <div className={`
                     relative
                     w-full
                     md:w-5/12
                     h-full
-                    rounded-lg
+                    md:rounded-lg
                     md:h-11/12
                     bg-white
                     shadow-xl/30
-                    p-10
-                    `}>
+                    p-4 md:p-10
+`}>
                         {modalDom}
                 </div>
             </div>
