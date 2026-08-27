@@ -12,7 +12,7 @@ export default  function AboutLayout({
       hsl-p-todo
       flex-1
       flex-col
-      w-full
+      pr-16
       `}
       >
         <h2 className="
@@ -25,9 +25,8 @@ export default  function AboutLayout({
         ">
           <Title text={CONTENTS.TODO.NAME} color={CONTENTS.TODO.COLOR} />
       </h2>
-
       <div className="
-        flex flex-1 w-full
+        flex flex-1
       ">
         {children}
       </div>

@@ -20,7 +20,6 @@ const headers = {
     scale: "規模",
 };
 
-// const getParam =  (key: string, queries?: ResumeQueries) => {
 const getParam =  <K extends keyof ResumeQueries>(
     key: K,
     queries?: ResumeQueries

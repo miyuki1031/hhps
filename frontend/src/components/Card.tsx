@@ -45,7 +45,7 @@ export function CardResume({
     }
     return (
         <div className="card card-border w-auto bg-base-100 shadow-sm p-1 m-2">
-            <div className="card-body">
+            <div className="card-body p-2 md:p-6">
                 <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-2">
                     {/** プロジェクト概要:projectOverview */}
                     <h2 className="text-3xl font-bold">{data.projectOverview}</h2>

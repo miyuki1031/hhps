@@ -16,6 +16,7 @@ interface ButtonBaseProps extends ComponentPropsWithoutRef<'button'> {
         text: string
         className: 'tooltip-start' | 'tooltip-end' | ''
     } | undefined
+    isNoPadding?: boolean
 }
 
 export default function ButtonBase({
@@ -23,6 +24,7 @@ export default function ButtonBase({
     onClick,
     href,
     tooltips,
+    isNoPadding = false,
     ...props // extendsで定義してあるその他の属性（className や type formActionなど）をまるっと受け取る
 } : ButtonBaseProps) {
     const router = useRouter();
@@ -46,9 +48,16 @@ export default function ButtonBase({
             onClick={handleClick}
             {...props}
             {...tooltipProps}
-            className={`btn btn-soft ${props.className || ""} ${tooltipsClassName}`}
+            className={`
+                ${isNoPadding
+                    ? ""
+                    : "btn btn-soft"
+                }
+                ${props.className || "" }
+                ${tooltipsClassName}`
+            }
         >
-            { children }
+        { children }
         </button>
     );
 
