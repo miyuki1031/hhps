@@ -9,8 +9,12 @@ import ButtonBase from '@/components/Button/ButtonBase';
 
 
 export default function TodoSort({
+    className = "",
+    innerClassName = "",
     isLoginMaster
 }:{
+    className?: string
+    innerClassName? : string
     isLoginMaster: boolean
 }) {
     const router = useRouter();
@@ -50,64 +54,69 @@ export default function TodoSort({
     };
 
     return (
-        <div className="flex justify-end w-100">
-            <ButtonBase
-                className={`
-                    ml-1
-                    ${isOpen? "block":"hidden"}
-                `}
-                onClick={()=>{ handleSort("dueDate") }}
-                tooltips={{ text: "有効期限", className: '' }}
-            >
-                <CalendarDays />
-            </ButtonBase>
+        <div className={className}>
+            <div className={`
+                flex
+                w-100
+                ${innerClassName}
+            `}>
+                <ButtonBase
+                    className={`
+                        ${isOpen? "block":"hidden"}
+                    `}
+                    onClick={()=>{ handleSort("dueDate") }}
+                    tooltips={{ text: "有効期限", className: '' }}
+                >
+                    <CalendarDays />
+                </ButtonBase>
 
-            <ButtonBase
-                className={`
-                    ml-1
-                    ${isComplete? "bg-slate-500":""}
-                    ${isOpen? "block":"hidden"}
-                `}
-                onClick={()=>{ handleSort("isComplete") }}
-                tooltips={{ text: "完了", className: '' }}
-            >
-                <BookmarkCheck />
-            </ButtonBase>
+                <ButtonBase
+                    className={`
+                        ml-1
+                        ${isComplete? "bg-slate-500":""}
+                        ${isOpen? "block":"hidden"}
+                    `}
+                    onClick={()=>{ handleSort("isComplete") }}
+                    tooltips={{ text: "完了", className: '' }}
+                >
+                    <BookmarkCheck />
+                </ButtonBase>
 
-            <ButtonBase
-                className={`
-                    ml-1
-                    ${isDelete? "bg-slate-500":""}
-                    ${isOpen? "block":"hidden"}
-                `}
-                onClick={()=>{ handleSort("isDelete") }}
-                tooltips={{ text: "削除", className: '' }}
-            >
-                <Trash2 />
-            </ButtonBase>
+                <ButtonBase
+                    className={`
+                        ml-1
+                        ${isDelete? "bg-slate-500":""}
+                        ${isOpen? "block":"hidden"}
+                    `}
+                    onClick={()=>{ handleSort("isDelete") }}
+                    tooltips={{ text: "削除", className: '' }}
+                >
+                    <Trash2 />
+                </ButtonBase>
 
-            <ButtonBase
-                className={`
-                    ml-1
-                    ${isPrivate? "bg-slate-500":""}
-                    ${isLoginMaster && isOpen? "block":"hidden"}
-                `}
-                onClick={()=>{ handleSort("isPrivate") }}
-                tooltips={{ text: "公開", className: '' }}
-            >
-                {isPrivate? <GlobeLock size={19} />: <Globe size={19} />}
-            </ButtonBase>
+                <ButtonBase
+                    className={`
+                        ml-1
+                        ${isPrivate? "bg-slate-500": ""}
+                        ${isLoginMaster && isOpen? "block": "hidden"}
+                    `}
+                    onClick={()=>{ handleSort("isPrivate") }}
+                    tooltips={{ text: "公開", className: '' }}
+                >
+                    {isPrivate? <GlobeLock size={19} />: <Globe size={19} />}
+                </ButtonBase>
 
-            <ButtonBase
-                className="ml-1"
-                onClick={()=>{ setOpen(!isOpen) }}
-                tooltips={{ text: "検索機能", className: '' }}
-            >
-                { isOpen
-                ? <ZoomOut />
-                : <ZoomIn />}
-            </ButtonBase>
-    </div>
+                <ButtonBase
+                    className="ml-1"
+                    onClick={()=>{ setOpen(!isOpen) }}
+                    tooltips={{ text: "検索機能", className: '' }}
+                >
+                    { isOpen
+                    ? <ZoomOut />
+                    : <ZoomIn />}
+                </ButtonBase>
+            </div>
+        </div>
     )
 
 }

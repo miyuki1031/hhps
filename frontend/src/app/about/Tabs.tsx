@@ -7,7 +7,7 @@ export default function Tabs() {
     const isProfile = pathname === '/about';
     const isResume =  pathname === '/about/resume';
     const isIntroduction =  pathname === '/about/introduction';
-    const style_button_base ="tab p-2 text-center focus:outline-none ";
+    const style_button_base ="tab p-6 text-center focus:outline-none ";
     return (
         <div className="w-auto">
             <div className="grid grid-cols-1 md:grid-cols-3">

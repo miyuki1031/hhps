@@ -29,6 +29,11 @@ export default async function page({
         };
     }
 
+    // 管理者のみ表示
+    const isHidden = (isMasterAuthor: boolean) : boolean => {
+        return (isMasterAuthor && !isLoginMaster) || !hasEditor;
+    }
+
     // URLクエリ取得
     const queries = await searchParams;
     // 検索パラメータ生成
@@ -45,73 +50,107 @@ export default async function page({
         isGuest: true, isLoginMaster: false, isLoginUser: false
     };
     const hasEditor = isLoginMaster || isLoginUser;
-    // 管理者のみ表示
-    const isHidden = (isMasterAuthor: boolean) : boolean => {
-        return (isMasterAuthor && !isLoginMaster) || !hasEditor;
 
-    }
+    const text = isGuest
+         ? "登録・編集はGoogleアカウント要(情報は破棄)"
+         : isLoginUser
+             ? "ログイン情報は破棄しユーザー情報のみ削除可能"
+             : "";
+
     return (
-        <div className="flex-1 bg-white p-4">
-            <div className="flex justify-between">
-                <div className="flex">
-                    {hasEditor? <TodoModal className="ml-1" isLoginMaster={isLoginMaster} />: ""}
-                    <LoginUser />
-                </div>
+        <div className="
+            w-1/2
+            flex-1
+            p-2 md:p-4
+            bg-white
+        ">
+            <div className="w-full text-black break-all">
                 <Suspense>
-                    <TodoSort isLoginMaster={isLoginMaster} />
-                </Suspense>
-            </div>
+                    <div className="block md:hidden">
+                        { hasEditor? <TodoModal className="pl-1" isLoginMaster={isLoginMaster} />: ""}
+                        <LoginUser className="pl-0 pt-2" />
+                        <div className="
+                            mt-2
+                            pl-2
+                            pt-2
+                            pb-2
+                            text-wrap
+                        ">
+                            {text}
+                        </div>
+                        <TodoSort
+                            className="pt-2"
+                            isLoginMaster={isLoginMaster}
+                        />
+                    </div>
 
-            <div className="p-2">
-                { isGuest
-                    ? "Todoを登録・編集するにはGoogleアカウントが必要です。(ログイン情報は破棄しています)"
-                    : isLoginUser
-                        ? "ログイン情報は破棄しユーザー情報のみ削除可能"
-                        : ""
-                }
-            </div>
-
-             <div className="flex flex-wrap">
-                { todoList.map((item, index ) => (
-                    <div
-                        key={index}
-                        className="card card-border bg-base-100 w-96 shadow-sm m-2"
-                    >
-                        <div className="card-body">
-                            <div className="flex justify-end">
-                                <span className={`badge
-                                    ${item.isComplete? "block": "hidden"}
-                                `}>isComplete</span>
-                                <span
-                                    className={`badge
-                                    ${item.isDelete? "block": "hidden"}
-                                `}>Delete</span>
-                                {item.isPrivate? <GlobeLock size={19} />: <Globe size={19} />}
-                                
-                            </div>
-                            <h2 className="card-title">{item.title}</h2>
-                            <p>{ item.description}</p>
-                            <p>期限：{ item.dueDate }</p>
-                            <div className={`
-                                card-actions justify-end flex
-                                ${isHidden(item.isMasterAuthor)? "hidden": "block"}
-                            `}>
-                                {/** 編集 */}
-                                <TodoModal initialData={item} isLoginMaster={isLoginMaster} />
-                                {/* * 完了 */}
-                                <TodoCompleted id={item.id} isComplete={item.isComplete} />
-                                {/* * 削除 */}
-                                <TodoDelete
-                                    id={item.id}
-                                    isDelete={item.isDelete}
-                                    hardDelete={isLoginMaster}
-                                 />
+                    <div className="
+                        hidden md:flex
+                        justify-between
+                        w-full
+                    ">
+                        <div className="md:flex">
+                            { hasEditor? <TodoModal isLoginMaster={isLoginMaster} />: ""}
+                            <LoginUser />
+                            <div className="
+                                pl-2
+                                pt-2
+                                h-10
+                            ">
+                                {text}
                             </div>
                         </div>
+                        <TodoSort
+                            className="hidden md:block"
+                            innerClassName="justify-end"
+                            isLoginMaster={isLoginMaster}
+                        />
                     </div>
-                    )
-                ) }
+
+                    <div className="flex flex-wrap">
+                        { todoList.map((item, index ) => (
+                            <div
+                                key={index}
+                                className="card card-border w-full md:w-96 shadow-sm m-2 bg-white"
+                            >
+                                <div className="card-body p-2 md:p-6">
+                                    <div className="flex justify-end">
+                                        <span className={`badge
+                                            ${item.isComplete? "block": "hidden"}
+                                        `}>isComplete</span>
+                                        <span
+                                            className={`badge
+                                            ${item.isDelete? "block": "hidden"}
+                                        `}>Delete</span>
+                                        {item.isPrivate? <GlobeLock size={19} />: <Globe size={19} />}
+                                        
+                                    </div>
+                                    <h2 className="card-title">{item.title}</h2>
+                                    <p>{ item.description}</p>
+                                    <p>期限：{ item.dueDate }</p>
+                                    <div className={`
+                                        card-actions justify-end flex
+                                        ${isHidden(item.isMasterAuthor)? "hidden": "block"}
+                                    `}>
+                                        {/** 編集 */}
+                                        <TodoModal initialData={item} isLoginMaster={isLoginMaster} />
+                                        {/* * 完了 */}
+                                        <TodoCompleted id={item.id} isComplete={item.isComplete} />
+                                        {/* * 削除 */}
+                                        <TodoDelete
+                                            id={item.id}
+                                            isDelete={item.isDelete}
+                                            hardDelete={isLoginMaster}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            )
+                        ) }
+                    </div>
+                </Suspense>
             </div>
         </div>
+
     )
 }

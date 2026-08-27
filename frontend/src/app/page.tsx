@@ -1,5 +1,3 @@
-'use client';
-
 import { SITE_INFO } from '../lib/constants';
 
 export default function Home() {

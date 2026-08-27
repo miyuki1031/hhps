@@ -1,7 +1,7 @@
 'use client';
 
 import { SITE_INFO } from '@/lib/constants';
-import Navigation from './Navigation';
+import Navigation from '@/components/Navigation';
 
 export default function Header() {
     return (
